@@ -1,0 +1,26 @@
+body {
+    margin: 0px;
+}
+
+#app-header {
+    padding: 0.1rem;
+    font-size: small;
+    background-color: gray;
+}
+
+.red {
+    color: red;
+}
+
+.note-card {
+    margin: 1rem;
+    border: 2px solid #555;
+}
+
+.note-title {
+    font-style: italic;
+}
+
+.note-desc {
+    color: gray;
+}
