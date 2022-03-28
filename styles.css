@@ -1,26 +1,80 @@
+:root {
+  --primary-color: rgb(255, 123, 0);
+  --secondary-color: rgb(255,160,100);
+}
 body {
-    margin: 0px;
+  margin: 0px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 #app-header {
-    padding: 0.1rem;
-    font-size: small;
-    background-color: gray;
+  padding: 0.5rem;
+  font-size: small;
+  background-color: var(--primary-color);
+  color: white;
 }
-
-.red {
-    color: red;
+#app-header h1 {
+  margin: 0px;
+}
+#new-note-form {
+  display: flex;
+  padding: 0.2rem;
+  height: 2.5rem;
+  align-content: center;
+  align-items: center;
+  background-color: var(--secondary-color);
 }
 
 .note-card {
-    margin: 1rem;
-    border: 2px solid #555;
+  margin: 0.5rem 1rem;
+  border: 2px solid #bbb;
+  border-radius: 0.3rem;
+  padding: 0.5rem;
+  position: relative;
 }
 
 .note-title {
-    font-style: italic;
+  font-weight: bold;
 }
 
 .note-desc {
-    color: gray;
+  color: gray;
+}
+
+.button {
+  display: flex;
+  height: 1.5rem;
+  width: fit-content;
+  background-color: var(--primary-color);
+  align-items: center;
+  color: white;
+  padding: 0.2rem;
+  border-radius: 0.5rem;
+  border: 2px solid white;
+  visibility: hidden;
+}
+
+.visible {
+  visibility: visible;
+}
+
+.delete-card-btn {
+  position: absolute;
+  height: 1.5rem;
+  width: 1.5rem;
+  top: 0.2rem;
+  right: 0.2rem;
+  opacity: 0;
+  cursor: pointer;
+  text-align: center;
+  color: white;
+  font-weight: bolder;
+border: none;
+border-radius: 50%;
+background-color: var(--primary-color);
+  transition: opacity 0.3s ease;
+}
+
+.note-card:hover .delete-card-btn {
+  opacity: 1;
 }
