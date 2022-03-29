@@ -1,36 +1,66 @@
-const docBody = document.querySelector("body");
+const searchIconBtn = document.querySelector("#search-icon-btn");
+const cancelSearchBtn = document.querySelector("#search-cancel-btn");
+const searchPanel = document.querySelector("#search-panel");
+
+searchIconBtn.addEventListener("click", () => toggleVisibility(searchPanel));
+cancelSearchBtn.addEventListener("click", () => toggleVisibility(searchPanel));
+
+function toggleVisibility(domElement) {
+  if (domElement.style.display == "none") {
+    domElement.style.display = "";
+    return;
+  }
+  domElement.style.display = "none";
+}
 const newNoteDiv = document.querySelector("#new-note-form");
 const notesDiv = document.querySelector("#notes");
-const NOTES_PREFIX = "PNotes:Note";
+const NOTES_PREFIX = "KNotes:Note";
 
 const takeNewNoteBtn = createDOMElement(
   "div",
-  { class: "button visible" },
-  createDOMElement("span", {}, "Take a note...")
+  { role: "button", class: "button" },
+  createDOMElement("span", { class: "plus" }, "+")
 );
+takeNewNoteBtn.appendChild(createDOMElement("div", {}, "Take a note..."));
+takeNewNoteBtn.addEventListener("click", (event) => {
+  event.target.parentNode.style.display = "none";
+  createNewNote();
+});
+
 newNoteDiv.appendChild(takeNewNoteBtn);
 
-takeNewNoteBtn.addEventListener("click", createNewNote);
-
 function createNewNote() {
-  takeNewNoteBtn.classList.toggle("visible");
-  const newNoteForm = createDOMElement("form", { visibility: "hidden" });
-  const title = createDOMElement("input", { placeholder: "Title" });
-  const note = createDOMElement("input", { placeholder: "Take a note..." });
-  const doneBtn = createDOMElement("button", { type: "button" }, "Done");
-  doneBtn.addEventListener("click", () => {
-    if (!title.value && !note.value) return;
-    const noteToSave = {
-      noteTitle: title.value,
-      noteDescription: note.value,
-      time: Date.now(),
-    };
-    const noteKey = `${NOTES_PREFIX}${noteToSave.time}`;
-    localStorage.setItem(noteKey, JSON.stringify(noteToSave));
-    reloadNotes();
+  newNoteDiv.style.height = "10rem";
+  const newNoteForm = createDOMElement("div", { class: "note-card" });
+  const title = createDOMElement("textarea", {
+    class: "note-card-title",
+    placeholder: "Title",
+  });
+  const note = createDOMElement("textarea", {
+    class: "note-card-desc",
+    placeholder: "Take a note...",
+  });
+  const doneBtn = createDOMElement(
+    "button",
+    { class: "button", type: "button" },
+    "Done"
+  );
+  doneBtn.addEventListener("click", (event) => {
+    newNoteForm.style.display = "none";
+    newNoteDiv.style.height = "3rem";
+    takeNewNoteBtn.style.display = "flex";
 
-    takeNewNoteBtn.classList.toggle("visible");
-    newNoteForm.classList.toggle("visible");
+    if (!title.value && !note.value) {
+      const noteToSave = {
+        noteTitle: title.value,
+        noteDescription: note.value,
+        time: Date.now(),
+      };
+      const noteKey = `${NOTES_PREFIX}${noteToSave.time}`;
+      localStorage.setItem(noteKey, JSON.stringify(noteToSave));
+      reloadNotes();
+    }
+    return;
   });
   [title, note, doneBtn].forEach((item) => newNoteForm.appendChild(item));
   newNoteDiv.appendChild(newNoteForm);

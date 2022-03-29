@@ -1,18 +1,148 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Peste Notes</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <header id="app-header">
-        <h1>Peste Notes</h1>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Keep Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&family=Roboto:wght@500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="main-script.js" defer></script>
+  </head>
+  <body>
+    <header id="app-header" class="h-64px p-8px-lr">
+      <!-- App Title -->
+      <div
+        class="m-8px-l"
+        style="
+          display: flex;
+          flex-direction: column;
+          flex-grow: 1;
+          justify-content: center;
+        "
+      >
+        <h2 tabindex="-1">Keep</h2>
+        <h3 tabindex="-1">Notes</h3>
+      </div>
+      <!-- Icon buttons -->
+      <div
+        id="search-icon-btn"
+        class="icon-button p-10px"
+        role="button"
+        aria-label="Search"
+        tabindex="0"
+      >
+        <svg
+          class="[ icon-color icon-size ]"
+          width="24px"
+          height="24px"
+          viewBox="0 0 24 24"
+          fill="#000000"
+          focusable="false"
+        >
+          <path
+            d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+          ></path>
+          <path d="M0 0h24v24H0z" fill="none"></path>
+        </svg>
+      </div>
+      <div
+        class="icon-button p-10px"
+        role="button"
+        aria-label="Open in new tab"
+        tabindex="0"
+      >
+        <svg
+          class="[ icon-color icon-size ]"
+          width="20"
+          height="24"
+          viewBox="0 0 20 20"
+          fill="#000000"
+          focusable="false"
+        >
+          <path
+            id="a"
+            d="m15.444 15.444h-10.888v-10.888h5.444v-1.556h-5.444c-0.86 0-1.556 0.696-1.556 1.556v10.888c0 0.86 0.696 1.556 1.556 1.556h10.888c0.86 0 1.556-0.696 1.556-1.556v-5.444h-1.556v5.444zm-3.888-12.444v1.556h2.788l-7.646 7.644 1.1 1.102 7.646-7.646v2.788h1.556v-5.444h-5.444z"
+          ></path>
+        </svg>
+      </div>
+      <div
+        class="icon-button p-10px"
+        role="button"
+        aria-label="Close"
+        tabindex="0"
+      >
+        <svg
+          class="[ icon-color icon-size ]"
+          width="24px"
+          height="24px"
+          viewBox="0 0 24 24"
+          fill="#000000"
+          focusable="false"
+        >
+          <path
+            d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+          ></path>
+          <path d="M0 0h24v24H0z" fill="none"></path>
+        </svg>
+      </div>
+      <!-- Search for notes panel  -->
+      <div
+        id="search-panel"
+        class="[ search-panel ] [ h-64px p-6px-lr ]"
+        style="display: none"
+      >
+        <div class="m-10px-lr">
+          <svg
+            class="icon-color"
+            width="24px"
+            height="24px"
+            viewBox="0 0 24 24"
+            fill="#000000"
+            focusable="false"
+          >
+            <path
+              d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+            ></path>
+            <path d="M0 0h24v24H0z" fill="none"></path>
+          </svg>
+        </div>
+        <input
+          id="search-input"
+          class="search-input"
+          placeholder="Search Keep..."
+          aria-label="Search Keep..."
+        />
+        <div
+          id="search-cancel-btn"
+          class="icon-button p-10px"
+          role="button"
+          aria-label="Cancel"
+          tabindex="0"
+        >
+          <svg
+            class="[ icon-color icon-size ]"
+            width="24px"
+            height="24px"
+            viewBox="0 0 24 24"
+            fill="#000000"
+            focusable="false"
+          >
+            <path
+              d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z"
+            ></path>
+            <path d="M0 0h24v24H0z" fill="none"></path>
+          </svg>
+        </div>
+      </div>
     </header>
-    <div id="new-note-form"></div>
+    <section class="main-section" id="main-section"></section>
+    <div id="new-note-form" style="height: 2.5rem"></div>
     <div id="notes"></div>
-    <script src="main-script.js"></script>
-</body>
+  </body>
 </html>

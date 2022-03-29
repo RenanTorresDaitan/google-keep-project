@@ -1,36 +1,176 @@
 :root {
   --primary-color: rgb(255, 123, 0);
-  --secondary-color: rgb(255,160,100);
+  --secondary-color: rgb(255, 160, 100);
+  --c-off-white-1: #f1f3f4;
+  --c-black: #000;
+  --c-white: #fff;
+  --tc-gray-1: rgb(128, 134, 139);
+  --tc-gray-2: rgb(95, 99, 104);
+}
+* {
+  margin: 0%;
+  padding: 0%;
+  box-sizing: border-box;
 }
 body {
-  margin: 0px;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-family: "Roboto", "Montserrat", sans-serif;
+}
+div {
+  display: block;
+}
+input {
+  writing-mode: horizontal-tb !important;
+  color: var(--tc-gray-1);
+  text-rendering: auto;
+  letter-spacing: normal;
+  word-spacing: normal;
+  line-height: normal;
+  text-transform: none;
+  text-indent: 0px;
+  text-shadow: none;
+  display: inline-block;
+  text-align: start;
+  appearance: auto;
+  cursor: text;
+  margin: 0em;
+  padding: 1px 2px;
+  border-width: 2px;
+  border-style: inset;
+  border-image: initial;
 }
 
+/* Utility classes */
+
+.show {
+  display: flex;
+}
+.h-64px {
+  height: 64px;
+}
+.m-8px-l {
+  margin-left: 8px;
+}
+.m-10px-lr {
+  margin-inline: 10px;
+}
+.p-6px-lr {
+  padding-inline: 6px;
+}
+.p-8px-lr {
+  padding-inline: 8px;
+}
+.p-10px {
+  padding: 10px;
+}
+
+/* Specific Selectors */
 #app-header {
-  padding: 0.5rem;
-  font-size: small;
-  background-color: var(--primary-color);
-  color: white;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-bottom: 1px solid var(--c-off-white-1);
+  background-color: var(--c-white);
+  position: relative;
 }
-#app-header h1 {
-  margin: 0px;
+
+#app-header h2 {
+  color: var(--tc-gray-1);
+  display: block;
+  font-family: "Roboto", "Arial", sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  line-height: 13px;
+  text-transform: uppercase;
 }
+#app-header h3 {
+  color: var(--tc-gray-2);
+  display: block;
+  font-family: "Montserrat", "Roboto", sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  margin-left: -1px;
+  line-height: 20px;
+}
+
+#main-section {
+  height:100%;
+  left:0;
+  padding-top: 64px;
+  position: absolute;
+  top:0;
+  width: 100%;
+}
+.icon-color {
+  color: var(--c-black);
+  opacity: 0.54;
+}
+.icon-size {
+  height: 20px;
+  width: 20px;
+}
+
+.icon-button {
+  border-radius: 50%;
+  box-sizing: border-box;
+  cursor: pointer;
+  height: 40px;
+  margin: 0px -2px;
+}
+.icon-button:hover {
+  background-color: var(--c-off-white-1);
+  opacity: 0.87;
+}
+
+.search-input {
+  background-color: transparent;
+  border: none;
+  color: var(--tc-gray-2);
+  box-flex: 1;
+  flex-grow: 1;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  outline: none;
+  width: 100px;
+}
+.search-panel {
+  align-items: center;
+  box-sizing: border-box;
+  background-color: var(--c-white);
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+/* Other */
 #new-note-form {
   display: flex;
-  padding: 0.2rem;
-  height: 2.5rem;
   align-content: center;
   align-items: center;
-  background-color: var(--secondary-color);
 }
 
 .note-card {
+  display: flex;
+  flex-wrap: wrap;
+  flex-flow: column;
   margin: 0.5rem 1rem;
+  background-color: white;
   border: 2px solid #bbb;
   border-radius: 0.3rem;
-  padding: 0.5rem;
+  padding: 0.8rem;
   position: relative;
+}
+.note-card-title,
+.note-card-desc {
+  border: none;
+  resize: none;
+  width: 100%;
+  vertical-align: top;
+  font-size: inherit;
 }
 
 .note-title {
@@ -38,24 +178,25 @@ body {
 }
 
 .note-desc {
+  overflow: hidden;
+  height: 100%;
+  flex-wrap: wrap;
+  flex-flow: column;
+  text-justify: auto;
   color: gray;
 }
 
 .button {
   display: flex;
   height: 1.5rem;
+  margin: 0.3rem;
   width: fit-content;
   background-color: var(--primary-color);
   align-items: center;
   color: white;
   padding: 0.2rem;
-  border-radius: 0.5rem;
+  border-radius: 0.8rem;
   border: 2px solid white;
-  visibility: hidden;
-}
-
-.visible {
-  visibility: visible;
 }
 
 .delete-card-btn {
@@ -69,12 +210,24 @@ body {
   text-align: center;
   color: white;
   font-weight: bolder;
-border: none;
-border-radius: 50%;
-background-color: var(--primary-color);
+  border: none;
+  border-radius: 50%;
+  background-color: var(--primary-color);
   transition: opacity 0.3s ease;
 }
 
 .note-card:hover .delete-card-btn {
   opacity: 1;
+}
+
+.plus {
+  color: white;
+  background-color: var(--secondary-color);
+  margin: 0 0.3rem;
+  padding: 0;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  text-align: center;
+  font-weight: bolder;
 }
