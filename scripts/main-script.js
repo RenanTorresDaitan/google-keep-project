@@ -1,6 +1,6 @@
 import NoteList from "./note-list.js";
 import NoteItem from "./note-item.js";
-
+import buildNoteCard from "./note-card-dom-element.js";
 
 // Search Notes functionality:
 const searchIconBtn = document.querySelector("#search-icon-btn");
@@ -25,16 +25,16 @@ const initializeApp = () => {
   reloadNotes();
 };
 
+const saveNotesToLocalStorage = () => {
+  localStorage.setItem(APP_NAME, JSON.stringify(notesList));
+};
+
 const loadNotesFromLocalStorage = () => {
   const storedList = localStorage.getItem(APP_NAME);
   if (typeof storedList !== "string") return;
   const parsedList = JSON.parse(storedList);
-  parsedList.forEach((item) => {
-    const newItem = createNoteItemObject(
-      item._item.noteTitle,
-      item._item.noteDescription,
-      item._item.noteTime
-    );
+  parsedList._list.forEach((note) => {
+    const newItem = createNoteItemObject(note);
     notesList.addNoteToList(newItem);
   });
 };
@@ -44,143 +44,57 @@ function reloadNotes() {
   renderNotes();
 }
 
-
-
-const createNoteItemObject = (noteTitle, noteDescription, noteTime) => {
+const createNoteItemObject = (noteInfo) => {
+  const noteId = noteInfo._id;
+  const { noteTitle, noteDescription, noteTime } = noteInfo._item;
   const note = new NoteItem();
-  note.setId(noteTime);
+  note.setId(noteId);
   note.setNote({ noteTitle, noteDescription, noteTime });
   return note;
 };
 
-const buildNoteCard = (item) => {
-  // Create Note Card DOM Elements from item data
-  const noteCard = createDOMElement("div", {
-    class: "note-card",
-    tabindex: "0",
-    "aria-label": `Keep\'s Note ${item.getNote().noteTitle}`,
-  });
-  const noteCardPinBtn = createDOMElement("div", {
-    role: "button",
-    class: "note-card-pin-button icon-size",
-    "aria-label": "Fix note",
-    "data-tooltip-text": "Fix note",
-    tabindex: "0",
-  }, createDOMElement("img", {src: "./resources/svg/pin.svg"}));
-  const noteCardMenuBtn = createDOMElement("div", {
-    role: "button",
-    class: "note-card-menu-button icon-size",
-    "aria-label": "Menu",
-    "data-tooltip-text": "Menu",
-    tabindex: "0",
-  }, createDOMElement("img", {src: "./resources/svg/menu.svg"}));
-  const noteCardTitle = createDOMElement(
-    "div",
-    { class: "note-card-title" },
-    createDOMElement("div", {}, item.getNote().noteTitle)
-  );
-  const noteCardTitleTextArea = createDOMElement("textarea", {
-    name: "note-title",
-    id: "title-textarea",
-    rows: "1",
-    maxlength: "999",
-    placeholder: "Title",
-    style: "height: 17px; display: none",
-  });
-  const noteCardDescription = createDOMElement(
-    "div",
-    { class: "note-card-desc" },
-    createDOMElement("div", {}, item.getNote().noteDescription)
-  );
-  const noteCardDescriptionTextArea = createDOMElement("textarea", {
-    name: "note-description",
-    id: "description-textarea",
-    rows: "1",
-    maxlength: "19999",
-    placeholder: "Take a note...",
-    style: "height: 16px; display: none",
-  });
-  // Append DOM Elements
-  noteCardTitle.appendChild(noteCardTitleTextArea);
-  noteCardDescription.appendChild(noteCardDescriptionTextArea);
-  noteCard.append(
-    noteCardMenuBtn,
-    noteCardPinBtn,
-    noteCardTitle,
-    noteCardDescription
-  );
-  notesDiv.appendChild(noteCard);
-};
-
 const takeNewNoteBtn = document.querySelector("#new-note-button");
-takeNewNoteBtn.addEventListener("click", createNewNote);
+takeNewNoteBtn.addEventListener("click", () =>
+  createNewNote({
+    _id: Date.now().toString(),
+    _item: {
+      noteTitle: "Title",
+      noteDescription: "Take a note...",
+      noteTime: Date.now(),
+    },
+  })
+);
 
-function createNewNote() {
-  const newNoteForm = createDOMElement("div", { class: "note-card" });
-  const title = createDOMElement("textarea", {
-    class: "note-card-title",
-    placeholder: "Title",
-  });
-  const note = createDOMElement("textarea", {
-    class: "note-card-desc",
-    placeholder: "Take a note...",
-  });
-  const doneBtn = createDOMElement(
-    "button",
-    { class: "button", type: "button" },
-    "Done"
-  );
-  doneBtn.addEventListener("click", (event) => {
-    newNoteForm.style.display = "none";
-    newNoteDiv.style.height = "3rem";
-    takeNewNoteBtn.style.display = "flex";
+function createNewNote(noteInfo) {
+  const newNote = createNoteItemObject(noteInfo);
+  notesList.addNoteToList(newNote);
+  reloadNotes();
+  saveNotesToLocalStorage();
+}
 
-    if (!title.value && !note.value) {
-      const noteToSave = {
-        noteTitle: title.value,
-        noteDescription: note.value,
-        time: Date.now(),
-      };
-      const noteKey = `${APP_NAME}${noteToSave.time}`;
-      localStorage.setItem(noteKey, JSON.stringify(noteToSave));
-      reloadNotes();
-    }
-    return;
-  });
-  [title, note, doneBtn].forEach((item) => newNoteForm.appendChild(item));
-  newNoteDiv.appendChild(newNoteForm);
+export function updateNote(noteInfo) {
+  notesList.removeNoteFromList(noteInfo._id);
+  createNewNote(noteInfo);
 }
 
 // Helper functions
 const renderNotes = () => {
-  notesList.getList().forEach((item) => buildNoteCard(item));
+  notesList
+    .getList()
+    .sort((a, b) => b.getNote().noteTime - a.getNote().noteTime)
+    .forEach((item) => buildNoteCard(item, notesDiv));
 };
-const toggleVisibility = (domElement) => {
+export function toggleVisibility(domElement) {
   if (domElement.style.display == "none") {
     domElement.style.display = "";
     return;
   }
   domElement.style.display = "none";
-};
+}
 const deleteContents = (parentElement) => {
   let child = parentElement.lastElementChild;
   while (child) {
     parentElement.removeChild(child);
     child = parentElement.lastElementChild;
   }
-};
-const createDOMElement = (name, attrs, ...children) => {
-  const dom = document.createElement(name);
-  if (attrs) {
-    for (let attr of Object.keys(attrs)) {
-      dom.setAttribute(attr, attrs[attr]);
-    }
-  }
-  if (children) {
-    for (let child of children) {
-      if (typeof child != "string") dom.appendChild(child);
-      else dom.appendChild(document.createTextNode(child));
-    }
-  }
-  return dom;
 };
