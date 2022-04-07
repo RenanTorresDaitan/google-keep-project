@@ -2,17 +2,31 @@ import NoteList from "./note-list.js";
 import NoteItem from "./note-item.js";
 import buildNoteCard from "./note-card-dom-element.js";
 
-// Search Notes functionality:
-const searchIconBtn = document.querySelector("#search-icon-btn");
-const cancelSearchBtn = document.querySelector("#search-cancel-btn");
-const searchPanel = document.querySelector("#search-panel");
-searchIconBtn.addEventListener("click", () => toggleVisibility(searchPanel));
-cancelSearchBtn.addEventListener("click", () => toggleVisibility(searchPanel));
-
-const newNoteDiv = document.querySelector("#new-note-div");
 const notesDiv = document.querySelector("#notes-area");
 const APP_NAME = "Keep-Notes";
 const notesList = new NoteList();
+
+// Search Notes functionality:
+const searchIconBtn = document.querySelector("#search-icon-btn");
+const searchPanel = document.querySelector("#search-panel");
+const searchInput = document.querySelector("#search-input");
+const cancelSearchBtn = document.querySelector("#search-cancel-btn");
+searchIconBtn.addEventListener("click", () => toggleVisibility(searchPanel));
+cancelSearchBtn.addEventListener("click", (event) => {
+  searchInput.value = "";
+  Array.from(notesDiv.children).forEach((note) => {
+    note.classList.remove("hide");
+  });
+  toggleVisibility(searchPanel);
+});
+searchInput.addEventListener("input", (event) => {
+  Array.from(notesDiv.children).forEach((note) => {
+    note.classList.toggle(
+      "hide",
+      !note.innerText.toLowerCase().includes(event.target.value.toLowerCase())
+    );
+  });
+});
 
 document.addEventListener("readystatechange", (event) => {
   if (event.target.readyState === "complete") {
