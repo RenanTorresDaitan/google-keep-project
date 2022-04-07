@@ -208,6 +208,26 @@ input {
   background-color: transparent;
   font-weight: bold;
 }
+
+.no-notes-found {
+  font-family: "Google Sans", sans-serif;
+  color: var(--tc-dark-gray);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.no-notes-found > h2 {
+  margin-top: 1rem;
+  font-size: 1.25rem;
+  font-weight: 400;
+}
+.no-notes-found > h4 {
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 200;
+}
 .icon-color {
   color: var(--c-black);
   opacity: 0.54;
@@ -324,6 +344,6 @@ input {
 .p-05rem-0625rem {
   padding: 0.5rem 0.625rem;
 }
-.p-1rem-lr{
+.p-1rem-lr {
   padding-inline: 1rem;
 }

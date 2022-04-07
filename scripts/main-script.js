@@ -68,22 +68,24 @@ const createNoteItemObject = (noteInfo) => {
 };
 
 const takeNewNoteBtn = document.querySelector("#new-note-button");
-takeNewNoteBtn.addEventListener("click", () =>
+takeNewNoteBtn.addEventListener("click", () => {
   createNewNote({
     _id: Date.now().toString(),
     _item: {
-      noteTitle: "Title",
-      noteDescription: "Take a note...",
+      noteTitle: "",
+      noteDescription: "",
       noteTime: Date.now(),
     },
-  })
-);
+  });
+  notesDiv.querySelector(".note-card-title").firstChild.click();
+  notesDiv.querySelector(".note-card-desc").firstChild.click();
+});
 
 function createNewNote(noteInfo) {
   const newNote = createNoteItemObject(noteInfo);
   notesList.addNoteToList(newNote);
-  reloadNotes();
   saveNotesToLocalStorage();
+  reloadNotes();
 }
 
 export function updateNote(noteInfo) {
@@ -93,10 +95,13 @@ export function updateNote(noteInfo) {
 
 // Helper functions
 const renderNotes = () => {
-  notesList
-    .getList()
-    .sort((a, b) => b.getNote().noteTime - a.getNote().noteTime)
-    .forEach((item) => buildNoteCard(item, notesDiv));
+  if (!notesList.getList() == "") {
+    document.querySelector(".no-notes-found").classList.toggle("hide", notesList.getList().length);
+    notesList
+      .getList()
+      .sort((a, b) => b.getNote().noteTime - a.getNote().noteTime)
+      .forEach((item) => buildNoteCard(item, notesDiv));
+  }
 };
 export function toggleVisibility(domElement) {
   if (domElement.style.display == "none") {
