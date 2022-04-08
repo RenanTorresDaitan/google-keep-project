@@ -1,4 +1,4 @@
-import { toggleVisibility, updateNote } from "./main-script.js";
+import { deleteNote, toggleVisibility, updateNote } from "./main-script.js";
 
 export default function buildNoteCard(item, notesArea) {
   // Create Note Card DOM Elements from item data
@@ -6,7 +6,7 @@ export default function buildNoteCard(item, notesArea) {
     class: "note-card",
     tabindex: "0",
     "aria-label": `Keep\'s Note ${item.getNote().noteTitle}`,
-    "data-note-id" : `${item.getId()}`,
+    "data-note-id": `${item.getId()}`,
   });
   const noteCardPinBtn = createDOMElement(
     "div",
@@ -28,7 +28,9 @@ export default function buildNoteCard(item, notesArea) {
       "data-tooltip-text": "Menu",
       tabindex: "0",
     },
-    createDOMElement("img", { src: "./resources/svg/menu.svg" })
+    createDOMElement("img", {
+      src: "./resources/svg/menu.svg",
+    })
   );
   const noteCardTitle = createDOMElement(
     "div",
@@ -66,10 +68,15 @@ export default function buildNoteCard(item, notesArea) {
     },
     "Done"
   );
+  const noteDeleteBtn = createDOMElement(
+    "div",
+    { role: "button", class: "menu-button hide" },
+    "Delete note"
+  );
 
   // Event Listeners
   noteCard.addEventListener("click", (event) => {
-      noteDoneBtn.style.display = "";
+    noteDoneBtn.style.display = "";
     if (event.target == noteCardTitle.firstChild) {
       noteCardTitleTextArea.value = noteCardTitle.firstChild.textContent;
       toggleVisibility(noteCardTitleTextArea);
@@ -84,16 +91,22 @@ export default function buildNoteCard(item, notesArea) {
       noteCardDescriptionTextArea.focus();
     }
     if (event.target == noteDoneBtn) {
-        noteDoneBtn.style.display = "none";
+      noteDoneBtn.style.display = "none";
       const updatedNote = {
         _id: noteCard.getAttribute("data-note-id"),
         _item: {
           noteTitle: noteCardTitle.textContent,
           noteDescription: noteCardDescription.textContent,
-          noteTime: Date.now()
-        }
+          noteTime: Date.now(),
+        },
       };
       updateNote(updatedNote);
+    }
+    if (event.target == noteCardMenuBtn) {
+      noteDeleteBtn.classList.toggle("hide");
+    }
+    if (event.target == noteDeleteBtn) {
+      deleteNote(noteCard.getAttribute("data-note-id"));
     }
   });
 
@@ -124,6 +137,7 @@ export default function buildNoteCard(item, notesArea) {
   // Append DOM Elements
   noteCardTitle.appendChild(noteCardTitleTextArea);
   noteCardDescription.appendChild(noteCardDescriptionTextArea);
+  noteCardMenuBtn.appendChild(noteDeleteBtn);
   noteCard.append(
     noteCardMenuBtn,
     noteCardPinBtn,

@@ -39,7 +39,7 @@ const initializeApp = () => {
   reloadNotes();
 };
 
-const saveNotesToLocalStorage = () => {
+const updateNotesOnLocalStorage = () => {
   localStorage.setItem(APP_NAME, JSON.stringify(notesList));
 };
 
@@ -84,10 +84,16 @@ takeNewNoteBtn.addEventListener("click", () => {
 function createNewNote(noteInfo) {
   const newNote = createNoteItemObject(noteInfo);
   notesList.addNoteToList(newNote);
-  saveNotesToLocalStorage();
+  updateNotesOnLocalStorage();
   reloadNotes();
 }
 
+export function deleteNote(id) {
+  notesList.removeNoteFromList(id);
+  updateNotesOnLocalStorage();
+  reloadNotes();
+  
+}
 export function updateNote(noteInfo) {
   notesList.removeNoteFromList(noteInfo._id);
   createNewNote(noteInfo);
@@ -95,7 +101,7 @@ export function updateNote(noteInfo) {
 
 // Helper functions
 const renderNotes = () => {
-  if (!notesList.getList() == "") {
+  if (notesList.getList().length >= 0) {
     document.querySelector(".no-notes-found").classList.toggle("hide", notesList.getList().length);
     notesList
       .getList()

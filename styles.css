@@ -81,6 +81,22 @@ input {
   top: 0;
   width: 100%;
 }
+.menu-button {
+  background-color: var(--c-gray);
+  border: 1px solid var(--c-black);
+  border-radius: 1rem;
+  padding: 0.3rem;
+  position: absolute;
+  font-size: 0.8rem;
+  width: 5rem;
+  top: 1.5rem;
+  right: -1rem;
+  text-align: center;
+}
+.menu-button:focus {
+  background-color: var(--tc-dark-gray);
+  color: white;
+}
 #new-note-div {
   align-items: center;
   min-width: 290px;
@@ -189,6 +205,9 @@ input {
   right: 25px;
   z-index: 1;
   transition: opacity 100ms linear;
+}
+.note-card-menu-button > img {
+  pointer-events: none;
 }
 
 .note-card:hover .note-card-menu-button,
