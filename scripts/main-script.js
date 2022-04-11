@@ -11,7 +11,10 @@ const searchIconBtn = document.querySelector("#search-icon-btn");
 const searchPanel = document.querySelector("#search-panel");
 const searchInput = document.querySelector("#search-input");
 const cancelSearchBtn = document.querySelector("#search-cancel-btn");
-searchIconBtn.addEventListener("click", () => toggleVisibility(searchPanel));
+searchIconBtn.addEventListener("click", () => {
+  toggleVisibility(searchPanel);
+  searchInput.focus();
+});
 cancelSearchBtn.addEventListener("click", (event) => {
   searchInput.value = "";
   Array.from(notesDiv.children).forEach((note) => {
@@ -41,6 +44,7 @@ const initializeApp = () => {
 
 const updateNotesOnLocalStorage = () => {
   localStorage.setItem(APP_NAME, JSON.stringify(notesList));
+  reloadNotes();
 };
 
 const loadNotesFromLocalStorage = () => {
@@ -48,8 +52,7 @@ const loadNotesFromLocalStorage = () => {
   if (typeof storedList !== "string") return;
   const parsedList = JSON.parse(storedList);
   parsedList._list.forEach((note) => {
-    const newItem = createNoteItemObject(note);
-    notesList.addNoteToList(newItem);
+    createNewNote(note);
   });
 };
 
@@ -58,54 +61,56 @@ function reloadNotes() {
   renderNotes();
 }
 
-const createNoteItemObject = (noteInfo) => {
-  const noteId = noteInfo._id;
-  const { noteTitle, noteDescription, noteTime } = noteInfo._item;
-  const note = new NoteItem();
-  note.setId(noteId);
-  note.setNote({ noteTitle, noteDescription, noteTime });
-  return note;
-};
-
 const takeNewNoteBtn = document.querySelector("#new-note-button");
 takeNewNoteBtn.addEventListener("click", () => {
+  function calculateNextId() {
+    const list = notesList.getList();
+    let nextId = 1;
+    if (list.length > 0) {
+      nextId = list[list.length - 1].getId() + 1;
+    }
+    return nextId;
+  }
   createNewNote({
-    _id: Date.now().toString(),
-    _item: {
-      noteTitle: "",
-      noteDescription: "",
-      noteTime: Date.now(),
-    },
+    _id: calculateNextId(),
+    noteTime: Date.now(),
   });
+  updateNotesOnLocalStorage();
   notesDiv.querySelector(".note-card-title").firstChild.click();
   notesDiv.querySelector(".note-card-desc").firstChild.click();
+  document.querySelector("#new-note-div").style.display = "none";
 });
 
 function createNewNote(noteInfo) {
-  const newNote = createNoteItemObject(noteInfo);
+  const newNote = new NoteItem(noteInfo);
   notesList.addNoteToList(newNote);
-  updateNotesOnLocalStorage();
-  reloadNotes();
 }
 
 export function deleteNote(id) {
   notesList.removeNoteFromList(id);
   updateNotesOnLocalStorage();
-  reloadNotes();
-  
+}
+export function pinNote(id) {
+  const noteToPin = notesList.getNoteById(id);
+  noteToPin.isPinned = noteToPin.isPinned ? false : true;
+  updateNotesOnLocalStorage();
 }
 export function updateNote(noteInfo) {
   notesList.removeNoteFromList(noteInfo._id);
   createNewNote(noteInfo);
+  updateNotesOnLocalStorage();
 }
 
 // Helper functions
 const renderNotes = () => {
   if (notesList.getList().length >= 0) {
-    document.querySelector(".no-notes-found").classList.toggle("hide", notesList.getList().length);
+    document
+      .querySelector(".no-notes-found")
+      .classList.toggle("hide", notesList.getList().length);
     notesList
       .getList()
-      .sort((a, b) => b.getNote().noteTime - a.getNote().noteTime)
+      .sort((a, b) => b.getTime() - a.getTime())
+      .sort((a, b) => Number(b.isPinned) - Number(a.isPinned))
       .forEach((item) => buildNoteCard(item, notesDiv));
   }
 };

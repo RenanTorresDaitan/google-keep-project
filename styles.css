@@ -161,12 +161,15 @@ input {
   resize: none;
   padding-top: 16px;
   width: 100%;
+  overflow: hidden;
   overflow-wrap: break-word;
+  white-space: normal;
 }
 
 .note-card-title {
   font-family: "Google Sans", Roboto, Arial, sans-serif;
   font-weight: 500;
+  text-overflow: ellipsis;
   color: var(--tc-dark-gray);
 }
 
@@ -187,7 +190,7 @@ input {
   width: 24px;
   opacity: 0;
   position: absolute;
-  top: 3px;
+  top: 8px;
   right: 0.5rem;
   z-index: 1;
   transition: opacity 100ms linear;
@@ -201,15 +204,14 @@ input {
   border-radius: 50%;
   opacity: 0;
   position: absolute;
-  top: 3px;
-  right: 25px;
+  top: 8px;
+  right: 1.5rem;
   z-index: 1;
   transition: opacity 100ms linear;
 }
-.note-card-menu-button > img {
+.note-card img {
   pointer-events: none;
 }
-
 .note-card:hover .note-card-menu-button,
 .note-card:hover .note-card-pin-button {
   opacity: 1;
@@ -220,12 +222,22 @@ input {
   opacity: 0.3;
 }
 
+
 .note-card-done-button {
+  border-radius: 0.5rem;
   border: none;
   display: flex;
+  right : 1rem;
+  bottom: 1rem;
   justify-content: flex-end;
   background-color: transparent;
   font-weight: bold;
+  outline: 0;
+  position: absolute;
+}
+.note-card-done-button:hover,
+.note-card-done-button:focus {
+  background-color: var(--tc-gray-1);
 }
 
 .no-notes-found {
@@ -328,6 +340,10 @@ input {
   border-radius: 50%;
   text-align: center;
   font-weight: bolder;
+}
+
+.note-card-button-active {
+  opacity: 1;
 }
 
 /* Utility classes */

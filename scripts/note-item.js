@@ -1,21 +1,45 @@
 export default class NoteItem {
-  constructor() {
-    this._id = null;
-    this._item = null;
+  constructor({
+    _id = null,
+    noteTitle = "",
+    noteDescription = "",
+    noteTime = 0,
+    isPinned = false,
+    color = "white",
+  } = {}) {
+    this._id = _id;
+    this.noteTitle = noteTitle;
+    this.noteDescription = noteDescription;
+    this.noteTime = noteTime;
+    this.isPinned = isPinned;
+    this.color = color;
   }
+
   getId() {
     return this._id;
   }
-
-  setId(id) {
-      this._id = id;
+  getTitle() {
+    return this.noteTitle;
   }
-
-  getNote() {
-      return this._item;
+  setTitle(noteTitle) {
+    this.noteTitle = noteTitle;
   }
-
-  setNote(note) {
-      this._item = note;
+  getDescription() {
+    return this.noteDescription;
+  }
+  setDescription(noteDescription) {
+    this.noteDescription = noteDescription;
+  }
+  getTime() {
+    return this.noteTime;
+  }
+  isPinned() {
+    return this.isPinned;
+  }
+  getCOlor() {
+    return this.color;
+  }
+  setColor(color) {
+    this.color = color;
   }
 }

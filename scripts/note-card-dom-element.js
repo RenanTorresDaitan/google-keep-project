@@ -1,11 +1,16 @@
-import { deleteNote, toggleVisibility, updateNote } from "./main-script.js";
+import {
+  deleteNote,
+  pinNote,
+  toggleVisibility,
+  updateNote,
+} from "./main-script.js";
 
 export default function buildNoteCard(item, notesArea) {
   // Create Note Card DOM Elements from item data
   const noteCard = createDOMElement("div", {
     class: "note-card",
     tabindex: "0",
-    "aria-label": `Keep\'s Note ${item.getNote().noteTitle}`,
+    "aria-label": `Keep\'s Note ${item.getTitle()}`,
     "data-note-id": `${item.getId()}`,
   });
   const noteCardPinBtn = createDOMElement(
@@ -35,7 +40,7 @@ export default function buildNoteCard(item, notesArea) {
   const noteCardTitle = createDOMElement(
     "div",
     { class: "note-card-title p-1rem-lr" },
-    createDOMElement("div", {}, item.getNote().noteTitle)
+    createDOMElement("div", {}, item.getTitle())
   );
   const noteCardTitleTextArea = createDOMElement("textarea", {
     name: "note-title",
@@ -49,7 +54,7 @@ export default function buildNoteCard(item, notesArea) {
   const noteCardDescription = createDOMElement(
     "div",
     { class: "note-card-desc p-1rem-lr" },
-    createDOMElement("div", {}, item.getNote().noteDescription)
+    createDOMElement("div", {}, item.getDescription())
   );
   const noteCardDescriptionTextArea = createDOMElement("textarea", {
     name: "note-description",
@@ -63,7 +68,7 @@ export default function buildNoteCard(item, notesArea) {
   const noteDoneBtn = createDOMElement(
     "button",
     {
-      class: "note-card-done-button [ m-0625rem-lr p-1rem-lr ]",
+      class: "note-card-done-button [ m-0625rem-lr p-05rem ]",
       style: "display: none;",
     },
     "Done"
@@ -74,18 +79,20 @@ export default function buildNoteCard(item, notesArea) {
     "Delete note"
   );
 
+  noteCardPinBtn.classList.toggle("note-card-button-active", item.isPinned);
   // Event Listeners
   noteCard.addEventListener("click", (event) => {
     noteDoneBtn.style.display = "";
-    if (event.target == noteCardTitle.firstChild) {
+
+    if (event.target == noteCardTitle.firstChild || event.target == noteCardTitle){
       noteCardTitleTextArea.value = noteCardTitle.firstChild.textContent;
       toggleVisibility(noteCardTitleTextArea);
       toggleVisibility(noteCardTitle.firstChild);
       noteCardTitleTextArea.focus();
-    }
-    if (event.target == noteCardDescription.firstChild) {
+    } 
+    if(event.target == noteCardDescription.firstChild || event.target == noteCardDescription) {
       noteCardDescriptionTextArea.value =
-        noteCardDescription.firstChild.textContent;
+      noteCardDescription.firstChild.textContent;
       toggleVisibility(noteCardDescriptionTextArea);
       toggleVisibility(noteCardDescription.firstChild);
       noteCardDescriptionTextArea.focus();
@@ -93,34 +100,22 @@ export default function buildNoteCard(item, notesArea) {
     if (event.target == noteDoneBtn) {
       noteDoneBtn.style.display = "none";
       const updatedNote = {
-        _id: noteCard.getAttribute("data-note-id"),
-        _item: {
-          noteTitle: noteCardTitle.textContent,
-          noteDescription: noteCardDescription.textContent,
-          noteTime: Date.now(),
-        },
+        _id: Number(noteCard.getAttribute("data-note-id")),
+        noteTitle: noteCardTitle.textContent,
+        noteDescription: noteCardDescription.textContent,
+        noteTime: Date.now(),
       };
       updateNote(updatedNote);
     }
     if (event.target == noteCardMenuBtn) {
       noteDeleteBtn.classList.toggle("hide");
     }
+    if (event.target == noteCardPinBtn) {
+      pinNote(noteCard.getAttribute("data-note-id"));
+    }
     if (event.target == noteDeleteBtn) {
       deleteNote(noteCard.getAttribute("data-note-id"));
-    }
-  });
-
-  noteCard.addEventListener("keydown", (event) => {
-    if (event.key == "Enter") {
-      event.preventDefault();
-      if (event.target == noteCardTitleTextArea) {
-        toggleVisibility(noteCardTitleTextArea);
-        toggleVisibility(noteCardTitle.firstChild);
-      }
-      if (event.target == noteCardDescriptionTextArea) {
-        toggleVisibility(noteCardDescriptionTextArea);
-        toggleVisibility(noteCardDescription.firstChild);
-      }
+      noteDeleteBtn.classList.toggle("hide");
     }
   });
 
