@@ -4,8 +4,8 @@
   --c-black: #000;
   --c-white: #fff;
   --tc-dark-gray: rgb(32, 33, 36);
-  --tc-gray-1: rgb(128, 134, 139);
-  --tc-gray-2: rgb(95, 99, 104);
+  --tc-gray-1: rgba(128, 134, 139,0.7);
+  --tc-gray-2: rgba(95, 99, 104,0.5);
 }
 * {
   margin: 0%;
@@ -81,9 +81,10 @@ input {
   top: 0;
   width: 100%;
 }
+
 .menu-button {
-  background-color: var(--c-gray);
-  border: 1px solid var(--c-black);
+  background-color: var(--c-off-white-1);
+  border: 1px solid var(--c-gray);
   border-radius: 1rem;
   padding: 0.3rem;
   position: absolute;
@@ -148,6 +149,9 @@ input {
   padding-bottom: 16px;
   transition: box-shadow outline 100ms;
 }
+.note-card img {
+  pointer-events: none;
+}
 .note-card:hover {
   box-shadow: 0 1px 2px 0 rgb(60 64 67 / 30%), 0 1px 3px 1px rgb(60 64 67 / 15%);
 }
@@ -156,6 +160,7 @@ input {
 }
 .note-card-title,
 .note-card-desc {
+  background-color: transparent;
   outline: 0px;
   border: none;
   resize: none;
@@ -179,7 +184,8 @@ input {
   font-size: 0.75rem;
   color: var(--tc-gray-2);
 }
-
+.note-card-color-button,
+.note-card-menu-button,
 .note-card-pin-button {
   cursor: pointer;
   display: flex;
@@ -190,44 +196,59 @@ input {
   width: 24px;
   opacity: 0;
   position: absolute;
-  top: 8px;
-  right: 0.5rem;
   z-index: 1;
   transition: opacity 100ms linear;
+}
+.note-card-pin-button {
+  top: 8px;
+  right: 0.5rem;
 }
 
 .note-card-menu-button {
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  opacity: 0;
-  position: absolute;
   top: 8px;
   right: 1.5rem;
-  z-index: 1;
-  transition: opacity 100ms linear;
 }
-.note-card img {
-  pointer-events: none;
+.note-card-color-button {
+  top: 8px;
+  right: 2.5rem;
+}
+
+.color-ball-container {
+  background-color: var(--c-off-white-1);
+  border: 1px solid var(--c-gray);
+  border-radius: 1rem;
+  padding: 0.3rem;
+  position: absolute;
+  display: flex;
+  position: absolute;
+  right: 1.5rem;
+}
+.color-ball {
+  display: flex;
+  border: 2px solid var(--c-gray);
+  flex-direction: row;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 100%;
+  gap: 0.2rem;
 }
 .note-card:hover .note-card-menu-button,
-.note-card:hover .note-card-pin-button {
+.note-card:hover .note-card-pin-button,
+.note-card:hover .note-card-color-button {
   opacity: 1;
 }
 .note-card-pin-button:hover,
-.note-card-menu-button:hover {
+.note-card-menu-button:hover,
+.note-card-color-button:hover {
   background-color: var(--tc-gray-1);
   opacity: 0.3;
 }
-
 
 .note-card-done-button {
   border-radius: 0.5rem;
   border: none;
   display: flex;
-  right : 1rem;
+  right: 1rem;
   bottom: 1rem;
   justify-content: flex-end;
   background-color: transparent;
@@ -344,6 +365,35 @@ input {
 
 .note-card-button-active {
   opacity: 1;
+}
+
+[data-color="red"] {
+  background: linear-gradient(180deg,rgb(255,0,0) 0%, rgba(255,255,255,0) 40%);
+  border-color: darkred;
+}
+[data-color="orange"] {
+  background: linear-gradient(180deg,rgb(255,165,0) 0%, rgba(255,255,255,0) 40%);
+  border-color: darkorange;
+}
+[data-color="yellow"] {
+  background: linear-gradient(180deg,rgb(255,255,0) 0%, rgba(255,255,255,0) 40%);
+  border-color: orange;
+}
+[data-color="greenyellow"] {
+  background: linear-gradient(180deg,rgb(0,128,0) 0%, rgba(255,255,255,0) 40%);
+  border-color: green;
+}
+[data-color="blue"] {
+  background: linear-gradient(180deg,rgb(0,0,255) 0%, rgba(255,255,255,0) 40%);
+  border-color: darkblue;
+}
+[data-color="violet"] {
+  background: linear-gradient(180deg,rgb(238,130,238) 0%, rgba(255,255,255,0) 40%);
+  border-color: purple;
+}
+[data-color="white"] {
+  background: linear-gradient(180deg,rgb(230,230,230) 0%, rgba(255,255,255,0) 40%);
+  border-color: gray;
 }
 
 /* Utility classes */

@@ -6,12 +6,22 @@ import {
 } from "./main-script.js";
 
 export default function buildNoteCard(item, notesArea) {
+  const colors = [
+    "red",
+    "orange",
+    "yellow",
+    "greenyellow",
+    "blue",
+    "violet",
+    "white",
+  ];
   // Create Note Card DOM Elements from item data
   const noteCard = createDOMElement("div", {
     class: "note-card",
     tabindex: "0",
     "aria-label": `Keep\'s Note ${item.getTitle()}`,
     "data-note-id": `${item.getId()}`,
+    "data-color" : `${item.color}`
   });
   const noteCardPinBtn = createDOMElement(
     "div",
@@ -35,6 +45,19 @@ export default function buildNoteCard(item, notesArea) {
     },
     createDOMElement("img", {
       src: "./resources/svg/menu.svg",
+    })
+  );
+  const noteCardColorBtn = createDOMElement(
+    "div",
+    {
+      role: "button",
+      class: "note-card-color-button icon-size",
+      "aria-label": "Change Note Color",
+      "data-tooltip-text": "Change Note Color",
+      tabindex: "0",
+    },
+    createDOMElement("img", {
+      src: "./resources/svg/drop.svg",
     })
   );
   const noteCardTitle = createDOMElement(
@@ -79,20 +102,43 @@ export default function buildNoteCard(item, notesArea) {
     "Delete note"
   );
 
+  const noteColorBtns = createDOMElement("div", {
+    class: "color-ball-container hide",
+  });
+
+  colors.forEach((item) => {
+    const colorBall = createDOMElement("span", {
+      role: "button",
+      class: "color-ball",
+    });
+    colorBall.style.backgroundColor = item;
+    colorBall.addEventListener("click", () => {
+      noteCard.setAttribute("data-color", item);
+    })
+    noteColorBtns.append(colorBall);
+  });
+
   noteCardPinBtn.classList.toggle("note-card-button-active", item.isPinned);
+
   // Event Listeners
   noteCard.addEventListener("click", (event) => {
     noteDoneBtn.style.display = "";
 
-    if (event.target == noteCardTitle.firstChild || event.target == noteCardTitle){
+    if (
+      event.target == noteCardTitle.firstChild ||
+      event.target == noteCardTitle
+    ) {
       noteCardTitleTextArea.value = noteCardTitle.firstChild.textContent;
       toggleVisibility(noteCardTitleTextArea);
       toggleVisibility(noteCardTitle.firstChild);
       noteCardTitleTextArea.focus();
-    } 
-    if(event.target == noteCardDescription.firstChild || event.target == noteCardDescription) {
+    }
+    if (
+      event.target == noteCardDescription.firstChild ||
+      event.target == noteCardDescription
+    ) {
       noteCardDescriptionTextArea.value =
-      noteCardDescription.firstChild.textContent;
+        noteCardDescription.firstChild.textContent;
       toggleVisibility(noteCardDescriptionTextArea);
       toggleVisibility(noteCardDescription.firstChild);
       noteCardDescriptionTextArea.focus();
@@ -104,11 +150,15 @@ export default function buildNoteCard(item, notesArea) {
         noteTitle: noteCardTitle.textContent,
         noteDescription: noteCardDescription.textContent,
         noteTime: Date.now(),
+        color: noteCard.getAttribute("data-color"),
       };
       updateNote(updatedNote);
     }
     if (event.target == noteCardMenuBtn) {
       noteDeleteBtn.classList.toggle("hide");
+    }
+    if (event.target == noteCardColorBtn) {
+      noteColorBtns.classList.toggle("hide");
     }
     if (event.target == noteCardPinBtn) {
       pinNote(noteCard.getAttribute("data-note-id"));
@@ -133,7 +183,9 @@ export default function buildNoteCard(item, notesArea) {
   noteCardTitle.appendChild(noteCardTitleTextArea);
   noteCardDescription.appendChild(noteCardDescriptionTextArea);
   noteCardMenuBtn.appendChild(noteDeleteBtn);
+  noteCardColorBtn.appendChild(noteColorBtns);
   noteCard.append(
+    noteCardColorBtn,
     noteCardMenuBtn,
     noteCardPinBtn,
     noteCardTitle,
