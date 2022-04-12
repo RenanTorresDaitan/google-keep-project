@@ -64,10 +64,11 @@ function reloadNotes() {
 const takeNewNoteBtn = document.querySelector("#new-note-button");
 takeNewNoteBtn.addEventListener("click", () => {
   function calculateNextId() {
-    const list = notesList.getList();
+    const list = notesList.getList().sort((a,b) => a.getId() - b.getId());
     let nextId = 1;
     if (list.length > 0) {
       nextId = list[list.length - 1].getId() + 1;
+      console.log(list);
     }
     return nextId;
   }
@@ -103,12 +104,13 @@ export function updateNote(noteInfo) {
 
 // Helper functions
 const renderNotes = () => {
-  if (notesList.getList().length >= 0) {
+  document.querySelector("#new-note-div").style.display = "";
+  const sortedList = notesList.getList();
+  if (sortedList.length >= 0) {
     document
       .querySelector(".no-notes-found")
-      .classList.toggle("hide", notesList.getList().length);
-    notesList
-      .getList()
+      .classList.toggle("hide",sortedList.length);
+    sortedList
       .sort((a, b) => b.getTime() - a.getTime())
       .sort((a, b) => Number(b.isPinned) - Number(a.isPinned))
       .forEach((item) => buildNoteCard(item, notesDiv));
