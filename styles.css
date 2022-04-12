@@ -4,8 +4,8 @@
   --c-black: #000;
   --c-white: #fff;
   --tc-dark-gray: rgb(32, 33, 36);
-  --tc-gray-1: rgba(128, 134, 139,0.7);
-  --tc-gray-2: rgba(95, 99, 104,0.5);
+  --tc-gray-1: rgb(128, 134, 139);
+  --tc-gray-2: rgb(95, 99, 104);
 }
 * {
   margin: 0%;
