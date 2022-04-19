@@ -1,8 +1,4 @@
-import {
-  deleteNote,
-  pinNote,
-  updateNote,
-} from "./main-script.js";
+import { deleteNote, pinNote, updateNote } from "./main-script.js";
 
 export default function buildNoteCard(item, notesArea) {
   // Create Note Card DOM Elements from item data
@@ -80,6 +76,26 @@ export default function buildNoteCard(item, notesArea) {
     placeholder: "Take a note...",
     style: "height: 1rem; display: none",
   });
+  const noteCardToDoItemPlaceHolder = createDOMElement(
+    "div",
+    { class: "to-do-item", style: "display:none" },
+    createDOMElement("img", {
+      class: "icon-size",
+      src: "./resources/svg/plus.svg",
+    })
+  );
+  const noteCardToDoItemPlaceHolderTextArea = createDOMElement("textarea", {
+    class: "to-do-item-textarea",
+    placeholder: "List item",
+  });
+  noteCardToDoItemPlaceHolderTextArea.addEventListener("click", () => {
+    const newToDoItem = createToDoitem("List Item");
+    noteCardDescription.insertBefore(newToDoItem, noteCardToDoItemPlaceHolder);
+    noteCardToDoItemPlaceHolderTextArea.blur();
+    newToDoItem.querySelector(".to-do-item-label").click();
+  });
+  noteCardToDoItemPlaceHolder.append(noteCardToDoItemPlaceHolderTextArea);
+  if (item.isToDoList) noteCardDescription.append(noteCardToDoItemPlaceHolder);
   const noteDoneBtn = createDOMElement(
     "button",
     {
@@ -181,11 +197,20 @@ export default function buildNoteCard(item, notesArea) {
       noteCardTitleTextArea.focus();
     }
     // Show and edit Description
-    if (event.target == noteCardDescriptionLabel || event.target == noteCardDescription) {
+    if (
+      event.target == noteCardDescriptionLabel ||
+      event.target == noteCardDescription
+    ) {
       hide(noteCardDescriptionLabel);
       noteCardDescriptionTextArea.value = noteCardDescriptionLabel.textContent;
       show(noteCardDescriptionTextArea);
       noteCardDescriptionTextArea.focus();
+    }
+    // To do list handling
+    if (item.isToDoList) {
+      show(noteCardToDoItemPlaceHolder);
+      hide(noteCardDescriptionLabel);
+      hide(noteCardDescriptionTextArea);
     }
     if (event.target == noteCardMenuBtn) {
       noteDeleteBtn.classList.toggle("hide");
@@ -205,11 +230,11 @@ export default function buildNoteCard(item, notesArea) {
       noteDoneBtn.style.display = "none";
       const toDoItems = [];
       const descriptionToUpdate = item.isToDoList
-      ? ""
-      : noteCardDescriptionLabel.textContent;
+        ? ""
+        : noteCardDescriptionLabel.textContent;
       noteCardDescription
-      .querySelectorAll(".to-do-item-label")
-      .forEach((item) => toDoItems.push(item.textContent));
+        .querySelectorAll(".to-do-item-label")
+        .forEach((item) => toDoItems.push(item.textContent));
       const updatedNote = {
         _id: Number(noteCard.getAttribute("data-note-id")),
         noteTitle: noteCardTitleLabel.textContent,
@@ -227,14 +252,16 @@ export default function buildNoteCard(item, notesArea) {
       noteCardTitleLabel.textContent = noteCardTitleTextArea.value;
     }
     if (event.target == noteCardDescriptionTextArea && !item.isToDoList) {
-      noteCardDescriptionLabel.textContent =
-        noteCardDescriptionTextArea.value;
+      noteCardDescriptionLabel.textContent = noteCardDescriptionTextArea.value;
     }
   });
 
   // Append DOM Elements
   noteCardTitle.append(noteCardTitleLabel, noteCardTitleTextArea);
-  noteCardDescription.append(noteCardDescriptionLabel, noteCardDescriptionTextArea);
+  noteCardDescription.append(
+    noteCardDescriptionLabel,
+    noteCardDescriptionTextArea
+  );
   noteCardMenuBtn.appendChild(noteDeleteBtn);
   noteCardColorBtn.appendChild(noteColorBtns);
   noteCard.append(
