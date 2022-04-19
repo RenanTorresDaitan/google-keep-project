@@ -159,7 +159,7 @@ input {
   outline: 1px solid rgba(0, 0, 0, 0.6);
 }
 .note-card-title,
-.note-card-desc {
+.note-card-desc{
   background-color: transparent;
   outline: 0px;
   border: none;
@@ -248,8 +248,8 @@ input {
   border-radius: 0.5rem;
   border: none;
   display: flex;
-  right: 1rem;
-  bottom: 1rem;
+  right: 0.25rem;
+  bottom: 0.25rem;
   justify-content: flex-end;
   background-color: transparent;
   font-weight: bold;
@@ -303,7 +303,20 @@ input {
   background-color: var(--c-off-white-1);
   opacity: 0.87;
 }
-
+.to-do-item{
+  display: flex;
+  gap: 0.5rem;
+}
+.to-do-item-textarea{
+  background-color: transparent;
+  outline: 0px;
+  border: none;
+  resize: none;
+  width: 100%;
+  overflow: hidden;
+  overflow-wrap: break-word;
+  white-space: normal;
+}
 .search-input {
   background-color: transparent;
   border: none;
@@ -380,7 +393,7 @@ input {
   border-color: orange;
 }
 [data-color="greenyellow"] {
-  background: linear-gradient(180deg,rgb(0,128,0) 0%, rgba(255,255,255,0) 40%);
+  background: linear-gradient(180deg,rgb(173,255,47) 0%, rgba(255,255,255,0) 40%);
   border-color: green;
 }
 [data-color="blue"] {

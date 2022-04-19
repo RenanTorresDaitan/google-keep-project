@@ -60,27 +60,43 @@ function reloadNotes() {
   deleteContents(notesDiv);
   renderNotes();
 }
-
-const takeNewNoteBtn = document.querySelector("#new-note-button");
-takeNewNoteBtn.addEventListener("click", () => {
-  function calculateNextId() {
-    const list = notesList.getList().sort((a,b) => a.getId() - b.getId());
-    let nextId = 1;
-    if (list.length > 0) {
-      nextId = list[list.length - 1].getId() + 1;
-      console.log(list);
-    }
-    return nextId;
-  }
-  createNewNote({
+// Create a list
+const makeNewListBtn = document.querySelector("#new-list-button");
+makeNewListBtn.addEventListener("click", () => {
+  const newList = {
     _id: calculateNextId(),
     noteTime: Date.now(),
-  });
+    isToDoList: true,
+    toDoItems: ["List item"],
+  };
+  createAndSaveNewItem(newList);
+});
+// Take new notes
+const takeNewNoteBtn = document.querySelector("#new-note-button");
+takeNewNoteBtn.addEventListener("click", () => {
+  const newNote = {
+    _id: calculateNextId(),
+    noteTime: Date.now(),
+    isToDoList: false,
+  };
+  createAndSaveNewItem(newNote);
+});
+
+function calculateNextId() {
+  const list = notesList.getList().sort((a, b) => a.getId() - b.getId());
+  let nextId = 1;
+  if (list.length > 0) {
+    nextId = list[list.length - 1].getId() + 1;
+  }
+  return nextId;
+}
+function createAndSaveNewItem(item) {
+  createNewNote(item);
   updateNotesOnLocalStorage();
   notesDiv.querySelector(".note-card-title").firstChild.click();
   notesDiv.querySelector(".note-card-desc").firstChild.click();
   document.querySelector("#new-note-div").style.display = "none";
-});
+}
 
 function createNewNote(noteInfo) {
   const newNote = new NoteItem(noteInfo);
@@ -97,8 +113,9 @@ export function pinNote(id) {
   updateNotesOnLocalStorage();
 }
 export function updateNote(noteInfo) {
+  const updatedNote = { ...notesList.getNoteById(noteInfo._id), ...noteInfo };
   notesList.removeNoteFromList(noteInfo._id);
-  createNewNote(noteInfo);
+  createNewNote(updatedNote);
   updateNotesOnLocalStorage();
 }
 
@@ -109,7 +126,7 @@ const renderNotes = () => {
   if (sortedList.length >= 0) {
     document
       .querySelector(".no-notes-found")
-      .classList.toggle("hide",sortedList.length);
+      .classList.toggle("hide", sortedList.length);
     sortedList
       .sort((a, b) => b.getTime() - a.getTime())
       .sort((a, b) => Number(b.isPinned) - Number(a.isPinned))

@@ -6,22 +6,13 @@ import {
 } from "./main-script.js";
 
 export default function buildNoteCard(item, notesArea) {
-  const colors = [
-    "red",
-    "orange",
-    "yellow",
-    "greenyellow",
-    "blue",
-    "violet",
-    "white",
-  ];
   // Create Note Card DOM Elements from item data
   const noteCard = createDOMElement("div", {
     class: "note-card",
     tabindex: "0",
     "aria-label": `Keep\'s Note ${item.getTitle()}`,
     "data-note-id": `${item.getId()}`,
-    "data-color" : `${item.color}`
+    "data-color": `${item.color}`,
   });
   const noteCardPinBtn = createDOMElement(
     "div",
@@ -88,11 +79,12 @@ export default function buildNoteCard(item, notesArea) {
     placeholder: "Take a note...",
     style: "height: 1rem; display: none",
   });
+
   const noteDoneBtn = createDOMElement(
     "button",
     {
       class: "note-card-done-button [ m-0625rem-lr p-05rem ]",
-      style: "display: none;",
+      style: "display: none; user-select: none;",
     },
     "Done"
   );
@@ -101,29 +93,71 @@ export default function buildNoteCard(item, notesArea) {
     { role: "button", class: "menu-button hide" },
     "Delete note"
   );
-
+  // Note Coloring
+  const colors = [
+    "red",
+    "orange",
+    "yellow",
+    "greenyellow",
+    "blue",
+    "violet",
+    "white",
+  ];
   const noteColorBtns = createDOMElement("div", {
     class: "color-ball-container hide",
   });
-
-  colors.forEach((item) => {
+  colors.forEach((color) => {
     const colorBall = createDOMElement("span", {
       role: "button",
       class: "color-ball",
     });
-    colorBall.style.backgroundColor = item;
+    colorBall.style.backgroundColor = color;
     colorBall.addEventListener("click", () => {
-      noteCard.setAttribute("data-color", item);
-    })
+      noteCard.setAttribute("data-color", color);
+    });
     noteColorBtns.append(colorBall);
   });
-
+  // To Dos handling
+  const createToDoitem = (toDoItem) => {
+    const toDoItemEl = createDOMElement("div", { class: "to-do-item" });
+    const checkbox = createDOMElement("input", { type: "checkbox" });
+    const label = createDOMElement(
+      "span",
+      { class: "to-do-item-label" },
+      `${toDoItem}`
+    );
+    const textArea = createDOMElement("textarea", {
+      class: "to-do-item-textarea",
+      style: "display:none",
+    });
+    toDoItemEl.append(checkbox, label, textArea);
+    toDoItemEl.addEventListener("click", (event) => {
+      if (event.target == label) {
+        toggleVisibility(label);
+        toggleVisibility(textArea);
+        textArea.focus();
+      }
+    });
+    toDoItemEl.addEventListener("input", (event) => {
+      if (event.inputType == "insertLineBreak") {
+        event.preventDefault();
+        toggleVisibility(label);
+        toggleVisibility(textArea);
+        textArea.blur();
+      }
+      label.textContent = textArea.value;
+    });
+    return toDoItemEl;
+  };
+  const toDoItems = item.getToDoItems();
+  toDoItems.forEach((toDoItem) => {
+    noteCardDescription.appendChild(createToDoitem(toDoItem));
+  });
   noteCardPinBtn.classList.toggle("note-card-button-active", item.isPinned);
 
   // Event Listeners
   noteCard.addEventListener("click", (event) => {
     noteDoneBtn.style.display = "";
-
     if (
       event.target == noteCardTitle.firstChild ||
       event.target == noteCardTitle
@@ -135,7 +169,7 @@ export default function buildNoteCard(item, notesArea) {
     }
     if (
       event.target == noteCardDescription.firstChild ||
-      event.target == noteCardDescription
+      (event.target == noteCardDescription && !item.isToDoList)
     ) {
       noteCardDescriptionTextArea.value =
         noteCardDescription.firstChild.textContent;
@@ -145,11 +179,19 @@ export default function buildNoteCard(item, notesArea) {
     }
     if (event.target == noteDoneBtn) {
       noteDoneBtn.style.display = "none";
+      const toDoItems = [];
+      const noteDescription = item.isToDoList
+        ? ""
+        : noteCardDescription.textContent;
+      noteCardDescription
+        .querySelectorAll(".to-do-item-label")
+        .forEach((item) => toDoItems.push(item.textContent));
       const updatedNote = {
         _id: Number(noteCard.getAttribute("data-note-id")),
         noteTitle: noteCardTitle.textContent,
-        noteDescription: noteCardDescription.textContent,
+        noteDescription: noteDescription,
         noteTime: Date.now(),
+        toDoItems: toDoItems,
         color: noteCard.getAttribute("data-color"),
       };
       updateNote(updatedNote);
@@ -173,7 +215,7 @@ export default function buildNoteCard(item, notesArea) {
     if (event.target == noteCardTitleTextArea) {
       noteCardTitle.firstChild.textContent = noteCardTitleTextArea.value;
     }
-    if (event.target == noteCardDescriptionTextArea) {
+    if (event.target == noteCardDescriptionTextArea && !item.isToDoList) {
       noteCardDescription.firstChild.textContent =
         noteCardDescriptionTextArea.value;
     }
@@ -181,7 +223,8 @@ export default function buildNoteCard(item, notesArea) {
 
   // Append DOM Elements
   noteCardTitle.appendChild(noteCardTitleTextArea);
-  noteCardDescription.appendChild(noteCardDescriptionTextArea);
+  if (!item.isToDoList)
+    noteCardDescription.appendChild(noteCardDescriptionTextArea);
   noteCardMenuBtn.appendChild(noteDeleteBtn);
   noteCardColorBtn.appendChild(noteColorBtns);
   noteCard.append(
@@ -197,17 +240,17 @@ export default function buildNoteCard(item, notesArea) {
 }
 
 const createDOMElement = (name, attrs, ...children) => {
-  const dom = document.createElement(name);
+  const domEl = document.createElement(name);
   if (attrs) {
     for (let attr of Object.keys(attrs)) {
-      dom.setAttribute(attr, attrs[attr]);
+      domEl.setAttribute(attr, attrs[attr]);
     }
   }
   if (children) {
     for (let child of children) {
-      if (typeof child != "string") dom.appendChild(child);
-      else dom.appendChild(document.createTextNode(child));
+      if (typeof child != "string") domEl.appendChild(child);
+      else domEl.appendChild(document.createTextNode(child));
     }
   }
-  return dom;
+  return domEl;
 };

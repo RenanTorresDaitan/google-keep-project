@@ -5,6 +5,8 @@ export default class NoteItem {
     noteDescription = "",
     noteTime = 0,
     isPinned = false,
+    isToDoList = false,
+    toDoItems = [],
     color = "white",
   } = {}) {
     this._id = _id;
@@ -12,6 +14,8 @@ export default class NoteItem {
     this.noteDescription = noteDescription;
     this.noteTime = noteTime;
     this.isPinned = isPinned;
+    this.isToDoList = isToDoList;
+    this.toDoItems = toDoItems;
     this.color = color;
   }
 
@@ -36,10 +40,16 @@ export default class NoteItem {
   isPinned() {
     return this.isPinned;
   }
-  getCOlor() {
+  getColor() {
     return this.color;
   }
   setColor(color) {
     this.color = color;
+  }
+  getToDoItems() {
+    return this.toDoItems;
+  }
+  addToDoItem(item) {
+    this.toDoItems.push(item);
   }
 }
