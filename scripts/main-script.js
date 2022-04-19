@@ -93,8 +93,7 @@ function calculateNextId() {
 function createAndSaveNewItem(item) {
   createNewNote(item);
   updateNotesOnLocalStorage();
-  notesDiv.querySelector(".note-card-title").firstChild.click();
-  notesDiv.querySelector(".note-card-desc").firstChild.click();
+  notesDiv.querySelector(".note-card-desc").click();
   document.querySelector("#new-note-div").style.display = "none";
 }
 
@@ -123,17 +122,17 @@ export function updateNote(noteInfo) {
 const renderNotes = () => {
   document.querySelector("#new-note-div").style.display = "";
   const sortedList = notesList.getList();
-  if (sortedList.length >= 0) {
-    document
-      .querySelector(".no-notes-found")
-      .classList.toggle("hide", sortedList.length);
+  document
+    .querySelector(".no-notes-found")
+    .classList.toggle("hide", sortedList.length);
+  if (sortedList.length) {
     sortedList
       .sort((a, b) => b.getTime() - a.getTime())
       .sort((a, b) => Number(b.isPinned) - Number(a.isPinned))
       .forEach((item) => buildNoteCard(item, notesDiv));
   }
 };
-export function toggleVisibility(domElement) {
+function toggleVisibility(domElement) {
   if (domElement.style.display == "none") {
     domElement.style.display = "";
     return;

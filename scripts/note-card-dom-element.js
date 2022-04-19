@@ -1,7 +1,6 @@
 import {
   deleteNote,
   pinNote,
-  toggleVisibility,
   updateNote,
 } from "./main-script.js";
 
@@ -51,11 +50,10 @@ export default function buildNoteCard(item, notesArea) {
       src: "./resources/svg/drop.svg",
     })
   );
-  const noteCardTitle = createDOMElement(
-    "div",
-    { class: "note-card-title p-1rem-lr" },
-    createDOMElement("div", {}, item.getTitle())
-  );
+  const noteCardTitle = createDOMElement("div", {
+    class: "note-card-title p-1rem-lr",
+  });
+  const noteCardTitleLabel = createDOMElement("label", {}, item.getTitle());
   const noteCardTitleTextArea = createDOMElement("textarea", {
     name: "note-title",
     class: "note-card-title",
@@ -65,10 +63,13 @@ export default function buildNoteCard(item, notesArea) {
     placeholder: "Title",
     style: "height: 1rem; display: none",
   });
-  const noteCardDescription = createDOMElement(
-    "div",
-    { class: "note-card-desc p-1rem-lr" },
-    createDOMElement("div", {}, item.getDescription())
+  const noteCardDescription = createDOMElement("div", {
+    class: "note-card-desc p-1rem-lr",
+  });
+  const noteCardDescriptionLabel = createDOMElement(
+    "label",
+    {},
+    item.getDescription()
   );
   const noteCardDescriptionTextArea = createDOMElement("textarea", {
     name: "note-description",
@@ -79,7 +80,6 @@ export default function buildNoteCard(item, notesArea) {
     placeholder: "Take a note...",
     style: "height: 1rem; display: none",
   });
-
   const noteDoneBtn = createDOMElement(
     "button",
     {
@@ -133,16 +133,16 @@ export default function buildNoteCard(item, notesArea) {
     toDoItemEl.append(checkbox, label, textArea);
     toDoItemEl.addEventListener("click", (event) => {
       if (event.target == label) {
-        toggleVisibility(label);
-        toggleVisibility(textArea);
+        hide(label);
+        show(textArea);
         textArea.focus();
       }
     });
     toDoItemEl.addEventListener("input", (event) => {
       if (event.inputType == "insertLineBreak") {
         event.preventDefault();
-        toggleVisibility(label);
-        toggleVisibility(textArea);
+        show(label);
+        hide(textArea);
         textArea.blur();
       }
       label.textContent = textArea.value;
@@ -157,49 +157,41 @@ export default function buildNoteCard(item, notesArea) {
 
   // Event Listeners
   noteCard.addEventListener("click", (event) => {
-    noteDoneBtn.style.display = "";
-    if (
-      event.target == noteCardTitle.firstChild ||
-      event.target == noteCardTitle
-    ) {
-      noteCardTitleTextArea.value = noteCardTitle.firstChild.textContent;
-      toggleVisibility(noteCardTitleTextArea);
-      toggleVisibility(noteCardTitle.firstChild);
+    // Show editable fields when you click in the note
+    if (event.target == noteCardTitle || event.target == noteCardDescription) {
+      noteDoneBtn.style.display = "";
+      if (noteCardTitleLabel.textContent == "") {
+        noteCardTitleTextArea.value = "";
+        show(noteCardTitleTextArea);
+        hide(noteCardTitleLabel);
+        noteCardTitleTextArea.focus();
+      }
+      if (noteCardDescriptionLabel.textContent == "") {
+        noteCardDescriptionTextArea.value = "";
+        show(noteCardDescriptionTextArea);
+        hide(noteCardDescriptionLabel);
+        noteCardDescriptionTextArea.focus();
+      }
+    }
+    // Show and edit Title
+    if (event.target == noteCardTitleLabel || event.target == noteCardTitle) {
+      hide(noteCardTitleLabel);
+      noteCardTitleTextArea.value = noteCardTitleLabel.textContent;
+      show(noteCardTitleTextArea);
       noteCardTitleTextArea.focus();
     }
-    if (
-      event.target == noteCardDescription.firstChild ||
-      (event.target == noteCardDescription && !item.isToDoList)
-    ) {
-      noteCardDescriptionTextArea.value =
-        noteCardDescription.firstChild.textContent;
-      toggleVisibility(noteCardDescriptionTextArea);
-      toggleVisibility(noteCardDescription.firstChild);
+    // Show and edit Description
+    if (event.target == noteCardDescriptionLabel || event.target == noteCardDescription) {
+      hide(noteCardDescriptionLabel);
+      noteCardDescriptionTextArea.value = noteCardDescriptionLabel.textContent;
+      show(noteCardDescriptionTextArea);
       noteCardDescriptionTextArea.focus();
-    }
-    if (event.target == noteDoneBtn) {
-      noteDoneBtn.style.display = "none";
-      const toDoItems = [];
-      const noteDescription = item.isToDoList
-        ? ""
-        : noteCardDescription.textContent;
-      noteCardDescription
-        .querySelectorAll(".to-do-item-label")
-        .forEach((item) => toDoItems.push(item.textContent));
-      const updatedNote = {
-        _id: Number(noteCard.getAttribute("data-note-id")),
-        noteTitle: noteCardTitle.textContent,
-        noteDescription: noteDescription,
-        noteTime: Date.now(),
-        toDoItems: toDoItems,
-        color: noteCard.getAttribute("data-color"),
-      };
-      updateNote(updatedNote);
     }
     if (event.target == noteCardMenuBtn) {
       noteDeleteBtn.classList.toggle("hide");
     }
     if (event.target == noteCardColorBtn) {
+      noteDoneBtn.style.display = "";
       noteColorBtns.classList.toggle("hide");
     }
     if (event.target == noteCardPinBtn) {
@@ -209,22 +201,40 @@ export default function buildNoteCard(item, notesArea) {
       deleteNote(noteCard.getAttribute("data-note-id"));
       noteDeleteBtn.classList.toggle("hide");
     }
+    if (event.target == noteDoneBtn) {
+      noteDoneBtn.style.display = "none";
+      const toDoItems = [];
+      const descriptionToUpdate = item.isToDoList
+      ? ""
+      : noteCardDescriptionLabel.textContent;
+      noteCardDescription
+      .querySelectorAll(".to-do-item-label")
+      .forEach((item) => toDoItems.push(item.textContent));
+      const updatedNote = {
+        _id: Number(noteCard.getAttribute("data-note-id")),
+        noteTitle: noteCardTitleLabel.textContent,
+        noteDescription: descriptionToUpdate,
+        noteTime: Date.now(),
+        toDoItems: toDoItems,
+        color: noteCard.getAttribute("data-color"),
+      };
+      updateNote(updatedNote);
+    }
   });
 
   noteCard.addEventListener("input", (event) => {
     if (event.target == noteCardTitleTextArea) {
-      noteCardTitle.firstChild.textContent = noteCardTitleTextArea.value;
+      noteCardTitleLabel.textContent = noteCardTitleTextArea.value;
     }
     if (event.target == noteCardDescriptionTextArea && !item.isToDoList) {
-      noteCardDescription.firstChild.textContent =
+      noteCardDescriptionLabel.textContent =
         noteCardDescriptionTextArea.value;
     }
   });
 
   // Append DOM Elements
-  noteCardTitle.appendChild(noteCardTitleTextArea);
-  if (!item.isToDoList)
-    noteCardDescription.appendChild(noteCardDescriptionTextArea);
+  noteCardTitle.append(noteCardTitleLabel, noteCardTitleTextArea);
+  noteCardDescription.append(noteCardDescriptionLabel, noteCardDescriptionTextArea);
   noteCardMenuBtn.appendChild(noteDeleteBtn);
   noteCardColorBtn.appendChild(noteColorBtns);
   noteCard.append(
@@ -254,3 +264,11 @@ const createDOMElement = (name, attrs, ...children) => {
   }
   return domEl;
 };
+
+function show(domElement) {
+  domElement.style.display = "";
+}
+
+function hide(domElement) {
+  domElement.style.display = "none";
+}
