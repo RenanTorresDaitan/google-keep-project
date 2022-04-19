@@ -62,25 +62,10 @@ function reloadNotes() {
 }
 // Create a list
 const makeNewListBtn = document.querySelector("#new-list-button");
-makeNewListBtn.addEventListener("click", () => {
-  const newList = {
-    _id: calculateNextId(),
-    noteTime: Date.now(),
-    isToDoList: true,
-    toDoItems: ["List item"],
-  };
-  createAndSaveNewItem(newList);
-});
+makeNewListBtn.addEventListener("click", () => createAndSaveNewItem(true));
 // Take new notes
 const takeNewNoteBtn = document.querySelector("#new-note-button");
-takeNewNoteBtn.addEventListener("click", () => {
-  const newNote = {
-    _id: calculateNextId(),
-    noteTime: Date.now(),
-    isToDoList: false,
-  };
-  createAndSaveNewItem(newNote);
-});
+takeNewNoteBtn.addEventListener("click", () => createAndSaveNewItem(false));
 
 function calculateNextId() {
   const list = notesList.getList().sort((a, b) => a.getId() - b.getId());
@@ -90,8 +75,13 @@ function calculateNextId() {
   }
   return nextId;
 }
-function createAndSaveNewItem(item) {
-  createNewNote(item);
+function createAndSaveNewItem(isToDoList) {
+  const newItem = {
+    _id: calculateNextId(),
+    noteTime: Date.now(),
+    isToDoList: isToDoList,
+  };
+  createNewNote(newItem);
   updateNotesOnLocalStorage();
   notesDiv.querySelector(".note-card-desc").click();
   document.querySelector("#new-note-div").style.display = "none";
