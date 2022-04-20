@@ -78,7 +78,7 @@ export default function buildNoteCard(item, notesArea) {
   });
   const noteCardToDoItemPlaceHolder = createDOMElement(
     "div",
-    { class: "to-do-item", style: "display:none" },
+    { id: "to-do-item-placeholder", style: "display:none" },
     createDOMElement("img", {
       class: "icon-size",
       src: "./resources/svg/plus.svg",
@@ -89,13 +89,12 @@ export default function buildNoteCard(item, notesArea) {
     placeholder: "List item",
   });
   noteCardToDoItemPlaceHolderTextArea.addEventListener("click", () => {
-    const newToDoItem = createToDoitem("");
+    const newToDoItem = createToDoitem({ label: "", isChecked: false });
     noteCardDescription.insertBefore(newToDoItem, noteCardToDoItemPlaceHolder);
     noteCardToDoItemPlaceHolderTextArea.blur();
     newToDoItem.querySelector(".to-do-item-label").click();
   });
   noteCardToDoItemPlaceHolder.append(noteCardToDoItemPlaceHolderTextArea);
-  if (item.isToDoList) noteCardDescription.append(noteCardToDoItemPlaceHolder);
   const noteDoneBtn = createDOMElement(
     "button",
     {
@@ -131,7 +130,7 @@ export default function buildNoteCard(item, notesArea) {
     const colorBall = createDOMElement("span", {
       role: "button",
       class: "color-ball",
-      "data-color": color
+      "data-color": color,
     });
     colorBall.addEventListener("click", () => {
       noteCard.setAttribute("data-color", color);
@@ -141,28 +140,37 @@ export default function buildNoteCard(item, notesArea) {
   // To Dos handling
   const createToDoitem = (toDoItem) => {
     const toDoItemEl = createDOMElement("div", { class: "to-do-item" });
-    const checkbox = createDOMElement("input", { type: "checkbox"});
+    const checkbox = createDOMElement("input", { type: "checkbox" });
+    checkbox.checked = toDoItem.isChecked;
     const label = createDOMElement(
       "label",
       { class: "to-do-item-label" },
-      `${toDoItem}`
+      `${toDoItem.label}`
     );
     const textArea = createDOMElement("textarea", {
       class: "to-do-item-textarea",
       style: "display:none",
     });
-    const deleteItemBtn = createDOMElement("span", {role: "button",class: "to-do-item-delete"}, "X")
+    const deleteItemBtn = createDOMElement(
+      "span",
+      { role: "button", class: "to-do-item-delete" },
+      "X"
+    );
     toDoItemEl.append(checkbox, label, textArea, deleteItemBtn);
     toDoItemEl.addEventListener("click", (event) => {
       if (event.target == label) {
         hide(label);
+        textArea.value = label.textContent;
         show(textArea);
         textArea.focus();
       }
       if (event.target == deleteItemBtn) {
-        console.log("removeu", deleteItemBtn.parentNode);
         noteCardDescription.removeChild(deleteItemBtn.parentNode);
         noteCardDescription.click();
+      }
+      if (event.target == checkbox) {
+        show(label);
+        hide(textArea);
       }
     });
     toDoItemEl.addEventListener("input", (event) => {
@@ -171,8 +179,9 @@ export default function buildNoteCard(item, notesArea) {
         show(label);
         hide(textArea);
         textArea.blur();
+      } else {
+        label.textContent = textArea.value;
       }
-      label.textContent = textArea.value;
     });
     return toDoItemEl;
   };
@@ -180,13 +189,14 @@ export default function buildNoteCard(item, notesArea) {
   toDoItems.forEach((toDoItem) => {
     noteCardDescription.appendChild(createToDoitem(toDoItem));
   });
+  if (item.isToDoList) noteCardDescription.append(noteCardToDoItemPlaceHolder);
   noteCardPinBtn.classList.toggle("note-card-button-active", item.isPinned);
 
   // Event Listeners
   noteCard.addEventListener("click", (event) => {
+    noteDoneBtn.style.display = "";
     // Show editable fields when you click in the note
     if (event.target == noteCardTitle || event.target == noteCardDescription) {
-      noteDoneBtn.style.display = "";
       if (noteCardTitleLabel.textContent == "") {
         noteCardTitleTextArea.value = "";
         show(noteCardTitleTextArea);
@@ -243,10 +253,18 @@ export default function buildNoteCard(item, notesArea) {
       const descriptionToUpdate = item.isToDoList
         ? ""
         : noteCardDescriptionLabel.textContent;
-      noteCardDescription
-        .querySelectorAll(".to-do-item-label")
-        .forEach((item) => {
-          if (item.textContent != "") toDoItems.push(item.textContent)});
+      noteCardDescription.querySelectorAll(".to-do-item").forEach((item) => {
+        const label = item.querySelector("label");
+        const input = item.querySelector("input[type='checkbox']");
+        if (label.textContent != "") {
+          const toDoItemToSave = {
+            label: label.textContent,
+            isChecked: input.checked,
+          };
+          console.log(toDoItemToSave);
+          toDoItems.push(toDoItemToSave);
+        }
+      });
       const updatedNote = {
         _id: Number(noteCard.getAttribute("data-note-id")),
         noteTitle: noteCardTitleLabel.textContent,
