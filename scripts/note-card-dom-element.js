@@ -156,11 +156,10 @@ export default function buildNoteCard(item, notesArea) {
       { role: "button", class: "to-do-item-delete" },
       "X"
     );
-    toDoItemEl.append(checkbox, label, textArea, deleteItemBtn);
     toDoItemEl.addEventListener("click", (event) => {
       if (event.target == label) {
+        textArea.textContent = label.textContent;
         hide(label);
-        textArea.value = label.textContent;
         show(textArea);
         textArea.focus();
       }
@@ -168,21 +167,24 @@ export default function buildNoteCard(item, notesArea) {
         noteCardDescription.removeChild(deleteItemBtn.parentNode);
         noteCardDescription.click();
       }
-      if (event.target == checkbox) {
-        show(label);
-        hide(textArea);
-      }
+      // if (event.target == checkbox) {
+      //   show(label);
+      //   hide(textArea);
+      // }
     });
     toDoItemEl.addEventListener("input", (event) => {
+      if (event.target == checkbox) return;
       if (event.inputType == "insertLineBreak") {
-        event.preventDefault();
-        show(label);
-        hide(textArea);
-        textArea.blur();
-      } else {
-        label.textContent = textArea.value;
+          event.preventDefault();
+          show(label);
+          hide(textArea);
+          textArea.blur();
+          noteCardToDoItemPlaceHolderTextArea.click();
+        } else {
+          label.textContent = textArea.value;
       }
     });
+    toDoItemEl.append(checkbox, label, textArea, deleteItemBtn);
     return toDoItemEl;
   };
   const toDoItems = item.getToDoItems();
@@ -261,7 +263,6 @@ export default function buildNoteCard(item, notesArea) {
             label: label.textContent,
             isChecked: input.checked,
           };
-          console.log(toDoItemToSave);
           toDoItems.push(toDoItemToSave);
         }
       });
