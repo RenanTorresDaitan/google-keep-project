@@ -232,6 +232,35 @@ input {
   height: 1rem;
   border-radius: 100%;
 }
+.completed-items-area {
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  justify-content: flex-start;
+  border-top: 1px solid var(--c-gray);
+  margin-top: 0.5rem;
+  gap: 0.25rem;
+}
+.completed-to-do-items-div {
+  gap: 0.5rem;
+  display: flex;
+  margin-top: 0.5rem;
+  align-items: center;
+}
+.completed-items-btn {
+  padding: 0.6rem;
+  background-image: url(./resources/svg/list-arrow-icon.svg);
+  background-position: center;
+  background-repeat: no-repeat;
+  border: 1px solid var(--c-gray);
+  border-radius: 50%;
+  width: 1rem;
+  height: 1rem;
+}
+.completed-items-list {
+  display: flex;
+  flex-direction: column;
+}
 .note-card:hover .note-card-menu-button,
 .note-card:hover .note-card-pin-button,
 .note-card:hover .note-card-color-button {
@@ -336,8 +365,8 @@ input {
   color: var(--tc-dark-gray);
   opacity: 0;
 }
-.to-do-item:hover .to-do-item-delete{
-  display:flex;
+.to-do-item:hover .to-do-item-delete {
+  display: flex;
   opacity: 1;
 }
 

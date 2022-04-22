@@ -137,6 +137,31 @@ export default function buildNoteCard(item, notesArea) {
     });
     noteColorBtns.append(colorBall);
   });
+
+  const toDoItems = item.getToDoItems();
+  const completedToDoItemsArea = createDOMElement("div", {
+    class: "completed-items-area",
+    style: "display:none;",
+  });
+  const completedToDoItemsLabel = createDOMElement("label", {
+    class: "completed-items-label",
+  });
+  const completedToDoItemsShowBtn = createDOMElement("div", {
+    class: "completed-items-btn",
+  });
+  const completedToDoItemsDiv = createDOMElement("div",{class: "completed-to-do-items-div"});
+  completedToDoItemsDiv.append(completedToDoItemsShowBtn, completedToDoItemsLabel);
+  const completedTodoItemsList = createDOMElement("div", {
+    class: "completed-items-list",
+  });
+  const checkedToDoItems = toDoItems.filter((item) => item.isChecked);
+  completedToDoItemsLabel.textContent =
+    checkedToDoItems.length > 1
+      ? `${checkedToDoItems.length} Completed items`
+      : "1 Completed item";
+  if (checkedToDoItems.length > 0) {
+    show(completedToDoItemsArea);
+  }
   // To Dos handling
   const createToDoitem = (toDoItem) => {
     const toDoItemEl = createDOMElement("div", { class: "to-do-item" });
@@ -164,8 +189,8 @@ export default function buildNoteCard(item, notesArea) {
         textArea.focus();
       }
       if (event.target == deleteItemBtn) {
-        noteCardDescription.removeChild(deleteItemBtn.parentNode);
-        noteCardDescription.click();
+        deleteItemBtn.parentNode.parentNode.removeChild(deleteItemBtn.parentNode);
+        noteDoneBtn.click();
       }
       // if (event.target == checkbox) {
       //   show(label);
@@ -173,25 +198,37 @@ export default function buildNoteCard(item, notesArea) {
       // }
     });
     toDoItemEl.addEventListener("input", (event) => {
-      if (event.target == checkbox) return;
+      if (event.target == checkbox) noteDoneBtn.click();
       if (event.inputType == "insertLineBreak") {
-          event.preventDefault();
-          show(label);
-          hide(textArea);
-          textArea.blur();
-          noteCardToDoItemPlaceHolderTextArea.click();
-        } else {
-          label.textContent = textArea.value;
+        event.preventDefault();
+        show(label);
+        hide(textArea);
+        textArea.blur();
+        noteCardToDoItemPlaceHolderTextArea.click();
+      } else {
+        label.textContent = textArea.value;
       }
     });
     toDoItemEl.append(checkbox, label, textArea, deleteItemBtn);
     return toDoItemEl;
   };
-  const toDoItems = item.getToDoItems();
   toDoItems.forEach((toDoItem) => {
-    noteCardDescription.appendChild(createToDoitem(toDoItem));
+    const toDoItemToAppend = createToDoitem(toDoItem);
+    if (toDoItem.isChecked) {
+      completedTodoItemsList.appendChild(toDoItemToAppend);
+    } else {
+      noteCardDescription.appendChild(toDoItemToAppend);
+    }
   });
-  if (item.isToDoList) noteCardDescription.append(noteCardToDoItemPlaceHolder);
+  completedToDoItemsArea.append(
+    completedToDoItemsDiv,
+    completedTodoItemsList
+  );
+  if (item.isToDoList) {
+    noteCardDescription.append(noteCardToDoItemPlaceHolder);
+    noteCardDescription.append(completedToDoItemsArea);
+  }
+
   noteCardPinBtn.classList.toggle("note-card-button-active", item.isPinned);
 
   // Event Listeners
