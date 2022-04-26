@@ -12,7 +12,7 @@ const searchPanel = document.querySelector("#search-panel");
 const searchInput = document.querySelector("#search-input");
 const cancelSearchBtn = document.querySelector("#search-cancel-btn");
 searchIconBtn.addEventListener("click", () => {
-  toggleVisibility(searchPanel);
+  searchPanel.classList.remove("hide");
   searchInput.focus();
 });
 cancelSearchBtn.addEventListener("click", (event) => {
@@ -20,7 +20,7 @@ cancelSearchBtn.addEventListener("click", (event) => {
   Array.from(notesDiv.children).forEach((note) => {
     note.classList.remove("hide");
   });
-  toggleVisibility(searchPanel);
+  searchPanel.classList.add("hide");
 });
 searchInput.addEventListener("input", (event) => {
   Array.from(notesDiv.children).forEach((note) => {
