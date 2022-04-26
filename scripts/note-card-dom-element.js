@@ -137,7 +137,7 @@ export default function buildNoteCard(item, notesArea) {
     });
     noteColorBtns.append(colorBall);
   });
-
+  // Completed to-do-items handling
   const toDoItems = item.getToDoItems();
   const completedToDoItemsArea = createDOMElement("div", {
     class: "completed-items-area",
@@ -147,10 +147,20 @@ export default function buildNoteCard(item, notesArea) {
     class: "completed-items-label",
   });
   const completedToDoItemsShowBtn = createDOMElement("div", {
-    class: "completed-items-btn",
+    class: "completed-items-btn rotate-90-cw",
   });
-  const completedToDoItemsDiv = createDOMElement("div",{class: "completed-to-do-items-div"});
-  completedToDoItemsDiv.append(completedToDoItemsShowBtn, completedToDoItemsLabel);
+  const completedToDoItemsDiv = createDOMElement("div", {
+    class: "completed-to-do-items-div",
+  });
+  completedToDoItemsDiv.addEventListener("click", (event) => {
+    event.stopPropagation();
+    completedTodoItemsList.classList.toggle("hide");
+    completedToDoItemsShowBtn.classList.toggle("rotate-90-cw");
+  });
+  completedToDoItemsDiv.append(
+    completedToDoItemsShowBtn,
+    completedToDoItemsLabel
+  );
   const completedTodoItemsList = createDOMElement("div", {
     class: "completed-items-list",
   });
@@ -165,8 +175,15 @@ export default function buildNoteCard(item, notesArea) {
   // To Dos handling
   const createToDoitem = (toDoItem) => {
     const toDoItemEl = createDOMElement("div", { class: "to-do-item" });
-    const checkbox = createDOMElement("input", { type: "checkbox" });
-    checkbox.checked = toDoItem.isChecked;
+    const checkbox = createDOMElement("div", {
+      role: "checkbox",
+      class: "to-do-item-checkbox",
+      tabindex: 0,
+    });
+    checkbox.classList.toggle(
+      "to-do-item-checkbox-checked",
+      toDoItem.isChecked
+    );
     const label = createDOMElement(
       "label",
       { class: "to-do-item-label" },
@@ -189,13 +206,15 @@ export default function buildNoteCard(item, notesArea) {
         textArea.focus();
       }
       if (event.target == deleteItemBtn) {
-        deleteItemBtn.parentNode.parentNode.removeChild(deleteItemBtn.parentNode);
+        deleteItemBtn.parentNode.parentNode.removeChild(
+          deleteItemBtn.parentNode
+        );
         noteDoneBtn.click();
       }
-      // if (event.target == checkbox) {
-      //   show(label);
-      //   hide(textArea);
-      // }
+      if (event.target == checkbox) {
+        event.target.classList.toggle("to-do-item-checkbox-checked");
+        noteDoneBtn.click();
+      }
     });
     toDoItemEl.addEventListener("input", (event) => {
       if (event.target == checkbox) noteDoneBtn.click();
@@ -220,10 +239,7 @@ export default function buildNoteCard(item, notesArea) {
       noteCardDescription.appendChild(toDoItemToAppend);
     }
   });
-  completedToDoItemsArea.append(
-    completedToDoItemsDiv,
-    completedTodoItemsList
-  );
+  completedToDoItemsArea.append(completedToDoItemsDiv, completedTodoItemsList);
   if (item.isToDoList) {
     noteCardDescription.append(noteCardToDoItemPlaceHolder);
     noteCardDescription.append(completedToDoItemsArea);
@@ -293,12 +309,16 @@ export default function buildNoteCard(item, notesArea) {
         ? ""
         : noteCardDescriptionLabel.textContent;
       noteCardDescription.querySelectorAll(".to-do-item").forEach((item) => {
-        const label = item.querySelector("label");
-        const input = item.querySelector("input[type='checkbox']");
+        const label = item.querySelector(".to-do-item-label");
+        const checkbox = item.querySelector(".to-do-item-checkbox");
         if (label.textContent != "") {
           const toDoItemToSave = {
             label: label.textContent,
-            isChecked: input.checked,
+            isChecked: checkbox.classList.contains(
+              "to-do-item-checkbox-checked"
+            )
+              ? true
+              : false,
           };
           toDoItems.push(toDoItemToSave);
         }
