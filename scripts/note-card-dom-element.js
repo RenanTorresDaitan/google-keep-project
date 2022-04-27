@@ -9,27 +9,29 @@ export default function buildNoteCard(item, notesArea) {
     "data-note-id": `${item.getId()}`,
     "data-color": `${item.color}`,
   });
+  const noteCardButtons = createDOMElement("div", {class: "note-card-buttons-container"});
   const noteCardPinBtn = createDOMElement(
     "div",
     {
       role: "button",
-      class: "note-card-pin-button icon-size",
+      class: "note-card-button",
       "aria-label": "Fix note",
       "data-tooltip-text": "Fix note",
       tabindex: "0",
     },
-    createDOMElement("img", { src: "./resources/svg/pin.svg" })
+    createDOMElement("img", { class: "svg-icon",src: "./resources/svg/pin.svg" })
   );
   const noteCardMenuBtn = createDOMElement(
     "div",
     {
       role: "button",
-      class: "note-card-menu-button icon-size",
+      class: "note-card-button",
       "aria-label": "Menu",
       "data-tooltip-text": "Menu",
       tabindex: "0",
     },
     createDOMElement("img", {
+      class: "svg-icon",
       src: "./resources/svg/menu.svg",
     })
   );
@@ -37,12 +39,13 @@ export default function buildNoteCard(item, notesArea) {
     "div",
     {
       role: "button",
-      class: "note-card-color-button icon-size",
+      class: "note-card-button",
       "aria-label": "Change Note Color",
       "data-tooltip-text": "Change Note Color",
       tabindex: "0",
     },
     createDOMElement("img", {
+      class: "svg-icon",
       src: "./resources/svg/drop.svg",
     })
   );
@@ -352,10 +355,9 @@ export default function buildNoteCard(item, notesArea) {
   );
   noteCardMenuBtn.appendChild(noteDeleteBtn);
   noteCardColorBtn.appendChild(noteColorBtns);
+  noteCardButtons.append(noteCardColorBtn,noteCardMenuBtn,noteCardPinBtn);
   noteCard.append(
-    noteCardColorBtn,
-    noteCardMenuBtn,
-    noteCardPinBtn,
+    noteCardButtons,
     noteCardTitle,
     noteCardDescription,
     noteDoneBtn

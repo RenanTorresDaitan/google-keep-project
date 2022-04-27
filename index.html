@@ -16,20 +16,21 @@
     <script src="./scripts/main-script.js" type="module" defer></script>
   </head>
   <body>
+    <!-- App Header -->
     <header id="app-header" class="h-4rem p-05rem-lr">
-      <!-- App Title -->
-      <div class="m-05rem-l header-container" >
-        <div class="menu-bars">
-          <img src="./resources/svg/menu-bars.svg" alt="">
+      <div class="header-container" >
+        <div class="icon-button icon-size" id="menu-bars">
+          <img class="svg-icon" src="./resources/svg/menu-bars.svg" alt="">
         </div>
-        <div class="header-icon"></div>
+        <div class="header-icon icon-size"></div>
         <h2 class="header-title" tabindex="-1">Keep</h2>
         <h3 class="header-subtitle" tabindex="-1">Notes</h3>
-      </div><!-- Search for notes panel  -->
-      <div id="search-panel" class="[ search-panel ]">
-        <div class="m-10px-lr">
+      </div>
+      <!-- Search for notes panel  -->
+      <div id="search-panel" class="search-panel">
+        <div class="icon-button icon-size">
           <img
-            class="icon-color"
+            class="svg-icon"
             src="./resources/svg/search-icon.svg"
             alt="Search"
             srcset=""
@@ -43,14 +44,14 @@
         />
         <div
           id="search-cancel-btn"
-          class="icon-button p-0625rem"
+          class="icon-button icon-size"
           role="button"
           aria-label="Cancel"
           tabindex="0"
         >
           <img
-            class="[ icon-color icon-size ]"
-            src="./resources/svg/close-search-icon.svg"
+            class="svg-icon"
+            src="./resources/svg/close-icon.svg"
             alt="Close Search"
           />
         </div>
@@ -58,44 +59,68 @@
       <!-- Icon buttons -->
       <div
         id="search-icon-btn"
-        class="icon-button p-0625rem"
+        class="icon-button icon-size"
         role="button"
         aria-label="Search"
         tabindex="0"
       >
         <img
-          class="[ icon-color icon-size ]"
+          class="svg-icon"
           src="./resources/svg/search-icon.svg"
           alt=""
         />
       </div>
       <div
-        class="icon-button p-0625rem"
+      class="icon-button icon-size"
         role="button"
         aria-label="Open in new tab"
         tabindex="0"
       >
         <img
-          class="[ icon-color icon-size ]"
+          class="svg-icon"
           src="./resources/svg/open-new-tab-icon.svg"
           alt="Open in a new Tab"
         />
       </div>
       <div
-        class="icon-button p-0625rem"
+        class="icon-button icon-size"
         role="button"
         aria-label="Close"
         tabindex="0"
       >
         <img
-          class="[ icon-color icon-size ]"
-          src="./resources/svg/close-app-icon.svg"
+          class="svg-icon"
+          src="./resources/svg/close-icon.svg"
           alt="Close App"
         />
       </div>
     </header>
     <!-- Main notes section -->
     <section class="main-section" id="main-section">
+      <!-- Side bar navigation -->
+      <div class="sidebar">
+        <div class="sidebar-item">
+          <div class="icon-button icon-size"></div>
+          <span class="sidebar-item-label">Notes</span>
+        </div>
+        <div class="sidebar-item">
+          <div class="icon-button icon-size"></div>
+          <span class="sidebar-item-label">Reminders</span>
+        </div>
+        <div class="sidebar-item">
+          <div class="icon-button icon-size"></div>
+          <span class="sidebar-item-label">Edit labels</span>
+        </div>
+        <div class="sidebar-item">
+          <div class="icon-button icon-size"></div>
+          <span class="sidebar-item-label">Archive</span>
+        </div>
+        <div class="sidebar-item">
+          <div class="icon-button icon-size"></div>
+          <span class="sidebar-item-label">Trash</span>
+        </div>
+      </div>
+      <div class="content">
       <!-- New note button -->
       <div class="new-note-div" id="new-note-div">
         <div
@@ -105,19 +130,19 @@
           tabindex="0"
           style="user-select: none"
         >
-          <img src="./resources/svg/plus.svg" alt="">
+          <img class="icon-size" src="./resources/svg/plus.svg" alt="">
           <span>Take a note…</span>
         </div>
         <div
           role="button"
           id="new-list-button"
-          class="p-05rem"
+          class="icon-button icon-size"
           tabindex="0"
           style="user-select: none"
           data-tooltip-text="New list"
           aria-label="New list"
         >
-          <img class="icon-size" src="./resources/svg/new-list-icon.svg" alt="">
+          <img class="svg-icon" src="./resources/svg/new-list-icon.svg" alt="">
         </div>
       </div>
       <div class="no-notes-found hide [ m-0625rem-lr p-05rem ]">
@@ -129,6 +154,7 @@
       
       <div id="notes-area">
       </div>
+    </div>
     </section>
   </body>
 </html>
