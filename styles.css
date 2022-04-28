@@ -237,48 +237,63 @@ input {
 /*===============================*/
 /* Sidebar        - Mobile First */
 /*===============================*/
-.sidebar {
+.sidebar-container {
   display: none;
 }
 /*===============================*/
 /* Sidebar        - Desktop Size */
 /*===============================*/
 @media screen and (min-width: 900px) {
+  .sidebar-container {
+    display:flex;
+    flex-direction: row;
+    flex: 1 0 5rem;
+    padding-top: 0.5rem;
+    transition: width, 350ms 150ms;
+  }
   .sidebar {
     display: flex;
-    flex: 0 1 17.5rem;
     flex-direction: column;
-    height: 100%;
-    padding-top: 0.5rem;
+    flex: 1;
+    margin-left: 2rem;
+    transition: margin, 350ms 150ms;
   }
-  .sidebar-item {
-    padding-left: 0.75rem;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-start;
-    min-width: 3rem;
+  .sidebar-container:hover,
+  .sidebar-container:focus-within {
+    flex: 1 0 17.5rem;
+  }
+  .sidebar-container:hover .sidebar{
+    margin-left: 0rem;
+  }
+  .sidebar-container:hover .sidebar-item-icon {
     width: 100%;
-    height: 3rem;
-    outline: 0;
+    padding-left: 2.75rem;
     border-radius: 0 100vw 100vw 0;
   }
-  .sidebar-item:hover {
-    background-color: var(--c-light-gray);
+  .sidebar-container:hover :is(.sidebar-item-icon:hover, .sidebar-item-label:hover) {
+    background-color: var(--c-gray) ;
   }
-  .sidebar-item:focus {
-    background-color: var(--c-white);
-    border: 1px solid var(--c-black);
+  .sidebar-item-icon {
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    height: 3rem;
+    padding:0.75rem;
+    width: 3rem;
+    flex: 1 0 3rem;
+    border-radius: 50%;
+    transition: width, border-radius, 350ms 150ms;
+  }
+  .sidebar-item-icon:hover{
+    background-color: var(--c-gray);
   }
   .sidebar-item-label {
-    font-family: var(--ff-google);
-    font-weight: 500;
-    font-size: 0.875rem;
-    line-height: 1.25rem;
+    padding-left: 1rem;
+    white-space: nowrap;
   }
 }
 
-.content{
+.content {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -313,7 +328,7 @@ input {
 /*===============================*/
 /* Note cards     - Mobile First */
 /*===============================*/
-.mini-icon{
+.mini-icon {
   width: 1.125rem;
   height: 1.125rem;
   padding: 0.125rem;
@@ -350,9 +365,6 @@ input {
 /*===============================*/
 /* Note cards     - Desktop Size */
 /*===============================*/
-
-
-
 
 .note-card {
   border: 1px solid var(--c-gray);
@@ -402,7 +414,6 @@ input {
   font-size: 0.75rem;
   color: var(--tc-gray-2);
 }
-
 
 .color-ball-container {
   background-color: var(--c-off-white-1);
@@ -461,7 +472,6 @@ input {
   display: flex;
   flex-direction: column;
 }
-
 
 .note-card-done-button {
   border-radius: 0.5rem;
@@ -529,6 +539,12 @@ input {
     width: 2.5rem;
   }
   .svg-icon {
+    opacity: 0.6;
+    color: #000;
+  }
+  .svg-icon-large {
+    height: 1.5rem;
+    width: 1.5rem;
     opacity: 0.6;
     color: #000;
   }
