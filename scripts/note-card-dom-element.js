@@ -1,6 +1,6 @@
 import { deleteNote, pinNote, updateNote } from "./main-script.js";
 
-export default function buildNoteCard(item, notesArea) {
+export default function buildNoteCard(item) {
   // Create Note Card DOM Elements from item data
   const noteCard = createDOMElement("div", {
     class: "note-card",
@@ -362,7 +362,6 @@ export default function buildNoteCard(item, notesArea) {
     noteCardDescription,
     noteDoneBtn
   );
-  notesArea.appendChild(noteCard);
   return noteCard;
 }
 

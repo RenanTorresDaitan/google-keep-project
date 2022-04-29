@@ -1,172 +1,119 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Keep Notes</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css?family=Google+Sans:300,400,500,700|Roboto:300,400,400italic,500,700|Product+Sans:300,400,400italic,500,700"
-      rel="stylesheet"
-      nonce=""
-    />
-    <link rel="stylesheet" href="styles.css" />
-    <script src="./scripts/main-script.js" type="module" defer></script>
-  </head>
-  <body>
-    <!-- App Header -->
-    <header id="app-header" class="h-4rem p-05rem-lr">
-      <div class="header-container" >
-        <div class="icon-button icon-size" id="menu-bars">
-          <img class="svg-icon" src="./resources/svg/menu-bars.svg" alt="">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Keep Notes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css?family=Google+Sans:300,400,500,700|Roboto:300,400,400italic,500,700|Product+Sans:300,400,400italic,500,700"
+    rel="stylesheet" nonce="" />
+  <link rel="stylesheet" href="styles.css" />
+  <script src="./scripts/main-script.js" type="module" defer></script>
+</head>
+
+<body>
+  <!-- App Header -->
+  <header id="app-header" class="h-4rem p-05rem-lr">
+    <div class="header-container">
+      <div class="icon-button icon-size" id="menu-bars">
+        <img class="svg-icon" src="./resources/svg/menu-bars.svg" alt="">
+      </div>
+      <div class="header-icon icon-size"></div>
+      <h2 class="header-title" tabindex="-1">Keep</h2>
+      <h3 class="header-subtitle" tabindex="-1">Notes</h3>
+    </div>
+    <!-- Search for notes panel  -->
+    <div id="search-panel" class="search-panel">
+      <div class="icon-button icon-size">
+        <img class="svg-icon" src="./resources/svg/search-icon.svg" alt="Search" srcset="" />
+      </div>
+      <input id="search-input" class="search-input" placeholder="Search Keep..." aria-label="Search Keep..." />
+      <div id="search-cancel-btn" class="icon-button icon-size" role="button" aria-label="Cancel" tabindex="0">
+        <img class="svg-icon" src="./resources/svg/close-icon.svg" alt="Close Search" />
+      </div>
+    </div>
+    <!-- Icon buttons -->
+    <div id="search-icon-btn" class="icon-button icon-size" role="button" aria-label="Search" tabindex="0">
+      <img class="svg-icon" src="./resources/svg/search-icon.svg" alt="" />
+    </div>
+    <div class="icon-button icon-size" role="button" aria-label="Open in new tab" tabindex="0">
+      <img class="svg-icon" src="./resources/svg/open-new-tab-icon.svg" alt="Open in a new Tab" />
+    </div>
+    <div class="icon-button icon-size" role="button" aria-label="Close" tabindex="0">
+      <img class="svg-icon" src="./resources/svg/close-icon.svg" alt="Close App" />
+    </div>
+  </header>
+  <!-- Main notes section -->
+  <section class="main-section" id="main-section">
+    <!-- Side bar navigation -->
+    <div class="sidebar-container">
+      <div class="sidebar">
+        <div class="sidebar-item" id="sidebar-item-notes">
+          <div class="sidebar-item-icon">
+            <img class="" src="./resources/svg/lamp-icon.svg" alt="">
+            <span class="sidebar-item-label">Notes</span>
+          </div>
         </div>
-        <div class="header-icon icon-size"></div>
-        <h2 class="header-title" tabindex="-1">Keep</h2>
-        <h3 class="header-subtitle" tabindex="-1">Notes</h3>
-      </div>
-      <!-- Search for notes panel  -->
-      <div id="search-panel" class="search-panel">
-        <div class="icon-button icon-size">
-          <img
-            class="svg-icon"
-            src="./resources/svg/search-icon.svg"
-            alt="Search"
-            srcset=""
-          />
+        <div class="sidebar-item" id="sidebar-item-reminders">
+          <div class="sidebar-item-icon">
+            <img class="" src="./resources/svg/bell-icon.svg" alt="">
+            <span class="sidebar-item-label">Reminders</span>
+          </div>
         </div>
-        <input
-          id="search-input"
-          class="search-input"
-          placeholder="Search Keep..."
-          aria-label="Search Keep..."
-        />
-        <div
-          id="search-cancel-btn"
-          class="icon-button icon-size"
-          role="button"
-          aria-label="Cancel"
-          tabindex="0"
-        >
-          <img
-            class="svg-icon"
-            src="./resources/svg/close-icon.svg"
-            alt="Close Search"
-          />
+        <div class="sidebar-item" id="sidebar-item-edit-labels">
+          <div class="sidebar-item-icon">
+            <img class="" src="./resources/svg/pencil-icon.svg" alt="">
+            <span class="sidebar-item-label">Edit labels</span>
+          </div>
         </div>
-      </div>
-      <!-- Icon buttons -->
-      <div
-        id="search-icon-btn"
-        class="icon-button icon-size"
-        role="button"
-        aria-label="Search"
-        tabindex="0"
-      >
-        <img
-          class="svg-icon"
-          src="./resources/svg/search-icon.svg"
-          alt=""
-        />
-      </div>
-      <div
-      class="icon-button icon-size"
-        role="button"
-        aria-label="Open in new tab"
-        tabindex="0"
-      >
-        <img
-          class="svg-icon"
-          src="./resources/svg/open-new-tab-icon.svg"
-          alt="Open in a new Tab"
-        />
-      </div>
-      <div
-        class="icon-button icon-size"
-        role="button"
-        aria-label="Close"
-        tabindex="0"
-      >
-        <img
-          class="svg-icon"
-          src="./resources/svg/close-icon.svg"
-          alt="Close App"
-        />
-      </div>
-    </header>
-    <!-- Main notes section -->
-    <section class="main-section" id="main-section">
-      <!-- Side bar navigation -->
-      <div class="sidebar-container">
-        <div class="sidebar">
-          <div class="sidebar-item">
-            <div class="sidebar-item-icon">
-              <img class="" src="./resources/svg/lamp-icon.svg" alt="">
-              <span class="sidebar-item-label">Notes</span>
-            </div>
+        <div class="sidebar-item" id="sidebar-item-archive">
+          <div class="sidebar-item-icon">
+            <img class="" src="./resources/svg/box-icon.svg" alt="">
+            <span class="sidebar-item-label">Archive</span>
           </div>
-          <div class="sidebar-item">
-            <div class="sidebar-item-icon">
-              <img class="" src="./resources/svg/bell-icon.svg" alt="">
-              <span class="sidebar-item-label">Reminders</span>
-            </div>
-          </div>
-          <div class="sidebar-item">
-            <div class="sidebar-item-icon">
-              <img class="" src="./resources/svg/pencil-icon.svg" alt="">
-              <span class="sidebar-item-label">Edit labels</span>
-            </div>
-          </div>
-          <div class="sidebar-item">
-            <div class="sidebar-item-icon">
-              <img class="" src="./resources/svg/box-icon.svg" alt="">
-              <span class="sidebar-item-label">Archive</span>
-            </div>
-          </div>
-          <div class="sidebar-item">
-            <div class="sidebar-item-icon">
-              <img class="" src="./resources/svg/trash-icon.svg" alt="">
-              <span class="sidebar-item-label">Trash</span>
-            </div>
+        </div>
+        <div class="sidebar-item" id="sidebar-item-trash">
+          <div class="sidebar-item-icon">
+            <img class="" src="./resources/svg/trash-icon.svg" alt="">
+            <span class="sidebar-item-label">Trash</span>
           </div>
         </div>
       </div>
-      <div class="content">
+    </div>
+    <div class="content">
       <!-- New note button -->
       <div class="new-note-div" id="new-note-div">
-        <div
-          role="button"
-          id="new-note-button"
-          class="[ m-0625rem-r p-05rem-0625rem ]"
-          tabindex="0"
-          style="user-select: none"
-        >
+        <div role="button" id="new-note-button" class="[ m-0625rem-r p-05rem-0625rem ]" tabindex="0"
+          style="user-select: none">
           <img class="icon-size" src="./resources/svg/plus.svg" alt="">
           <span>Take a note…</span>
         </div>
-        <div
-          role="button"
-          id="new-list-button"
-          class="icon-button icon-size"
-          tabindex="0"
-          style="user-select: none"
-          data-tooltip-text="New list"
-          aria-label="New list"
-        >
+        <div role="button" id="new-list-button" class="icon-button icon-size" tabindex="0" style="user-select: none"
+          data-tooltip-text="New list" aria-label="New list">
           <img class="svg-icon" src="./resources/svg/new-list-icon.svg" alt="">
         </div>
       </div>
-      <div class="no-notes-found hide [ m-0625rem-lr p-05rem ]">
-        <img src="./resources/no-notes-folder.png" width="236px" alt="No notes found">
+      <div class="content-area" id="notes-page">
+        <div class="no-notes-found hide [ m-0625rem-lr p-05rem ]">
+          <img src="./resources/no-notes-folder.png" width="236px" alt="No notes found">
           <h2>No notes yet</h2>
           <h4>Your notes from Google Keep will show up here.</h4>
-        </img>
-      </div>
-      
-      <div id="notes-area">
+          </img>
+        </div>
+        <div id="notes-area">
       </div>
     </div>
-    </section>
-  </body>
+    <div class="content-area hide" id="reminders-page"></div>
+    <div class="content-area hide" id="edit-labels-page"></div>
+      <div class="content-area hide" id="archive-page"></div>
+      <div class="content-area hide" id="trash-page"></div>
+      </div>
+    </div>
+  </section>
+</body>
+
 </html>

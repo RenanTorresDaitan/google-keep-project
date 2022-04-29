@@ -227,11 +227,24 @@ input {
   padding: 64px 0px 10px 0px;
   position: absolute;
   display: flex;
-  flex-basis: 100%;
   justify-content: flex-start;
   align-items: flex-start;
   flex-direction: row;
-  gap: 1rem;
+}
+.content {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+.content-area { 
+  flex-grow: 1;
+}
+#notes-area {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+ flex: 1 0 300px;
 }
 
 /*===============================*/
@@ -247,58 +260,65 @@ input {
   .sidebar-container {
     display:flex;
     flex-direction: row;
-    flex: 1 0 5rem;
+    width: 4.25rem;
+    height: 100%;
     padding-top: 0.5rem;
-    transition: width, 350ms 150ms;
+    transition: width, 150ms 350ms;
   }
   .sidebar {
     display: flex;
     flex-direction: column;
-    flex: 1;
-    margin-left: 2rem;
-    transition: margin, 350ms 150ms;
+    width: 3rem;
+    margin-left: 1.25rem;
+    transition: margin, width,  150ms 350ms;
+  }
+  .sidebar-item {
+    cursor:pointer;
   }
   .sidebar-container:hover,
-  .sidebar-container:focus-within {
-    flex: 1 0 17.5rem;
+  .sidebar-container:focus-within{
+    width: 17.5rem;
   }
   .sidebar-container:hover .sidebar{
     margin-left: 0rem;
+    width: 100%;
+  }
+  .sidebar-container:hover .sidebar-item:hover > .sidebar-item-icon {
+    background-color: var(--c-light-gray) ;
+    transition-delay: 0ms;
+    transition-duration: 0ms;
+    
   }
   .sidebar-container:hover .sidebar-item-icon {
+    border-radius: 0vw 100vw 100vw 0vw;
+    padding-left: 2rem;
     width: 100%;
-    padding-left: 2.75rem;
-    border-radius: 0 100vw 100vw 0;
-  }
-  .sidebar-container:hover :is(.sidebar-item-icon:hover, .sidebar-item-label:hover) {
-    background-color: var(--c-gray) ;
   }
   .sidebar-item-icon {
+    pointer-events: none;
     display: flex;
     align-items: center;
     overflow: hidden;
     height: 3rem;
     padding:0.75rem;
     width: 3rem;
-    flex: 1 0 3rem;
-    border-radius: 50%;
-    transition: width, border-radius, 350ms 150ms;
-  }
-  .sidebar-item-icon:hover{
-    background-color: var(--c-gray);
+    border-radius:  100vw 100vw 100vw 100vw;
+    background-color: var(--c-white);
+    transition: width, border-radius, padding-left, 150ms 350ms;
   }
   .sidebar-item-label {
+    pointer-events: none;
+    background-color: transparent;
     padding-left: 1rem;
     white-space: nowrap;
   }
+  .sidebar-item[active] > .sidebar-item-icon, 
+  .sidebar-container:hover .sidebar-item[active] > .sidebar-item-icon {
+    background-color: #feefc3;
+  }
 }
 
-.content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  flex: 1 1 100%;
-}
+
 .menu-button {
   background-color: var(--c-off-white-1);
   border: 1px solid var(--c-gray);
@@ -316,14 +336,7 @@ input {
   color: white;
 }
 
-#notes-area {
-  display: flex;
-  flex-direction: row;
-  width: min(100%, 800px);
-  justify-content: center;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-}
+
 
 /*===============================*/
 /* Note cards     - Mobile First */

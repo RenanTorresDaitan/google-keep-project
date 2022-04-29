@@ -6,6 +6,9 @@ export default class NoteItem {
     noteTime = 0,
     isPinned = false,
     isToDoList = false,
+    isReminder = false,
+    isArchived = false,
+    isTrashed = false,
     toDoItems = [],
     color = "white",
   } = {}) {
@@ -15,6 +18,9 @@ export default class NoteItem {
     this.noteTime = noteTime;
     this.isPinned = isPinned;
     this.isToDoList = isToDoList;
+    this.isReminder = isReminder;
+    this.isArchived = isArchived;
+    this.isTrashed = isTrashed;
     this.toDoItems = toDoItems;
     this.color = color;
   }

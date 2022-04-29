@@ -66,6 +66,50 @@ makeNewListBtn.addEventListener("click", () => createAndSaveNewItem(true));
 // Take new notes
 const takeNewNoteBtn = document.querySelector("#new-note-button");
 takeNewNoteBtn.addEventListener("click", () => createAndSaveNewItem(false));
+// Change pages
+const contentArea = document.querySelectorAll(".content-area");
+// Get side bar buttons
+const notesSideBarBtn = document.querySelector("#sidebar-item-notes");
+const remindersSideBarBtn = document.querySelector("#sidebar-item-reminders");
+const editLabelsSideBarBtn = document.querySelector("#sidebar-item-edit-labels");
+const archiveSideBarBtn = document.querySelector("#sidebar-item-archive");
+const trashSideBarBtn = document.querySelector("#sidebar-item-trash");
+// Change to Pages
+notesSideBarBtn.addEventListener("click", (event) => {
+  document.querySelectorAll("[id^='sidebar-item']").forEach(el => el.removeAttribute("active"));
+  notesSideBarBtn.setAttribute("active", "");
+  showContentPage("notes-page");
+});
+remindersSideBarBtn.addEventListener("click", (event) => {
+  document.querySelectorAll("[id^='sidebar-item-'").forEach(el => el.removeAttribute("active"));
+  remindersSideBarBtn.setAttribute("active", "");
+  showContentPage("reminders-page");
+});
+editLabelsSideBarBtn.addEventListener("click", (event) => {
+  document.querySelectorAll("[id^='sidebar-item-'").forEach(el => el.removeAttribute("active"));
+  editLabelsSideBarBtn.setAttribute("active", "");
+  showContentPage("edit-labels-page");
+});
+archiveSideBarBtn.addEventListener("click", (event) => {
+  document.querySelectorAll("[id^='sidebar-item-'").forEach(el => el.removeAttribute("active"));
+  archiveSideBarBtn.setAttribute("active", "");
+  showContentPage("archive-page");
+});
+trashSideBarBtn.addEventListener("click", (event) => {
+  document.querySelectorAll("[id^='sidebar-item-'").forEach(el => el.removeAttribute("active"));
+  trashSideBarBtn.setAttribute("active", "");
+  showContentPage("trash-page");
+});
+
+
+function showContentPage(pageToDisplay) {
+  contentArea.forEach((page) => {
+    page.classList.add("hide");
+    if (page.id == pageToDisplay) {
+      page.classList.remove("hide");
+    }
+  });
+}
 
 function calculateNextId() {
   const list = notesList.getList().sort((a, b) => a.getId() - b.getId());
@@ -118,10 +162,26 @@ const renderNotes = () => {
   if (sortedList.length) {
     sortedList
       .sort((a, b) => b.getTime() - a.getTime())
-      .sort((a, b) => Number(b.isPinned) - Number(a.isPinned))
-      .forEach((item) => buildNoteCard(item, notesDiv));
+      .sort((a, b) => Number(b.isPinned) - Number(a.isPinned));
+    const createdNoteCards = sortedList.map((item) => buildNoteCard(item));
+    createdNoteCards.forEach((note) => {
+      const noteToAppend = notesList.getNoteById(
+        note.getAttribute("data-note-id")
+      );
+      if (noteToAppend.isReminder == true) {
+        // append to reminder page
+      }
+      if (noteToAppend.isArchived == true) {
+        // append to archive page
+      }
+      if (noteToAppend.isTrashed == true) {
+        // append to archive page
+      }
+      notesDiv.append(note);
+    });
   }
 };
+
 function toggleVisibility(domElement) {
   if (domElement.style.display == "none") {
     domElement.style.display = "";
