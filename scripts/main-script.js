@@ -103,15 +103,32 @@ function showNotesFromSidebar() {
 }
 
 function showDefaultSidebarContent(activeSidebar) {
+  
   const noNotesDiv = document.querySelector(".no-notes-found");
+  const noRemindersDiv = document.querySelector(".no-reminders-found");
+  const noArchivedDiv = document.querySelector(".no-archived-found");
+  const noTrashedDiv = document.querySelector(".no-trashed-found");
   const trashHeader = document.querySelector(".trash-header");
   trashHeader.classList.add("hide");
+  noRemindersDiv.classList.add("hide");
+  noArchivedDiv.classList.add("hide");
+  noTrashedDiv.classList.add("hide");
   noNotesDiv.classList.add("hide");
   if (activeSidebar == notesSideBarBtn) {
     const currentNotes = notesList.getList().filter(item => !item.isTrashed && !item.isArchived).length;
     currentNotes > 0 ? noNotesDiv.classList.add("hide") : noNotesDiv.classList.remove("hide");
   }
+  if (activeSidebar == remindersSideBarBtn) {
+    const currentNotes = notesList.getList().filter(item => item.isReminder).length;
+    currentNotes > 0 ? noRemindersDiv.classList.add("hide") : noRemindersDiv.classList.remove("hide");
+  }
+  if (activeSidebar == archiveSideBarBtn) {
+    const currentNotes = notesList.getList().filter(item => item.isArchived).length;
+    currentNotes > 0 ? noArchivedDiv.classList.add("hide") : noArchivedDiv.classList.remove("hide");
+  }
   if (activeSidebar == trashSideBarBtn) {
+    const currentNotes = notesList.getList().filter(item => item.isTrashed).length;
+    currentNotes > 0 ? noTrashedDiv.classList.add("hide") : noTrashedDiv.classList.remove("hide");
     trashHeader.classList.remove("hide");
   }
 }
@@ -146,12 +163,30 @@ function createNewNote(noteInfo) {
   notesList.addNoteToList(newNote);
 }
 
-export function deleteNote(id) {
-  notesList.getNoteById(id).isTrashed = true;
+// Exported note functions
+
+export function addReminder(id) {
+  notesList.getNoteById(id).isReminder = true;
   updateNotesOnLocalStorage();
 }
 export function archiveNote(id) {
   notesList.getNoteById(id).isArchived = true;
+  updateNotesOnLocalStorage();
+}
+export function deleteNote(id) {
+  notesList.removeNoteFromList(id);
+  updateNotesOnLocalStorage();
+}
+export function restoreNote(id) {
+  notesList.getNoteById(id).isTrashed = false;
+  updateNotesOnLocalStorage();
+}
+export function trashNote(id) {
+  notesList.getNoteById(id).isTrashed = true;
+  updateNotesOnLocalStorage();
+}
+export function unarchiveNote(id) {
+  notesList.getNoteById(id).isArchived = false;
   updateNotesOnLocalStorage();
 }
 export function pinNote(id) {

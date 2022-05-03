@@ -120,17 +120,17 @@ input {
   padding: 0.5rem;
 }
 .trash-header {
-  display:flex;
+  display: flex;
   color: --tc-dark-gray;
-    cursor: default;
-    flex: 1 0 100%;
-    font-size: 17px;
-    font-style: italic;
-    align-items: center;
-    justify-content: center;
-    padding-top: 1.5rem;
-    padding-bottom: 0.5rem;
-    margin-inline: auto;
+  cursor: default;
+  flex: 1 0 100%;
+  font-size: 17px;
+  font-style: italic;
+  align-items: center;
+  justify-content: center;
+  padding-top: 1.5rem;
+  padding-bottom: 0.5rem;
+  margin-inline: auto;
 }
 
 /*===========================*/
@@ -266,9 +266,12 @@ input {
   flex-grow: 1;
 }
 .content-area {
+  margin-inline: auto;
   display: flex;
   flex-wrap: wrap;
   flex: 0 1 auto;
+  align-items: center;
+  justify-content: center;
 }
 #notes-area {
   display: flex;
@@ -541,8 +544,8 @@ input {
     font-size: 1.125rem;
     color: var(--tc-dark-gray);
   }
-  .note-lower-toolbar{
-    display:flex;
+  .note-lower-toolbar {
+    display: flex;
   }
   .note-card:hover .note-lower-toolbar {
     opacity: 1;
@@ -550,8 +553,8 @@ input {
   .note-card-buttons-container {
     display: none;
   }
-  .notecard-pin-button{
-    display:flex;
+  .notecard-pin-button {
+    display: flex;
     height: 2rem;
   }
   .note-card:hover .notecard-pin-button {
@@ -741,6 +744,47 @@ input {
   overflow: hidden;
   overflow-wrap: break-word;
   white-space: normal;
+}
+.no-reminders-found,
+.no-archived-found {
+  margin-top: 4rem;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.no-reminders-label,
+.no-trashed-label,
+.no-archived-label {
+  color: #80868b;
+  cursor: default;
+  font-family: "Google Sans", Roboto, Arial, sans-serif;
+  font-size: 1.375rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.75rem;
+}
+
+.no-reminders-img {
+  background: url(./resources/svg/bell-icon.svg);
+}
+.no-archived-img {
+  background: url(./resources/svg/notecard/archive-note-icon.svg);
+}
+.no-trashed-img {
+  background: url(./resources/svg/trash-icon.svg);
+}
+.no-reminders-img,
+.no-trashed-img,
+.no-archived-img {
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 120px;
+  aspect-ratio: 1;
+  opacity: 0.1;
+  margin: 1.25rem;
 }
 
 /* Other */

@@ -1,4 +1,13 @@
-import { archiveNote, deleteNote, pinNote, updateNote } from "./main-script.js";
+import {
+  addReminder,
+  archiveNote,
+  trashNote,
+  deleteNote,
+  restoreNote,
+  pinNote,
+  unarchiveNote,
+  updateNote,
+} from "./main-script.js";
 
 export default function buildNoteCard(item) {
   // Create Note Card DOM Elements from item data
@@ -182,6 +191,22 @@ export default function buildNoteCard(item) {
   }
 
   const lowerToolbar = createDOMElement("div", { class: "note-lower-toolbar" });
+  const deleteForeverBtn = createDOMElement(
+    "div",
+    { class: "lower-toolbar-button" },
+    createDOMElement("img", {
+      class: "svg-icon",
+      src: "./resources/svg/notecard/delete-forever-icon.svg",
+    })
+  );
+  const restoreNoteBtn = createDOMElement(
+    "div",
+    { class: "lower-toolbar-button" },
+    createDOMElement("img", {
+      class: "svg-icon",
+      src: "./resources/svg/notecard/restore-note-icon.svg",
+    })
+  );
   const addReminderBtn = createDOMElement(
     "div",
     { class: "lower-toolbar-button" },
@@ -196,6 +221,14 @@ export default function buildNoteCard(item) {
     createDOMElement("img", {
       class: "svg-icon",
       src: "./resources/svg/notecard/archive-note-icon.svg",
+    })
+  );
+  const unarchiveNoteBtn = createDOMElement(
+    "div",
+    { class: "lower-toolbar-button" },
+    createDOMElement("img", {
+      class: "svg-icon",
+      src: "./resources/svg/notecard/unarchive-note-icon.svg",
     })
   );
   const colorPalleteBtn = createDOMElement(
@@ -222,7 +255,7 @@ export default function buildNoteCard(item) {
       src: "./resources/svg/notecard/pin-large-icon.svg",
     })
   );
-  lowerToolbar.append(addReminderBtn, colorPalleteBtn, archiveNoteBtn, menuBtn);
+
   // To Dos handling
   const createToDoitem = (toDoItem) => {
     const toDoItemEl = createDOMElement("div", { class: "to-do-item" });
@@ -300,7 +333,6 @@ export default function buildNoteCard(item) {
 
   // Event Listeners
   noteCard.addEventListener("click", (event) => {
-
     noteDoneBtn.style.display = "";
     // Show editable fields when you click in the note
     if (event.target == noteCardTitle || event.target == noteCardDescription) {
@@ -352,11 +384,23 @@ export default function buildNoteCard(item) {
       pinNote(noteCard.getAttribute("data-note-id"));
     }
     if (event.target == noteDeleteBtn) {
-      deleteNote(noteCard.getAttribute("data-note-id"));
+      trashNote(noteCard.getAttribute("data-note-id"));
       noteDeleteBtn.classList.toggle("hide");
     }
     if (event.target == archiveNoteBtn) {
       archiveNote(noteCard.getAttribute("data-note-id"));
+    }
+    if (event.target == unarchiveNoteBtn) {
+      unarchiveNote(noteCard.getAttribute("data-note-id"));
+    }
+    if (event.target == deleteForeverBtn) {
+      deleteNote(noteCard.getAttribute("data-note-id"));
+    }
+    if (event.target == restoreNoteBtn) {
+      restoreNote(noteCard.getAttribute("data-note-id"));
+    }
+    if (event.target == addReminderBtn) {
+      addReminder(noteCard.getAttribute("data-note-id"));
     }
     if (event.target == noteDoneBtn) {
       noteDoneBtn.style.display = "none";
@@ -401,6 +445,16 @@ export default function buildNoteCard(item) {
   });
 
   // Append DOM Elements
+  if (item.isTrashed) {
+    lowerToolbar.append(deleteForeverBtn, restoreNoteBtn);
+  } else {
+    lowerToolbar.append(
+      addReminderBtn,
+      colorPalleteBtn,
+      item.isArchived ? unarchiveNoteBtn : archiveNoteBtn,
+      menuBtn
+    );
+  }
   noteCardTitle.append(noteCardTitleLabel, noteCardTitleTextArea);
   noteCardDescription.append(
     noteCardDescriptionLabel,
@@ -409,14 +463,18 @@ export default function buildNoteCard(item) {
   noteCardMenuBtn.appendChild(noteDeleteBtn);
   noteCardColorBtn.appendChild(noteColorBtns);
   noteCardButtons.append(noteCardColorBtn, noteCardMenuBtn, noteCardPinBtn);
-  noteCard.append(
-    noteCardButtons,
-    pinBtn,
-    noteCardTitle,
-    noteCardDescription,
-    noteDoneBtn,
-    lowerToolbar
-  );
+  if (item.isTrashed) {
+    noteCard.append(noteCardTitle, noteCardDescription, lowerToolbar);
+  } else {
+    noteCard.append(
+      noteCardButtons,
+      pinBtn,
+      noteCardTitle,
+      noteCardDescription,
+      noteDoneBtn,
+      lowerToolbar
+    );
+  }
   return noteCard;
 }
 
