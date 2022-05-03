@@ -20,7 +20,7 @@
   <header id="app-header" class="h-4rem p-05rem-lr">
     <div class="header-container">
       <div class="icon-button icon-size" id="menu-bars">
-        <img class="svg-icon" src="./resources/svg/menu-bars.svg" alt="">
+        <img class="svg-icon-large" src="./resources/svg/menu-bars.svg" alt="">
       </div>
       <div class="header-icon icon-size"></div>
       <h2 class="header-title" tabindex="-1">Keep</h2>
@@ -52,33 +52,33 @@
     <!-- Side bar navigation -->
     <div class="sidebar-container">
       <div class="sidebar">
-        <div class="sidebar-item" id="sidebar-item-notes">
+        <div class="sidebar-item" id="sidebar-item-notes" active>
           <div class="sidebar-item-icon">
-            <img class="" src="./resources/svg/lamp-icon.svg" alt="">
+            <img class="svg-icon-large" src="./resources/svg/lamp-icon.svg" alt="">
             <span class="sidebar-item-label">Notes</span>
           </div>
         </div>
         <div class="sidebar-item" id="sidebar-item-reminders">
           <div class="sidebar-item-icon">
-            <img class="" src="./resources/svg/bell-icon.svg" alt="">
+            <img class="svg-icon-large" src="./resources/svg/bell-icon.svg" alt="">
             <span class="sidebar-item-label">Reminders</span>
           </div>
         </div>
         <div class="sidebar-item" id="sidebar-item-edit-labels">
           <div class="sidebar-item-icon">
-            <img class="" src="./resources/svg/pencil-icon.svg" alt="">
+            <img class="svg-icon-large" src="./resources/svg/pencil-icon.svg" alt="">
             <span class="sidebar-item-label">Edit labels</span>
           </div>
         </div>
         <div class="sidebar-item" id="sidebar-item-archive">
           <div class="sidebar-item-icon">
-            <img class="" src="./resources/svg/box-icon.svg" alt="">
+            <img class="svg-icon-large" src="./resources/svg/box-icon.svg" alt="">
             <span class="sidebar-item-label">Archive</span>
           </div>
         </div>
         <div class="sidebar-item" id="sidebar-item-trash">
           <div class="sidebar-item-icon">
-            <img class="" src="./resources/svg/trash-icon.svg" alt="">
+            <img class="svg-icon-large" src="./resources/svg/trash-icon.svg" alt="">
             <span class="sidebar-item-label">Trash</span>
           </div>
         </div>
@@ -89,7 +89,7 @@
       <div class="new-note-div" id="new-note-div">
         <div role="button" id="new-note-button" class="[ m-0625rem-r p-05rem-0625rem ]" tabindex="0"
           style="user-select: none">
-          <img class="icon-size" src="./resources/svg/plus.svg" alt="">
+          <img class="icon-size" src="./resources/svg/notecard/plus-icon.svg" alt="">
           <span>Take a note…</span>
         </div>
         <div role="button" id="new-list-button" class="icon-button icon-size" tabindex="0" style="user-select: none"
@@ -97,6 +97,10 @@
           <img class="svg-icon" src="./resources/svg/new-list-icon.svg" alt="">
         </div>
       </div>
+      <div class="trash-header hide">Notes in Trash are deleted after 7 days.<div role="button"
+        class="empty-trash-btn"
+        aria-hidden="false" tabindex="0" style="user-select: none;">Empty Trash</div>
+    </div>
       <div class="content-area" id="notes-page">
         <div class="no-notes-found hide [ m-0625rem-lr p-05rem ]">
           <img src="./resources/no-notes-folder.png" width="236px" alt="No notes found">
@@ -105,15 +109,11 @@
           </img>
         </div>
         <div id="notes-area">
+        </div>
       </div>
+        
     </div>
-    <div class="content-area hide" id="reminders-page"></div>
-    <div class="content-area hide" id="edit-labels-page"></div>
-      <div class="content-area hide" id="archive-page"></div>
-      <div class="content-area hide" id="trash-page"></div>
-      </div>
     </div>
   </section>
 </body>
-
 </html>

@@ -1,4 +1,4 @@
-import { deleteNote, pinNote, updateNote } from "./main-script.js";
+import { archiveNote, deleteNote, pinNote, updateNote } from "./main-script.js";
 
 export default function buildNoteCard(item) {
   // Create Note Card DOM Elements from item data
@@ -9,7 +9,9 @@ export default function buildNoteCard(item) {
     "data-note-id": `${item.getId()}`,
     "data-color": `${item.color}`,
   });
-  const noteCardButtons = createDOMElement("div", {class: "note-card-buttons-container"});
+  const noteCardButtons = createDOMElement("div", {
+    class: "note-card-buttons-container",
+  });
   const noteCardPinBtn = createDOMElement(
     "div",
     {
@@ -19,7 +21,10 @@ export default function buildNoteCard(item) {
       "data-tooltip-text": "Fix note",
       tabindex: "0",
     },
-    createDOMElement("img", { class: "svg-icon",src: "./resources/svg/pin.svg" })
+    createDOMElement("img", {
+      class: "svg-icon",
+      src: "./resources/svg/notecard/pin-icon.svg",
+    })
   );
   const noteCardMenuBtn = createDOMElement(
     "div",
@@ -32,7 +37,7 @@ export default function buildNoteCard(item) {
     },
     createDOMElement("img", {
       class: "svg-icon",
-      src: "./resources/svg/menu.svg",
+      src: "./resources/svg/notecard/menu-circles.svg",
     })
   );
   const noteCardColorBtn = createDOMElement(
@@ -46,7 +51,7 @@ export default function buildNoteCard(item) {
     },
     createDOMElement("img", {
       class: "svg-icon",
-      src: "./resources/svg/drop.svg",
+      src: "./resources/svg/notecard/drop-icon.svg",
     })
   );
   const noteCardTitle = createDOMElement("div", {
@@ -83,8 +88,8 @@ export default function buildNoteCard(item) {
     "div",
     { id: "to-do-item-placeholder", style: "display:none" },
     createDOMElement("img", {
-      class: "icon-size",
-      src: "./resources/svg/plus.svg",
+      class: "svg-icon-large",
+      src: "./resources/svg/notecard/plus-icon.svg",
     })
   );
   const noteCardToDoItemPlaceHolderTextArea = createDOMElement("textarea", {
@@ -175,6 +180,49 @@ export default function buildNoteCard(item) {
   if (checkedToDoItems.length > 0) {
     show(completedToDoItemsArea);
   }
+
+  const lowerToolbar = createDOMElement("div", { class: "note-lower-toolbar" });
+  const addReminderBtn = createDOMElement(
+    "div",
+    { class: "lower-toolbar-button" },
+    createDOMElement("img", {
+      class: "svg-icon",
+      src: "./resources/svg/notecard/add-reminder-icon.svg",
+    })
+  );
+  const archiveNoteBtn = createDOMElement(
+    "div",
+    { class: "lower-toolbar-button" },
+    createDOMElement("img", {
+      class: "svg-icon",
+      src: "./resources/svg/notecard/archive-note-icon.svg",
+    })
+  );
+  const colorPalleteBtn = createDOMElement(
+    "div",
+    { class: "lower-toolbar-button" },
+    createDOMElement("img", {
+      class: "svg-icon",
+      src: "./resources/svg/notecard/color-palette-icon.svg",
+    })
+  );
+  const menuBtn = createDOMElement(
+    "div",
+    { class: "lower-toolbar-button" },
+    createDOMElement("img", {
+      class: "svg-icon",
+      src: "./resources/svg/notecard/menu-circles.svg",
+    })
+  );
+  const pinBtn = createDOMElement(
+    "div",
+    { class: "notecard-pin-button" },
+    createDOMElement("img", {
+      class: "svg-icon-large",
+      src: "./resources/svg/notecard/pin-large-icon.svg",
+    })
+  );
+  lowerToolbar.append(addReminderBtn, colorPalleteBtn, archiveNoteBtn, menuBtn);
   // To Dos handling
   const createToDoitem = (toDoItem) => {
     const toDoItemEl = createDOMElement("div", { class: "to-do-item" });
@@ -252,6 +300,7 @@ export default function buildNoteCard(item) {
 
   // Event Listeners
   noteCard.addEventListener("click", (event) => {
+
     noteDoneBtn.style.display = "";
     // Show editable fields when you click in the note
     if (event.target == noteCardTitle || event.target == noteCardDescription) {
@@ -291,6 +340,7 @@ export default function buildNoteCard(item) {
       hide(noteCardDescriptionLabel);
       hide(noteCardDescriptionTextArea);
     }
+    // Buttons handling
     if (event.target == noteCardMenuBtn) {
       noteDeleteBtn.classList.toggle("hide");
     }
@@ -298,12 +348,15 @@ export default function buildNoteCard(item) {
       noteDoneBtn.style.display = "";
       noteColorBtns.classList.toggle("hide");
     }
-    if (event.target == noteCardPinBtn) {
+    if (event.target == noteCardPinBtn || event.target == pinBtn) {
       pinNote(noteCard.getAttribute("data-note-id"));
     }
     if (event.target == noteDeleteBtn) {
       deleteNote(noteCard.getAttribute("data-note-id"));
       noteDeleteBtn.classList.toggle("hide");
+    }
+    if (event.target == archiveNoteBtn) {
+      archiveNote(noteCard.getAttribute("data-note-id"));
     }
     if (event.target == noteDoneBtn) {
       noteDoneBtn.style.display = "none";
@@ -355,12 +408,14 @@ export default function buildNoteCard(item) {
   );
   noteCardMenuBtn.appendChild(noteDeleteBtn);
   noteCardColorBtn.appendChild(noteColorBtns);
-  noteCardButtons.append(noteCardColorBtn,noteCardMenuBtn,noteCardPinBtn);
+  noteCardButtons.append(noteCardColorBtn, noteCardMenuBtn, noteCardPinBtn);
   noteCard.append(
     noteCardButtons,
+    pinBtn,
     noteCardTitle,
     noteCardDescription,
-    noteDoneBtn
+    noteDoneBtn,
+    lowerToolbar
   );
   return noteCard;
 }

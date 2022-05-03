@@ -93,7 +93,7 @@ input {
   flex-direction: column;
   flex-grow: 1;
   justify-content: center;
-  padding-left: 0.5rem;
+  padding-left: 0rem;
 }
 .search-panel {
   align-items: center;
@@ -118,6 +118,19 @@ input {
 .search-cancel-btn {
   margin: 3px;
   padding: 0.5rem;
+}
+.trash-header {
+  display:flex;
+  color: --tc-dark-gray;
+    cursor: default;
+    flex: 1 0 100%;
+    font-size: 17px;
+    font-style: italic;
+    align-items: center;
+    justify-content: center;
+    padding-top: 1.5rem;
+    padding-bottom: 0.5rem;
+    margin-inline: auto;
 }
 
 /*===========================*/
@@ -170,6 +183,22 @@ input {
   .search-cancel-btn {
     display: none;
   }
+  .empty-trash-btn {
+    color: rgba(0, 0, 0, 0.87);
+    overflow: hidden;
+    font-family: "Google Sans", Roboto, Arial, sans-serif;
+    font-size: 0.875rem;
+    font-style: normal;
+    color: #1a73e8;
+    font-weight: 500;
+    height: 36px;
+    padding: 0.5rem 1.5rem;
+    margin-left: 1rem;
+    border-radius: 0.25rem;
+  }
+  .empty-trash-btn:hover {
+    background-color: rgba(66, 133, 244, 0.039);
+  }
 }
 
 /*===============================*/
@@ -205,14 +234,13 @@ input {
   #new-note-div {
     display: flex;
     align-items: center;
-    width: min(100%, 600px);
+    flex-direction: row;
+    min-width: min(100%, 600px);
     margin: 2rem auto 1rem auto;
     border-radius: 0.5rem;
     box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.3),
       0 2px 6px 2px rgba(60, 64, 67, 0.15);
     background-color: var(--c-white);
-    flex-direction: row;
-    flex: 0 1 3rem;
     padding: 0.2rem 0.5rem;
   }
   #new-note-button img {
@@ -230,21 +258,25 @@ input {
   justify-content: flex-start;
   align-items: flex-start;
   flex-direction: row;
+  flex-wrap: nowrap;
 }
 .content {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
 }
-.content-area { 
-  flex-grow: 1;
+.content-area {
+  display: flex;
+  flex-wrap: wrap;
+  flex: 0 1 auto;
 }
 #notes-area {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
- flex: 1 0 300px;
+  flex-wrap: wrap;
+  padding: 1rem;
+  flex: 1 0 300px;
 }
 
 /*===============================*/
@@ -258,7 +290,7 @@ input {
 /*===============================*/
 @media screen and (min-width: 900px) {
   .sidebar-container {
-    display:flex;
+    display: flex;
     flex-direction: row;
     width: 4.25rem;
     height: 100%;
@@ -269,29 +301,26 @@ input {
     display: flex;
     flex-direction: column;
     width: 3rem;
-    margin-left: 1.25rem;
-    transition: margin, width,  150ms 350ms;
+    margin-left: 0.75rem;
+    transition: margin, width, 150ms 350ms;
   }
   .sidebar-item {
-    cursor:pointer;
+    cursor: pointer;
   }
   .sidebar-container:hover,
-  .sidebar-container:focus-within{
+  .sidebar-container:focus-within {
     width: 17.5rem;
   }
-  .sidebar-container:hover .sidebar{
+  .sidebar-container:hover .sidebar {
     margin-left: 0rem;
     width: 100%;
   }
   .sidebar-container:hover .sidebar-item:hover > .sidebar-item-icon {
-    background-color: var(--c-light-gray) ;
-    transition-delay: 0ms;
-    transition-duration: 0ms;
-    
+    background-color: var(--c-light-gray);
   }
   .sidebar-container:hover .sidebar-item-icon {
     border-radius: 0vw 100vw 100vw 0vw;
-    padding-left: 2rem;
+    padding-left: 1.5rem;
     width: 100%;
   }
   .sidebar-item-icon {
@@ -300,11 +329,13 @@ input {
     align-items: center;
     overflow: hidden;
     height: 3rem;
-    padding:0.75rem;
+    padding: 0.75rem;
     width: 3rem;
-    border-radius:  100vw 100vw 100vw 100vw;
+    border-radius: 100vw 100vw 100vw 100vw;
     background-color: var(--c-white);
-    transition: width, border-radius, padding-left, 150ms 350ms;
+    transition: width 150ms 350ms;
+    transition: border-radius 150ms 350ms;
+    transition: padding-left, 150ms 350ms;
   }
   .sidebar-item-label {
     pointer-events: none;
@@ -312,12 +343,14 @@ input {
     padding-left: 1rem;
     white-space: nowrap;
   }
-  .sidebar-item[active] > .sidebar-item-icon, 
+  .sidebar-item[active] > .sidebar-item-icon,
   .sidebar-container:hover .sidebar-item[active] > .sidebar-item-icon {
     background-color: #feefc3;
   }
+  .sidebar-item[active] .sidebar-item-icon > .svg-icon-large {
+    opacity: 1;
+  }
 }
-
 
 .menu-button {
   background-color: var(--c-off-white-1);
@@ -336,8 +369,6 @@ input {
   color: white;
 }
 
-
-
 /*===============================*/
 /* Note cards     - Mobile First */
 /*===============================*/
@@ -346,6 +377,19 @@ input {
   height: 1.125rem;
   padding: 0.125rem;
 }
+.note-card {
+  border: 1px solid var(--c-gray);
+  border-radius: 8px;
+  background-color: var(--c-white);
+  display: flex;
+  flex-direction: column;
+  flex: 0 1 240px;
+  min-height: 50px;
+  position: relative;
+  margin: 0.5rem;
+  padding-bottom: 16px;
+  transition: box-shadow outline 100ms;
+}
 .note-card-buttons-container {
   display: flex;
   flex: 0 0 1.5rem;
@@ -353,8 +397,9 @@ input {
   align-items: center;
   justify-content: flex-end;
   height: 1.5rem;
+  padding: 0.25rem;
   position: absolute;
-  z-index: 1;
+  /* z-index: 0; */
 }
 .note-card-button {
   cursor: pointer;
@@ -374,32 +419,10 @@ input {
   background-color: var(--c-light-gray);
   opacity: 0.3;
 }
-
-/*===============================*/
-/* Note cards     - Desktop Size */
-/*===============================*/
-
-.note-card {
-  border: 1px solid var(--c-gray);
-  border-radius: 8px;
-  background-color: var(--c-white);
-  display: flex;
-  flex-direction: column;
-  flex: 0 1 240px;
-  min-height: 50px;
-  position: relative;
-  margin-top: 10px;
-  padding-bottom: 16px;
-  transition: box-shadow outline 100ms;
-}
-.note-card img {
-  pointer-events: none;
-}
-.note-card:hover {
-  box-shadow: 0 1px 2px 0 rgb(60 64 67 / 30%), 0 1px 3px 1px rgb(60 64 67 / 15%);
-}
-.note-card:focus {
-  outline: 1px solid rgba(0, 0, 0, 0.6);
+.note-lower-toolbar {
+  display: none;
+  opacity: 0;
+  transition: opacity 200ms;
 }
 .note-card-title,
 .note-card-desc {
@@ -411,9 +434,8 @@ input {
   width: 100%;
   overflow: hidden;
   overflow-wrap: break-word;
-  white-space: normal;
+  white-space: pre-wrap;
 }
-
 .note-card-title {
   font-family: var(--ff-google);
   font-weight: 500;
@@ -426,26 +448,6 @@ input {
   font-weight: 400;
   font-size: 0.75rem;
   color: var(--tc-gray-2);
-}
-
-.color-ball-container {
-  background-color: var(--c-off-white-1);
-  border: 1px solid var(--c-gray);
-  border-radius: 1rem;
-  padding: 0.3rem;
-  position: absolute;
-  display: flex;
-  position: absolute;
-  right: 1.5rem;
-  gap: 0.1rem;
-}
-.color-ball {
-  display: flex;
-  border: 1px solid var(--c-gray);
-  flex-direction: row;
-  width: 1rem;
-  height: 1rem;
-  border-radius: 100%;
 }
 .completed-items-area {
   display: flex;
@@ -460,6 +462,8 @@ input {
 .completed-to-do-items-div {
   gap: 0.5rem;
   display: flex;
+  visibility: visible;
+  height: 100%;
   margin-top: 0.5rem;
   align-items: center;
 }
@@ -484,6 +488,104 @@ input {
 .completed-items-list {
   display: flex;
   flex-direction: column;
+}
+.notecard-pin-button {
+  display: none;
+  position: absolute;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  height: 0rem;
+  aspect-ratio: 1;
+  z-index: 10;
+  right: 0.75rem;
+  top: 0.325rem;
+  opacity: 0;
+  transition: opacity 200ms;
+}
+
+/*===============================*/
+/* Note cards     - Desktop Size */
+/*===============================*/
+@media screen and (min-width: 900px) {
+  .note-card {
+    padding-bottom: 0.25rem;
+    margin: 1rem;
+  }
+  .note-card img {
+    pointer-events: none;
+  }
+  .note-card:hover {
+    box-shadow: 0 1px 2px 0 rgb(60 64 67 / 30%),
+      0 1px 3px 1px rgb(60 64 67 / 15%);
+  }
+  .note-card:focus {
+    outline: 1px solid rgba(0, 0, 0, 0.6);
+  }
+  .note-card-desc {
+    padding: 0.25rem 0.5rem 1rem 0.5rem;
+  }
+
+  .note-card-title {
+    font-family: var(--ff-google);
+    font-weight: 500;
+    text-overflow: ellipsis;
+    color: var(--tc-dark-gray);
+  }
+
+  .note-card-desc {
+    font-family: var(--ff-google);
+    font-weight: 400;
+    font-size: 1.125rem;
+    color: var(--tc-dark-gray);
+  }
+  .note-lower-toolbar{
+    display:flex;
+  }
+  .note-card:hover .note-lower-toolbar {
+    opacity: 1;
+  }
+  .note-card-buttons-container {
+    display: none;
+  }
+  .notecard-pin-button{
+    display:flex;
+    height: 2rem;
+  }
+  .note-card:hover .notecard-pin-button {
+    opacity: 1;
+  }
+  .completed-to-do-items-div {
+    visibility: hidden;
+    height: 0;
+  }
+  .completed-items-list {
+    display: flex;
+  }
+  .to-do-item-checkbox-checked ~ .to-do-item-label {
+    text-decoration: line-through;
+  }
+}
+.color-ball-container {
+  background-color: var(--c-off-white-1);
+  border: 1px solid var(--c-gray);
+  border-radius: 1rem;
+  padding: 0.3rem;
+  position: absolute;
+  display: flex;
+  position: absolute;
+  right: 1.5rem;
+  gap: 0.1rem;
+}
+.color-ball {
+  display: flex;
+  border: 1px solid var(--c-gray);
+  flex-direction: row;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 100%;
 }
 
 .note-card-done-button {
@@ -511,6 +613,7 @@ input {
   align-items: center;
   justify-content: center;
   text-align: center;
+  width: 100%;
 }
 .no-notes-found > h2 {
   margin-top: 1rem;
@@ -528,14 +631,23 @@ input {
   height: 1.25rem;
   width: 1.25rem;
 }
+.lower-toolbar-button,
 .icon-button {
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+}
+.lower-toolbar-button {
+  padding: 0.375rem;
+  margin-inline: 0.25rem;
+}
+.icon-button {
   padding: 1.25rem;
 }
+.lower-toolbar-button:hover,
+.notecard-pin-button:hover,
 .icon-button:hover {
   background-color: var(--c-light-gray);
 }
@@ -544,6 +656,7 @@ input {
   color: #000;
   width: 20px;
   height: 20px;
+  pointer-events: none;
 }
 /* Desktop Icons */
 @media screen and (min-width: 900px) {
@@ -587,6 +700,12 @@ input {
 .to-do-item-label {
   color: var(--tc-dark-gray);
   flex: 1;
+}
+@media screen and (min-width: 900px) {
+  .to-do-item-label {
+    font-family: var(--ff-roboto);
+    font-size: 14px;
+  }
 }
 
 .to-do-item-delete {
