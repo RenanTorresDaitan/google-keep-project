@@ -51,7 +51,7 @@
   <section class="main-section" id="main-section">
     <!-- Side bar navigation -->
     <div class="sidebar-container">
-      <div class="sidebar">
+      <nav class="sidebar">
         <div class="sidebar-item" id="sidebar-item-notes" active>
           <div class="sidebar-item-icon">
             <img class="svg-icon-large" src="./resources/svg/lamp-icon.svg" alt="">
@@ -82,11 +82,12 @@
             <span class="sidebar-item-label">Trash</span>
           </div>
         </div>
-      </div>
+      </nav>
     </div>
     <div class="content">
       <!-- New note button -->
-      <div class="new-note-div" id="new-note-div">
+      <div class="take-new-notes" id="new-note-div">
+        <!-- New note and new list buttons -->
         <div role="button" id="new-note-button" class="[ m-0625rem-r p-05rem-0625rem ]" tabindex="0"
           style="user-select: none">
           <img class="icon-size" src="./resources/svg/notecard/plus-icon.svg" alt="">
@@ -96,11 +97,43 @@
           data-tooltip-text="New list" aria-label="New list">
           <img class="svg-icon" src="./resources/svg/new-list-icon.svg" alt="">
         </div>
+        <!-- Note card to be edited after clicking -->
+        <div class="editing-note hide">
+          <div class="card-menu hide">
+            <div id="archive-menu-button"class="menu-option">Archive</div>
+            <div id="delete-menu-button"class="menu-option">Delete</div>
+            <div id="open-menu-button"class="menu-option" style="display:flex; justify-content: center;">
+              <div style=" margin-right: 0.375rem;">Open in Keep</div>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18px" height="18px" viewBox="0 0 24 24" fill="#333" focusable="false">
+                <path d="m15.444 15.444h-10.888v-10.888h5.444v-1.556h-5.444c-0.86 0-1.556 0.696-1.556 1.556v10.888c0 0.86 0.696 1.556 1.556 1.556h10.888c0.86 0 1.556-0.696 1.556-1.556v-5.444h-1.556v5.444zm-3.888-12.444v1.556h2.788l-7.646 7.644 1.1 1.102 7.646-7.646v2.788h1.556v-5.444h-5.444z"></path>
+            </svg>
+            </div>
+          </div>
+          <div class="card-menu-button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18px" height="18px" viewBox="0 0 24 24">
+              <path
+                d="M12,8.5c1,0,1.8-0.8,1.8-1.8S13,5,12,5s-1.8,0.8-1.8,1.8S11,8.5,12,8.5z M12,10.2c-1,0-1.8,0.8-1.8,1.8s0.8,1.8,1.8,1.8
+              s1.8-0.8,1.8-1.8S13,10.2,12,10.2z M12,15.5c-1,0-1.8,0.8-1.8,1.8S11,19,12,19s1.8-0.8,1.8-1.8S13,15.5,12,15.5z" />
+            </svg>
+          </div>
+          <div class="card-pin-button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18px" height="18px" viewBox="0 0 24 24">
+              <path d="M16 5h.99L17 3H7v2h1v7l-2 2v2h5v6l1 1 1-1v-6h5v-2l-2-2V5z"></path>
+            </svg>
+          </div>
+          <textarea class="card-title-textarea" placeholder="Title"></textarea>
+          <textarea class="card-desc-textarea" placeholder="Take a note..."></textarea>
+          <div class="done-button-container">
+            <div class="card-done-button">Done</div>
+          </div>
+        </div>
       </div>
-      <div class="trash-header hide">Notes in Trash are deleted after 7 days.<div role="button"
-        class="empty-trash-btn"
-        aria-hidden="false" tabindex="0" style="user-select: none;">Empty Trash</div>
-    </div>
+
+
+
+      <div class="trash-header hide">Notes in Trash are deleted after 7 days.<div role="button" class="empty-trash-btn"
+          aria-hidden="false" tabindex="0" style="user-select: none;">Empty Trash</div>
+      </div>
       <div class="content-area" id="notes-page">
         <div class="no-notes-found hide [ m-0625rem-lr p-05rem ]">
           <img src="./resources/no-notes-folder.png" width="236px" alt="No notes found">
@@ -123,9 +156,10 @@
         <div id="notes-area">
         </div>
       </div>
-        
+
     </div>
     </div>
   </section>
 </body>
+
 </html>

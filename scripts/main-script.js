@@ -1,10 +1,11 @@
+import { startEditingNewNote } from "./create-new-note-dom-element.js";
 import NoteList from "./note-list.js";
 import NoteItem from "./note-item.js";
 import buildNoteCard from "./note-card-dom-element.js";
 
 const notesDiv = document.querySelector("#notes-area");
 const APP_NAME = "Keep-Notes";
-const notesList = new NoteList();
+export const notesList = new NoteList();
 
 // Search Notes functionality:
 const searchIconBtn = document.querySelector("#search-icon-btn");
@@ -60,12 +61,21 @@ function reloadNotes() {
   deleteContents(notesDiv);
   renderNotes();
 }
+// Take new notes
+const takeNewNoteBtn = document.querySelector("#new-note-button");
+takeNewNoteBtn.addEventListener("click", () => {
+  startEditingNewNote();
+});
+
+export function createAndSaveNewItem(newItem) {
+  createNewNote(newItem);
+  updateNotesOnLocalStorage();
+}
+
+
 // Create a list
 const makeNewListBtn = document.querySelector("#new-list-button");
 makeNewListBtn.addEventListener("click", () => createAndSaveNewItem(true));
-// Take new notes
-const takeNewNoteBtn = document.querySelector("#new-note-button");
-takeNewNoteBtn.addEventListener("click", () => createAndSaveNewItem(false));
 // Get side bar buttons
 const notesSideBarBtn = document.querySelector("#sidebar-item-notes");
 const remindersSideBarBtn = document.querySelector("#sidebar-item-reminders");
@@ -138,25 +148,8 @@ function removeActiveFromSidebarItems() {
     .forEach((el) => el.removeAttribute("active"));
 }
 
-function calculateNextId() {
-  const list = notesList.getList().sort((a, b) => a.getId() - b.getId());
-  let nextId = 1;
-  if (list.length > 0) {
-    nextId = list[list.length - 1].getId() + 1;
-  }
-  return nextId;
-}
-function createAndSaveNewItem(isToDoList) {
-  const newItem = {
-    _id: calculateNextId(),
-    noteTime: Date.now(),
-    isToDoList: isToDoList,
-  };
-  createNewNote(newItem);
-  updateNotesOnLocalStorage();
-  notesDiv.querySelector(".note-card-desc").click();
-  document.querySelector("#new-note-div").style.display = "none";
-}
+
+
 
 function createNewNote(noteInfo) {
   const newNote = new NoteItem(noteInfo);
