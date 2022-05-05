@@ -63,19 +63,16 @@ function reloadNotes() {
 }
 // Take new notes
 const takeNewNoteBtn = document.querySelector("#new-note-button");
-takeNewNoteBtn.addEventListener("click", () => {
-  startEditingNewNote();
-});
+takeNewNoteBtn.addEventListener("click", () => startEditingNewNote("note"));
+// Create a list
+const makeNewListBtn = document.querySelector("#new-list-button");
+makeNewListBtn.addEventListener("click", () => startEditingNewNote("list"));
 
 export function createAndSaveNewItem(newItem) {
   createNewNote(newItem);
   updateNotesOnLocalStorage();
 }
 
-
-// Create a list
-const makeNewListBtn = document.querySelector("#new-list-button");
-makeNewListBtn.addEventListener("click", () => createAndSaveNewItem(true));
 // Get side bar buttons
 const notesSideBarBtn = document.querySelector("#sidebar-item-notes");
 const remindersSideBarBtn = document.querySelector("#sidebar-item-reminders");
