@@ -381,7 +381,7 @@ input {
 }
 .newnote[editing="true"] #new-note-button,
 .newnote[editing="true"] #new-list-button,
-.newnote[editing="true"] ~ .content-area .no-notes-found {
+.newnote[editing="true"] ~ .no-notes-found {
   display: none;
 }
 .newnote-to-do-item {
@@ -468,21 +468,14 @@ input {
   flex-direction: column;
   flex-grow: 1;
 }
-.content-area {
-  margin-inline: auto;
-  display: flex;
-  flex-wrap: wrap;
-  flex: 0 1 auto;
-  align-items: center;
-  justify-content: center;
-}
+
 #notes-area {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
+  gap:  0.5rem;
   padding: 1rem;
-  flex: 1 0 300px;
 }
 
 /*===============================*/

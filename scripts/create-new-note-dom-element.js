@@ -1,5 +1,18 @@
 import { createAndSaveNewItem, notesList } from "./main-script.js";
 
+// New Note to be Created
+const newNoteToCreate = {
+  noteTitle: "",
+  noteDescription: "",
+  noteTime: Date.now(),
+  isPinned: false,
+  isToDoList: false,
+  isReminder: false,
+  isArchived: false,
+  isTrashed: false,
+  toDoItems: [],
+};
+
 const newNotesArea = document.querySelector(".newnote");
 
 const editingNote = document.querySelector(".editing-note");
@@ -7,6 +20,7 @@ const newNoteTitle = document.querySelector(".newnote-title-textarea");
 const newNoteToDoItemsArea = document.querySelector(
   ".newnote-to-do-items-area"
 );
+const completedToDoItemsArea = document.querySelector(".completed-items-area");
 const newNoteDesc = document.querySelector(".newnote-desc-textarea");
 
 const doneBtn = document.querySelector(".newnote-card-done-button");
@@ -54,13 +68,19 @@ function createToDoItem() {
   });
   deleteItem.addEventListener("click", () => {
     newToDoItem.remove();
-  })
+  });
   return newToDoItem;
 }
 
 // Event Listener for elements inside new note
 editingNote.addEventListener("click", (event) => {
-  const emptyFields = newNoteDesc.value == "" && newNoteTitle.value == "";
+  const newNoteToDoItems = newNoteToDoItemsArea.querySelectorAll(
+    ".newnote-to-do-item"
+  );
+  const emptyFields =
+    newNoteDesc.value == "" &&
+    newNoteTitle.value == "" &&
+    newNoteToDoItems.length == 0;
   hide(cardMenu);
   if (
     emptyFields &&
@@ -74,23 +94,43 @@ editingNote.addEventListener("click", (event) => {
   if (event.target == pinBtn) pinBtn.classList.toggle("note-pinned");
   if (event.target == menuBtn) show(cardMenu);
   if (event.target == doneBtn) {
-    const newItem = {
-      _id: calculateNextId(),
-      noteTitle: newNoteTitle.value,
-      noteDescription: newNoteDesc.value,
-      noteTime: Date.now(),
-      isPinned: pinBtn.classList.contains("note-pinned"),
-    };
-    createAndSaveNewItem(newItem);
+    // Update Note fields
+    newNoteToCreate.noteTitle = newNoteTitle.value;
+    newNoteToCreate.noteDescription = newNoteDesc.value;
+    newNoteToCreate.toDoItems = toDoItems;
+    newNoteToCreate.isPinned = pinBtn.classList.contains("note-pinned");
+    // To do items handling
+    const toDoItems = [];
+    newNoteToDoItems.forEach((item) => {
+      if (item != cardItemPlaceholder) {
+        const checkbox = item.querySelector(".newnote-to-do-item-checkbox");
+        const textArea = item.querySelector(
+          ".newnote-item-placeholder-textarea"
+        );
+        if (textArea.value != "") {
+          const toDoItemToSave = {
+            label: textArea.value,
+            isChecked:
+              checkbox.getAttribute("checked") == "true" ? true : false,
+          };
+          toDoItems.push(toDoItemToSave);
+        }
+      }
+    });
+
+    createAndSaveNewItem(newNoteToCreate);
     endEditingNewNote();
   }
 });
+// Event Listener for keydown events
 itemPlaceholderTextArea.addEventListener("keydown", (event) => {
   const newToDoItem = createToDoItem();
   event.preventDefault();
   newToDoItem.querySelector(".newnote-item-placeholder-textarea").focus();
-  newToDoItem.querySelector(".newnote-item-placeholder-textarea").value =
-    event.key;
+  if (event.keyCode >= 65 && event.keyCode <= 90) {
+    newToDoItem.querySelector(".newnote-item-placeholder-textarea").value =
+      event.key;
+  }
 });
 
 export function startEditingNewNote(noteType) {
@@ -99,6 +139,7 @@ export function startEditingNewNote(noteType) {
   show(editingNote);
   pinBtn.classList.remove("note-pinned");
   if (noteType == "list") {
+    newNoteToCreate.isToDoList = true;
     hide(newNoteDesc);
     show(cardItemPlaceholder);
     itemPlaceholderTextArea.focus();
@@ -118,14 +159,6 @@ function endEditingNewNote() {
 }
 
 // Helper Functions
-function calculateNextId() {
-  const list = notesList.getList().sort((a, b) => a.getId() - b.getId());
-  let nextId = 1;
-  if (list.length > 0) {
-    nextId = list[list.length - 1].getId() + 1;
-  }
-  return nextId;
-}
 function hide(domElement) {
   domElement.classList.add("hide");
 }
@@ -134,7 +167,8 @@ function show(domElement) {
 }
 function deleteExistingToDoItems() {
   Array.from(newNoteToDoItemsArea.children).forEach((el) => {
-    if (el != cardItemPlaceholder) newNoteToDoItemsArea.removeChild(el);
+    if (el !== cardItemPlaceholder && el !== completedToDoItemsArea)
+      newNoteToDoItemsArea.removeChild(el);
   });
 }
 function updateCheckedToDoItems() {
@@ -145,6 +179,6 @@ function updateCheckedToDoItems() {
         .querySelector(".newnote-to-do-item-checkbox")
         .getAttribute("checked") == "true"
     )
-      console.log(item);
+      console.log();
   });
 }

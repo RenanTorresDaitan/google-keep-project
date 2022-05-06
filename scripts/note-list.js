@@ -12,6 +12,7 @@ export default class NoteList {
   }
 
   addNoteToList(noteObj) {
+    noteObj._id = this._calculateNextId();
     this._list.push(noteObj);
   }
 
@@ -21,5 +22,13 @@ export default class NoteList {
 
   removeNoteFromList(id) {
     this._list = this.getList().filter((item) => item.getId() != id);
+  }
+  _calculateNextId() {
+    const list = this.getList().sort((a, b) => a.getId() - b.getId());
+    let nextId = 1;
+    if (list.length > 0) {
+      nextId = list[list.length - 1].getId() + 1;
+    }
+    return nextId;
   }
 }

@@ -100,13 +100,16 @@
         <!-- Note card to be edited after clicking -->
         <div class="editing-note hide">
           <div class="newnote-menu hide">
-            <div id="archive-menu-button"class="newnote-menu-option">Archive</div>
-            <div id="delete-menu-button"class="newnote-menu-option">Delete</div>
-            <div id="open-menu-button"class="newnote-menu-option" style="display:flex; justify-content: center;">
+            <div id="archive-menu-button" class="newnote-menu-option">Archive</div>
+            <div id="delete-menu-button" class="newnote-menu-option">Delete</div>
+            <div id="open-menu-button" class="newnote-menu-option" style="display:flex; justify-content: center;">
               <div style=" margin-right: 0.375rem;">Open in Keep</div>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18px" height="18px" viewBox="0 0 24 24" fill="#333" focusable="false">
-                <path d="m15.444 15.444h-10.888v-10.888h5.444v-1.556h-5.444c-0.86 0-1.556 0.696-1.556 1.556v10.888c0 0.86 0.696 1.556 1.556 1.556h10.888c0.86 0 1.556-0.696 1.556-1.556v-5.444h-1.556v5.444zm-3.888-12.444v1.556h2.788l-7.646 7.644 1.1 1.102 7.646-7.646v2.788h1.556v-5.444h-5.444z"></path>
-            </svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18px" height="18px" viewBox="0 0 24 24" fill="#333"
+                focusable="false">
+                <path
+                  d="m15.444 15.444h-10.888v-10.888h5.444v-1.556h-5.444c-0.86 0-1.556 0.696-1.556 1.556v10.888c0 0.86 0.696 1.556 1.556 1.556h10.888c0.86 0 1.556-0.696 1.556-1.556v-5.444h-1.556v5.444zm-3.888-12.444v1.556h2.788l-7.646 7.644 1.1 1.102 7.646-7.646v2.788h1.556v-5.444h-5.444z">
+                </path>
+              </svg>
             </div>
           </div>
           <div class="newnote-menu-button">
@@ -127,10 +130,18 @@
           <div class="newnote-to-do-items-area">
             <div class="newnote-item-placeholder">
               <svg class="newnote-card-item-svg" width="20px" height="20px" viewBox="0 0 24 24" fill="#000000de">
-                  <path d="m19 13h-6v6h-2v-6h-6v-2h6v-6h2v6h6v2z" />
-                  <path d="m0 0h24v24h-24z" fill="none" />
+                <path d="m19 13h-6v6h-2v-6h-6v-2h6v-6h2v6h6v2z" />
+                <path d="m0 0h24v24h-24z" fill="none" />
               </svg>
-              <textarea name="" id="" cols="30" rows="10" placeholder=" List item" class="newnote-item-placeholder-textarea"></textarea>
+              <textarea name="" id="" cols="30" rows="10" placeholder=" List item"
+                class="newnote-item-placeholder-textarea"></textarea>
+            </div>
+            <div class="completed-items-area">
+              <div class="completed-items-div">
+                <div class="completed-items-btn rotate-90-cw"></div>
+                <div class="completed-items-label">Completed items</div>
+              </div>
+              <div class="completed-items-list"></div>
             </div>
           </div>
           <div class="newnote-card-button-container">
@@ -138,35 +149,34 @@
           </div>
         </div>
       </div>
-
-
-
-      <div class="trash-header hide">Notes in Trash are deleted after 7 days.<div role="button" class="empty-trash-btn"
-          aria-hidden="false" tabindex="0" style="user-select: none;">Empty Trash</div>
-      </div>
-      <div class="content-area" id="notes-page">
-        <div class="no-notes-found hide [ m-0625rem-lr p-05rem ]">
-          <img src="./resources/no-notes-folder.png" width="236px" alt="No notes found">
-          <h2>No notes yet</h2>
-          <h4>Your notes from Google Keep will show up here.</h4>
-          </img>
-        </div>
-        <div class="no-reminders-found">
-          <div class="no-reminders-img"></div>
-          <div class="no-reminders-label">Notes with upcoming reminders appear here</div>
-        </div>
-        <div class="no-archived-found">
-          <div class="no-archived-img"></div>
-          <div class="no-archived-label">Your archived notes appear here</div>
-        </div>
-        <div class="no-trashed-found">
-          <div class="no-trashed-img"></div>
-          <div class="no-trashed-label">No notes in Trash</div>
-        </div>
-        <div id="notes-area">
+      <!-- Trash area header -->
+      <div class="trash-header hide">Notes in Trash are deleted after 7 days.
+        <div role="button" class="empty-trash-btn" aria-hidden="false" tabindex="0" style="user-select: none;">Empty
+          Trash
         </div>
       </div>
-
+      <!-- Notes not found banners -->
+      <div class="no-notes-found hide">
+        <img src="./resources/no-notes-folder.png" width="236px" alt="No notes found">
+        <h2>No notes yet</h2>
+        <h4>Your notes from Google Keep will show up here.</h4>
+        </img>
+      </div>
+      <div class="no-reminders-found">
+        <div class="no-reminders-img"></div>
+        <div class="no-reminders-label">Notes with upcoming reminders appear here</div>
+      </div>
+      <div class="no-archived-found">
+        <div class="no-archived-img"></div>
+        <div class="no-archived-label">Your archived notes appear here</div>
+      </div>
+      <div class="no-trashed-found">
+        <div class="no-trashed-img"></div>
+        <div class="no-trashed-label">No notes in Trash</div>
+      </div>
+      <!-- Notes content area -->
+      <section id="notes-area">
+      </section>
     </div>
     </div>
   </section>
