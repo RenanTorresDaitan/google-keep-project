@@ -14,13 +14,14 @@ const newNoteToCreate = {
 };
 
 const newNotesArea = document.querySelector(".newnote");
-
 const editingNote = document.querySelector(".editing-note");
 const newNoteTitle = document.querySelector(".newnote-title-textarea");
 const newNoteToDoItemsArea = document.querySelector(
   ".newnote-to-do-items-area"
 );
 const completedToDoItemsArea = document.querySelector(".completed-items-area");
+const completedTodoItemsList = document.querySelector(".completed-items-list");
+const completedItemsLabel = document.querySelector(".completed-items-label");
 const newNoteDesc = document.querySelector(".newnote-desc-textarea");
 
 const doneBtn = document.querySelector(".newnote-card-done-button");
@@ -52,22 +53,33 @@ function createToDoItem() {
   newToDoItem.append(checkbox, textArea, deleteItem);
   newNoteToDoItemsArea.insertBefore(newToDoItem, cardItemPlaceholder);
   // Event Listeners
-  checkbox.addEventListener("click", () => {
-    if (checkbox.getAttribute("checked") == "true") {
-      checkbox.setAttribute("checked", "false");
-    } else {
-      checkbox.setAttribute("checked", "true");
+  newToDoItem.addEventListener("click", (event) => {
+    if (event.target == checkbox) {
+      if (checkbox.getAttribute("checked") == "true") {
+        checkbox.setAttribute("checked", "false");
+        newNoteToDoItemsArea.insertBefore(newToDoItem, cardItemPlaceholder);
+      } else {
+        checkbox.setAttribute("checked", "true");
+        completedTodoItemsList.append(newToDoItem);
+      }
     }
-    updateCheckedToDoItems();
+    if (event.target == deleteItem) {
+      newToDoItem.remove();
+    }
+    const completedItems = completedTodoItemsList.children.length;
+    completedItems > 0
+      ? show(completedToDoItemsArea)
+      : hide(completedToDoItemsArea);
+    completedItemsLabel.textContent =
+      completedItems > 1
+        ? `${completedItems} Completed items`
+        : `1 Completed item`;
   });
   textArea.addEventListener("keydown", (event) => {
     if (event.key === "Enter") {
       itemPlaceholderTextArea.focus();
       event.preventDefault();
     }
-  });
-  deleteItem.addEventListener("click", () => {
-    newToDoItem.remove();
   });
   return newToDoItem;
 }
@@ -92,12 +104,19 @@ editingNote.addEventListener("click", (event) => {
     return;
   }
   if (event.target == pinBtn) pinBtn.classList.toggle("note-pinned");
+  const completedItemsBtn = document.querySelector(".completed-items-btn");
+  if (
+    event.target == completedItemsBtn ||
+    event.target == completedItemsLabel
+  ) {
+    completedItemsBtn.classList.toggle("rotate-90-cw");
+    completedTodoItemsList.classList.toggle("hide");
+  }
   if (event.target == menuBtn) show(cardMenu);
   if (event.target == doneBtn) {
     // Update Note fields
     newNoteToCreate.noteTitle = newNoteTitle.value;
     newNoteToCreate.noteDescription = newNoteDesc.value;
-    newNoteToCreate.toDoItems = toDoItems;
     newNoteToCreate.isPinned = pinBtn.classList.contains("note-pinned");
     // To do items handling
     const toDoItems = [];
@@ -117,6 +136,7 @@ editingNote.addEventListener("click", (event) => {
         }
       }
     });
+    newNoteToCreate.toDoItems = toDoItems;
 
     createAndSaveNewItem(newNoteToCreate);
     endEditingNewNote();
@@ -169,16 +189,5 @@ function deleteExistingToDoItems() {
   Array.from(newNoteToDoItemsArea.children).forEach((el) => {
     if (el !== cardItemPlaceholder && el !== completedToDoItemsArea)
       newNoteToDoItemsArea.removeChild(el);
-  });
-}
-function updateCheckedToDoItems() {
-  Array.from(newNoteToDoItemsArea.children).forEach((item) => {
-    if (
-      item != cardItemPlaceholder &&
-      item
-        .querySelector(".newnote-to-do-item-checkbox")
-        .getAttribute("checked") == "true"
-    )
-      console.log();
   });
 }
