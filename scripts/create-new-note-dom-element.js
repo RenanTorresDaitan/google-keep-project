@@ -162,6 +162,7 @@ export function startEditingNewNote(noteType) {
     newNoteToCreate.isToDoList = true;
     hide(newNoteDesc);
     show(cardItemPlaceholder);
+    hide(completedToDoItemsArea);
     itemPlaceholderTextArea.focus();
   } else {
     hide(cardItemPlaceholder);
@@ -188,6 +189,9 @@ function show(domElement) {
 function deleteExistingToDoItems() {
   Array.from(newNoteToDoItemsArea.children).forEach((el) => {
     if (el !== cardItemPlaceholder && el !== completedToDoItemsArea)
-      newNoteToDoItemsArea.removeChild(el);
+    newNoteToDoItemsArea.removeChild(el);
+  });
+  Array.from(completedTodoItemsList.children).forEach((el) => {
+    completedTodoItemsList.removeChild(el);
   });
 }
