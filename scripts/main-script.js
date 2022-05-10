@@ -159,31 +159,46 @@ function showDefaultSidebarContent(activeSidebar) {
       .getList()
       .filter((item) => !item.isTrashed && !item.isArchived).length;
     currentNotes > 0 ? hide(noNotesDiv) : show(noNotesDiv);
+    changeAppHeader("Keep");
   }
   if (activeSidebar == remindersSideBarBtn) {
     const currentNotes = noteItemsList
-      .getList()
-      .filter((item) => item.isReminder).length;
+    .getList()
+    .filter((item) => item.isReminder).length;
     currentNotes > 0 ? hide(noRemindersDiv) : show(noRemindersDiv);
+    changeAppHeader("Reminders");
   }
   if (activeSidebar == archiveSideBarBtn) {
     const currentNotes = noteItemsList
-      .getList()
-      .filter((item) => item.isArchived).length;
+    .getList()
+    .filter((item) => item.isArchived).length;
     currentNotes > 0 ? hide(noArchivedDiv) : show(noArchivedDiv);
+    changeAppHeader("Archive");
   }
   if (activeSidebar == trashSideBarBtn) {
     const currentNotes = noteItemsList
-      .getList()
-      .filter((item) => item.isTrashed).length;
+    .getList()
+    .filter((item) => item.isTrashed).length;
     currentNotes > 0 ? hide(noTrashedDiv) : show(noTrashedDiv);
     show(trashHeader);
+    changeAppHeader("Trash");
   }
 }
 function removeActiveFromSidebarItems() {
   document
     .querySelectorAll("[id^='sidebar-item-']")
     .forEach((el) => el.removeAttribute("active"));
+}
+const appIcon = document.querySelector(".header-icon");
+const pageTitle = document.querySelector(".header-title");
+function changeAppHeader(activeSidebar) {
+  pageTitle.textContent = activeSidebar;
+  if (activeSidebar === "Keep") {
+    show(appIcon);
+    show(pageTitle);
+  } else {
+    hide(appIcon);
+  }
 }
 
 function createNewNote(noteInfo) {

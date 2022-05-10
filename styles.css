@@ -185,6 +185,7 @@ input {
     display: none;
   }
   .empty-trash-btn {
+    cursor: pointer;
     color: rgba(0, 0, 0, 0.87);
     overflow: hidden;
     font-family: "Google Sans", Roboto, Arial, sans-serif;
