@@ -424,7 +424,7 @@ export default function buildNoteCard(item) {
         _id: Number(noteCard.getAttribute("data-note-id")),
         noteTitle: noteCardTitleLabel.textContent,
         noteDescription: descriptionToUpdate,
-        noteTime: Date.now(),
+        noteTime: {creationDate: Date.now(), deletionDate: null},
         toDoItems: toDoItems,
         color: noteCard.getAttribute("data-color"),
       };

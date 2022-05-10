@@ -1,10 +1,10 @@
-import { createAndSaveNewItem, notesList } from "./main-script.js";
+import { createAndSaveNewItem, noteItemsList } from "./main-script.js";
 
 // New Note to be Created
 const newNoteToCreate = {
   noteTitle: "",
   noteDescription: "",
-  noteTime: Date.now(),
+  noteTime: { creationDate: Date.now(), deletionDate: null },
   isPinned: false,
   isToDoList: false,
   isReminder: false,
@@ -189,7 +189,7 @@ function show(domElement) {
 function deleteExistingToDoItems() {
   Array.from(newNoteToDoItemsArea.children).forEach((el) => {
     if (el !== cardItemPlaceholder && el !== completedToDoItemsArea)
-    newNoteToDoItemsArea.removeChild(el);
+      newNoteToDoItemsArea.removeChild(el);
   });
   Array.from(completedTodoItemsList.children).forEach((el) => {
     completedTodoItemsList.removeChild(el);

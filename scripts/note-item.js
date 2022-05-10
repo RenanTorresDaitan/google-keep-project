@@ -3,7 +3,7 @@ export default class NoteItem {
     _id = null,
     noteTitle = "",
     noteDescription = "",
-    noteTime = 0,
+    noteTime = { creationDate: 0, deletionDate: null},
     isPinned = false,
     isToDoList = false,
     isReminder = false,
@@ -41,7 +41,15 @@ export default class NoteItem {
     this.noteDescription = noteDescription;
   }
   getTime() {
-    return this.noteTime;
+    return this.noteTime.creationDate;
+  }
+  setTimeToDelete(time) {
+    this.noteTime.deletionDate = time;
+  }
+  checkTimeToDelete() {
+    if (this.noteTime.deletionDate == null) return false;
+    if (this.noteTime.deletionDate - Date.now() >= 0) return false;
+    return true;
   }
   isPinned() {
     return this.isPinned;
