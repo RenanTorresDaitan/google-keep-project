@@ -60,27 +60,32 @@ function reloadNotes() {
   deleteContents(notesDiv);
   renderNotes();
 }
-
+// Create a list
+const makeNewListBtn = document.querySelector("#new-list-button");
+makeNewListBtn.addEventListener("click", () => createAndSaveNewItem(true));
+// Take new notes
 const takeNewNoteBtn = document.querySelector("#new-note-button");
-takeNewNoteBtn.addEventListener("click", () => {
-  function calculateNextId() {
-    const list = notesList.getList().sort((a,b) => a.getId() - b.getId());
-    let nextId = 1;
-    if (list.length > 0) {
-      nextId = list[list.length - 1].getId() + 1;
-      console.log(list);
-    }
-    return nextId;
+takeNewNoteBtn.addEventListener("click", () => createAndSaveNewItem(false));
+
+function calculateNextId() {
+  const list = notesList.getList().sort((a, b) => a.getId() - b.getId());
+  let nextId = 1;
+  if (list.length > 0) {
+    nextId = list[list.length - 1].getId() + 1;
   }
-  createNewNote({
+  return nextId;
+}
+function createAndSaveNewItem(isToDoList) {
+  const newItem = {
     _id: calculateNextId(),
     noteTime: Date.now(),
-  });
+    isToDoList: isToDoList,
+  };
+  createNewNote(newItem);
   updateNotesOnLocalStorage();
-  notesDiv.querySelector(".note-card-title").firstChild.click();
-  notesDiv.querySelector(".note-card-desc").firstChild.click();
+  notesDiv.querySelector(".note-card-desc").click();
   document.querySelector("#new-note-div").style.display = "none";
-});
+}
 
 function createNewNote(noteInfo) {
   const newNote = new NoteItem(noteInfo);
@@ -97,8 +102,9 @@ export function pinNote(id) {
   updateNotesOnLocalStorage();
 }
 export function updateNote(noteInfo) {
+  const updatedNote = { ...notesList.getNoteById(noteInfo._id), ...noteInfo };
   notesList.removeNoteFromList(noteInfo._id);
-  createNewNote(noteInfo);
+  createNewNote(updatedNote);
   updateNotesOnLocalStorage();
 }
 
@@ -106,17 +112,17 @@ export function updateNote(noteInfo) {
 const renderNotes = () => {
   document.querySelector("#new-note-div").style.display = "";
   const sortedList = notesList.getList();
-  if (sortedList.length >= 0) {
-    document
-      .querySelector(".no-notes-found")
-      .classList.toggle("hide",sortedList.length);
+  document
+    .querySelector(".no-notes-found")
+    .classList.toggle("hide", sortedList.length);
+  if (sortedList.length) {
     sortedList
       .sort((a, b) => b.getTime() - a.getTime())
       .sort((a, b) => Number(b.isPinned) - Number(a.isPinned))
       .forEach((item) => buildNoteCard(item, notesDiv));
   }
 };
-export function toggleVisibility(domElement) {
+function toggleVisibility(domElement) {
   if (domElement.style.display == "none") {
     domElement.style.display = "";
     return;
