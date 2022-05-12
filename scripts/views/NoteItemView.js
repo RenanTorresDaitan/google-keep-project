@@ -29,20 +29,7 @@ class NoteItemView {
                     <label>${noteItem.description}</label>
                     <textarea name="note-description" class="note-card-desc-textarea hide" id="description-textarea" rows="1" maxlength="19999" placeholder="Take a note..." style="height: 1rem;"></textarea>
                 </div>
-                <div class="note-to-do-items hide">
-                    <div class="to-do-item-placeholder hide">
-                        <img class="svg-icon-large" src="./resources/svg/notecard/plus-icon.svg">
-                        <textarea class="to-do-item-textarea" placeholder="List item"></textarea>
-                    </div>
-                    <div class="completed-items-area hide">
-                        <div class="completed-items-separator"></div>
-                        <div class="completed-items-div">
-                            <div class="completed-items-btn rotate-90-cw"></div>
-                            <label class="completed-items-label">1 Completed item</label>
-                        </div>
-                        <div class="completed-items-list"></div>
-                    </div>
-                </div>
+                ${new ToDoItemContainer(noteItem).build()}
                 <button class="note-card-done-button hide [ m-0625rem-lr p-05rem ]" style="user-select: none;">Done</button>
                 <div class="note-lower-toolbar">
                     <div class="lower-toolbar-button">

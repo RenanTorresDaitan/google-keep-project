@@ -15,6 +15,7 @@
   <script src="./scripts/create-new-note-dom-element.js" defer></script>
   <script src="./scripts/note-card-dom-element.js" defer></script>
   <script src="./scripts/components/ColorBallContainer.js" defer></script>
+  <script src="./scripts/components/ToDoItemContainer.js" defer></script>
   <script src="./scripts/controllers/NoteItemController.js" defer></script>
   <script src="./scripts/models/NoteItemModel.js" defer></script>
   <script src="./scripts/models/NoteListModel.js" defer></script>
@@ -96,12 +97,12 @@
       <div class="newnote" id="new-note-div">
         <!-- New note and new list buttons -->
         <div role="button" id="new-note-button" class="[ m-0625rem-r p-05rem-0625rem ]" tabindex="0"
-          style="user-select: none">
+          style="user-select: none" onclick="startEditingNewNote('note')">
           <img class="icon-size" src="./resources/svg/notecard/plus-icon.svg" alt="">
           <span>Take a note…</span>
         </div>
         <div role="button" id="new-list-button" class="icon-button icon-size" tabindex="0" style="user-select: none"
-          data-tooltip-text="New list" aria-label="New list">
+          data-tooltip-text="New list" aria-label="New list" onclick="startEditingNewNote('list')">
           <img class="svg-icon" src="./resources/svg/new-list-icon.svg" alt="">
         </div>
         <!-- Note card to be edited after clicking -->

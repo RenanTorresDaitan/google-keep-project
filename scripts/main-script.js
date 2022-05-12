@@ -2,8 +2,8 @@ const APP_NAME = "Keep-Notes";
 const SEVEN_DAYS_IN_MILLISECONDS = 604800000;
 const MOBILE_SCREEN_SIZE = 900;
 
-// const notesArea = document.querySelector("#notes-area");
-const notesArea = new NoteItemView(document.querySelector("#notes-area"));
+const notesArea = document.querySelector("#notes-area");
+const noteItemView = new NoteItemView(notesArea);
 const noteItemsList = new NoteList();
 const noteController = new NoteItemController();
 
@@ -25,14 +25,14 @@ searchIconBtn.addEventListener("click", () => {
 });
 cancelSearchBtn.addEventListener("click", (event) => {
   searchInput.value = "";
-  Array.from(notesArea.children).forEach((note) => {
+  Array.from(noteItemView.children).forEach((note) => {
     show(note);
   });
   hide(searchPanel);
 });
 searchInput.addEventListener("input", (event) => {
   const searchTerm = event.target.value.toLowerCase();
-  Array.from(notesArea.children).forEach((note) => {
+  Array.from(noteItemView.children).forEach((note) => {
     toggleVisibility(note, !note.innerText.toLowerCase().includes(searchTerm));
   });
 });
@@ -63,15 +63,8 @@ const loadNotesFromLocalStorage = () => {
 };
 
 function reloadNotes() {
-  // deleteContents(notesArea);
   renderNotes();
 }
-// Take new notes
-const takeNewNoteBtn = document.querySelector("#new-note-button");
-takeNewNoteBtn.addEventListener("click", () => startEditingNewNote("note"));
-// Create a list
-const makeNewListBtn = document.querySelector("#new-list-button");
-makeNewListBtn.addEventListener("click", () => startEditingNewNote("list"));
 
 function createAndSaveNewItem(newItem) {
   createNewNote(newItem);
@@ -111,7 +104,7 @@ emptyTrashBtn.addEventListener("click", () => {
 function showNotesFromSidebar() {
   const activeSidebar = document.querySelector("[id^='sidebar-item-'][active]");
   // showDefaultSidebarContent(activeSidebar);
-  Array.from(notesArea.children).forEach((note) => {
+  Array.from(noteItemView.children).forEach((note) => {
     const noteItem = noteItemsList.getNoteById(
       note.getAttribute("data-note-id")
     );
@@ -226,9 +219,7 @@ const renderNotes = () => {
     sortedList
       .sort((a, b) => b.getTime() - a.getTime())
       .sort((a, b) => Number(b.isPinned) - Number(a.isPinned));
-    // const createdNoteCards = sortedList.map((item) => buildNoteCard(item));
-    // createdNoteCards.forEach((note) => notesArea.append(note));
-    notesArea.update(noteItemsList.getList());
+    noteItemView.update(noteItemsList.getList());
     // showNotesFromSidebar();
   }
 };
@@ -236,13 +227,6 @@ const renderNotes = () => {
 function toggleVisibility(domElement, force) {
   domElement.classList.toggle("hide", force);
 }
-const deleteContents = (parentElement) => {
-  let child = parentElement.lastElementChild;
-  while (child) {
-    parentElement.removeChild(child);
-    child = parentElement.lastElementChild;
-  }
-};
 function hide(domElement) {
   domElement.classList.add("hide");
 }
