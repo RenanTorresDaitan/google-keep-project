@@ -1,14 +1,11 @@
-import { startEditingNewNote } from "./create-new-note-dom-element.js";
-import NoteList from "./note-list.js";
-import NoteItem from "./note-item.js";
-import buildNoteCard from "./note-card-dom-element.js";
-
 const APP_NAME = "Keep-Notes";
 const SEVEN_DAYS_IN_MILLISECONDS = 604800000;
 const MOBILE_SCREEN_SIZE = 900;
 
-const notesArea = document.querySelector("#notes-area");
-export const noteItemsList = new NoteList();
+// const notesArea = document.querySelector("#notes-area");
+const notesArea = new NoteItemView(document.querySelector("#notes-area"));
+const noteItemsList = new NoteList();
+const noteController = new NoteItemController();
 
 const changeToNotesOnMobile = new ResizeObserver((item) => {
   if (item[0].contentRect.width < MOBILE_SCREEN_SIZE) {
@@ -66,7 +63,7 @@ const loadNotesFromLocalStorage = () => {
 };
 
 function reloadNotes() {
-  deleteContents(notesArea);
+  // deleteContents(notesArea);
   renderNotes();
 }
 // Take new notes
@@ -76,7 +73,7 @@ takeNewNoteBtn.addEventListener("click", () => startEditingNewNote("note"));
 const makeNewListBtn = document.querySelector("#new-list-button");
 makeNewListBtn.addEventListener("click", () => startEditingNewNote("list"));
 
-export function createAndSaveNewItem(newItem) {
+function createAndSaveNewItem(newItem) {
   createNewNote(newItem);
   updateNotesOnLocalStorage();
 }
@@ -100,7 +97,7 @@ const trashSideBarBtn = document.querySelector("#sidebar-item-trash");
   item.addEventListener("click", (event) => {
     removeActiveFromSidebarItems();
     item.setAttribute("active", "");
-    showNotesFromSidebar(item);
+    // showNotesFromSidebar(item);
   });
 });
 
@@ -113,7 +110,7 @@ emptyTrashBtn.addEventListener("click", () => {
 });
 function showNotesFromSidebar() {
   const activeSidebar = document.querySelector("[id^='sidebar-item-'][active]");
-  showDefaultSidebarContent(activeSidebar);
+  // showDefaultSidebarContent(activeSidebar);
   Array.from(notesArea.children).forEach((note) => {
     const noteItem = noteItemsList.getNoteById(
       note.getAttribute("data-note-id")
@@ -202,45 +199,12 @@ function changeAppHeader(activeSidebar) {
 }
 
 function createNewNote(noteInfo) {
-  const newNote = new NoteItem(noteInfo);
+  const newNote = new NoteItemModel(noteInfo);
   noteItemsList.addNoteToList(newNote);
 }
 
-// Exported note functions
 
-export function addReminder(id) {
-  noteItemsList.getNoteById(id).isReminder = true;
-  updateNotesOnLocalStorage();
-}
-export function archiveNote(id) {
-  noteItemsList.getNoteById(id).isArchived = true;
-  updateNotesOnLocalStorage();
-}
-export function deleteNote(id) {
-  noteItemsList.removeNoteFromList(id);
-  updateNotesOnLocalStorage();
-}
-export function restoreNote(id) {
-  noteItemsList.getNoteById(id).isTrashed = false;
-  noteItemsList.getNoteById(id).noteTime.deletionDate = null;
-  updateNotesOnLocalStorage();
-}
-export function trashNote(id) {
-  noteItemsList.getNoteById(id).isTrashed = true;
-  noteItemsList.getNoteById(id).noteTime.deletionDate =
-    Date.now() + SEVEN_DAYS_IN_MILLISECONDS;
-  updateNotesOnLocalStorage();
-}
-export function unarchiveNote(id) {
-  noteItemsList.getNoteById(id).isArchived = false;
-  updateNotesOnLocalStorage();
-}
-export function pinNote(id) {
-  const noteToPin = noteItemsList.getNoteById(id);
-  noteToPin.isPinned = noteToPin.isPinned ? false : true;
-  updateNotesOnLocalStorage();
-}
-export function updateNote(noteInfo) {
+function updateNote(noteInfo) {
   const updatedNote = {
     ...noteItemsList.getNoteById(noteInfo._id),
     ...noteInfo,
@@ -249,7 +213,6 @@ export function updateNote(noteInfo) {
   createNewNote(updatedNote);
   updateNotesOnLocalStorage();
 }
-
 // Helper functions
 const renderNotes = () => {
   const sortedList = noteItemsList.getList().filter((item) => {
@@ -263,9 +226,10 @@ const renderNotes = () => {
     sortedList
       .sort((a, b) => b.getTime() - a.getTime())
       .sort((a, b) => Number(b.isPinned) - Number(a.isPinned));
-    const createdNoteCards = sortedList.map((item) => buildNoteCard(item));
-    createdNoteCards.forEach((note) => notesArea.append(note));
-    showNotesFromSidebar();
+    // const createdNoteCards = sortedList.map((item) => buildNoteCard(item));
+    // createdNoteCards.forEach((note) => notesArea.append(note));
+    notesArea.update(noteItemsList.getList());
+    // showNotesFromSidebar();
   }
 };
 

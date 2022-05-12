@@ -1,15 +1,4 @@
-import {
-  addReminder,
-  archiveNote,
-  trashNote,
-  deleteNote,
-  restoreNote,
-  pinNote,
-  unarchiveNote,
-  updateNote,
-} from "./main-script.js";
-
-export default function buildNoteCard(item) {
+function buildNoteCard(item) {
   // Create Note Card DOM Elements from item data
   const noteCard = createDOMElement("div", {
     class: "note-card",

@@ -1,4 +1,4 @@
-import { createAndSaveNewItem, noteItemsList } from "./main-script.js";
+// import { createAndSaveNewItem, noteItemsList } from "./main-script.js";
 
 // New Note to be Created
 const newNoteToCreate = {
@@ -153,7 +153,7 @@ itemPlaceholderTextArea.addEventListener("keydown", (event) => {
   }
 });
 
-export function startEditingNewNote(noteType) {
+/*export*/ function startEditingNewNote(noteType) {
   newNotesArea.setAttribute("editing", "true");
   deleteExistingToDoItems();
   show(editingNote);

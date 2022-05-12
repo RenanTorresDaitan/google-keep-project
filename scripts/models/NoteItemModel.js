@@ -1,9 +1,9 @@
-export default class NoteItem {
+class NoteItemModel {
   constructor({
     _id = null,
     noteTitle = "",
     noteDescription = "",
-    noteTime = { creationDate: 0, deletionDate: null},
+    noteTime = { creationDate: 0, deletionDate: null },
     isPinned = false,
     isToDoList = false,
     isReminder = false,
@@ -25,19 +25,22 @@ export default class NoteItem {
     this.color = color;
   }
 
-  getId() {
+  get id() {
     return this._id;
   }
-  getTitle() {
+  set id(newId) {
+    this._id = newId;
+  }
+  get title() {
     return this.noteTitle;
   }
-  setTitle(noteTitle) {
+  set title(noteTitle) {
     this.noteTitle = noteTitle;
   }
-  getDescription() {
+  get description() {
     return this.noteDescription;
   }
-  setDescription(noteDescription) {
+  set description(noteDescription) {
     this.noteDescription = noteDescription;
   }
   getTime() {
