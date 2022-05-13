@@ -120,7 +120,7 @@ editingNote.addEventListener("click", (event) => {
     newNoteToCreate.isPinned = pinBtn.classList.contains("note-pinned");
     // To do items handling
     const toDoItems = [];
-    newNoteToDoItems.forEach((item) => {
+    newNoteToDoItems.forEach((item, index) => {
       if (item != cardItemPlaceholder) {
         const checkbox = item.querySelector(".newnote-to-do-item-checkbox");
         const textArea = item.querySelector(
@@ -132,6 +132,7 @@ editingNote.addEventListener("click", (event) => {
             isChecked:
               checkbox.getAttribute("checked") == "true" ? true : false,
           };
+          toDoItemToSave.id = index;
           toDoItems.push(toDoItemToSave);
         }
       }

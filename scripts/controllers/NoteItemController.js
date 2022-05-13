@@ -6,6 +6,7 @@ class NoteItemController {
       .querySelector(`[data-note-id="${id}"] .menu-panel`)
       .classList.remove("hide");
   }
+  
   openColorMenu(id){
     document
     .querySelector(`[data-note-id="${id}"] .color-ball-container`)

@@ -6,7 +6,6 @@ const notesArea = document.querySelector("#notes-area");
 const noteItemView = new NoteItemView(notesArea);
 const noteItemsList = new NoteList();
 const noteController = new NoteItemController();
-
 const changeToNotesOnMobile = new ResizeObserver((item) => {
   if (item[0].contentRect.width < MOBILE_SCREEN_SIZE) {
     notesSideBarBtn.click();

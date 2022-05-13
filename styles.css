@@ -1006,7 +1006,7 @@ input {
   color: var(--tc-dark-gray);
   opacity: 0;
 }
-.to-do-item:focus-visible .to-do-item-delete {
+.to-do-item:hover .to-do-item-delete {
   display: flex;
   opacity: 1;
 }
