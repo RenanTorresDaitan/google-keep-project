@@ -67,14 +67,12 @@ class NoteItemModel {
     return this.toDoItems;
   }
   getToDoItemById(id) {
-      return this.toDoItems.find((item) => item.id == id);
+    return this.toDoItems.find((item) => item.id == id);
   }
   addToDoItem(item) {
     this.toDoItems.push(item);
   }
-  deleteToDoItem(itemToDelete) {
-    console.log("before", this.toDoItems);
-    this.toDoItems.filter(item => item != itemToDelete);
-    console.log("after", this.toDoItems);
+  removeToDoItemFromList(id) {
+    this.toDoItems = this.getToDoItems().filter((item) => item.id != id);
   }
 }

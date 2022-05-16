@@ -6,7 +6,6 @@ class NoteItemController {
       .querySelector(`[data-note-id="${id}"] .menu-panel`)
       .classList.remove("hide");
   }
-  
   openColorMenu(id){
     document
     .querySelector(`[data-note-id="${id}"] .color-ball-container`)
@@ -45,7 +44,17 @@ class NoteItemController {
   }
   pinNote(id) {
     const noteToPin = noteItemsList.getNoteById(id);
-    noteToPin.isPinned = noteToPin.isPinned ? false : true;
+    noteToPin.isPinned = !noteToPin.isPinned;
+    updateNotesOnLocalStorage();
+  }
+  // Todo items
+  toggleChecked(noteId,itemId) {
+    const item = noteItemsList.getNoteById(noteId).getToDoItemById(itemId)
+    item.isChecked = !item.isChecked;
+    updateNotesOnLocalStorage();
+  }
+  deleteToDoItem(noteId,itemId){
+    noteItemsList.getNoteById(noteId).removeToDoItemFromList(itemId);
     updateNotesOnLocalStorage();
   }
 }

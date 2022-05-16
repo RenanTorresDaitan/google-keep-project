@@ -4,8 +4,8 @@ const MOBILE_SCREEN_SIZE = 900;
 
 const notesArea = document.querySelector("#notes-area");
 const noteItemView = new NoteItemView(notesArea);
-const noteItemsList = new NoteList();
-const noteController = new NoteItemController();
+const noteItemsList = new NoteListModel();
+const noteItemsController = new NoteItemController();
 const changeToNotesOnMobile = new ResizeObserver((item) => {
   if (item[0].contentRect.width < MOBILE_SCREEN_SIZE) {
     notesSideBarBtn.click();
@@ -102,8 +102,8 @@ emptyTrashBtn.addEventListener("click", () => {
 });
 function showNotesFromSidebar() {
   const activeSidebar = document.querySelector("[id^='sidebar-item-'][active]");
-  // showDefaultSidebarContent(activeSidebar);
-  Array.from(noteItemView.children).forEach((note) => {
+  showDefaultSidebarContent(activeSidebar);
+  Array.from(notesArea.children).forEach((note) => {
     const noteItem = noteItemsList.getNoteById(
       note.getAttribute("data-note-id")
     );
@@ -219,7 +219,7 @@ const renderNotes = () => {
       .sort((a, b) => b.getTime() - a.getTime())
       .sort((a, b) => Number(b.isPinned) - Number(a.isPinned));
     noteItemView.update(noteItemsList.getList());
-    // showNotesFromSidebar();
+    showNotesFromSidebar();
   }
 };
 

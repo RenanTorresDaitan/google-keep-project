@@ -13,21 +13,21 @@ class NoteItemView {
             }" data-note-id="${noteItem.id}" data-color="${noteItem.color}">
                 ${new ColorBallContainer(noteItem).build()}
                 <div class="menu-panel hide">
-                    <div role="button" class="menu-option" onclick="noteController.archiveNote(${
+                    <div role="button" class="menu-option" onclick="noteItemsController.archiveNote(${
                       noteItem.id
                     })">Archive</div>
-                    <div role="button" class="menu-option" onclick="noteController.trashNote(${
+                    <div role="button" class="menu-option" onclick="noteItemsController.trashNote(${
                       noteItem.id
                     })">Delete</div>
                 </div>
                 <div class="note-card-buttons-container">
-                    <div role="button" class="note-card-button color-button" aria-label="Change Note Color" data-tooltip-text="Change Note Color" tabindex="0" onclick="noteController.openColorMenu(${
+                    <div role="button" class="note-card-button color-button" aria-label="Change Note Color" data-tooltip-text="Change Note Color" tabindex="0" onclick="noteItemsController.openColorMenu(${
                       noteItem.id
                     })"></div>
-                    <div role="button" class="note-card-button menu-button" aria-label="Menu" data-tooltip-text="Menu" tabindex="0" onclick="noteController.openMenu(${
+                    <div role="button" class="note-card-button menu-button" aria-label="Menu" data-tooltip-text="Menu" tabindex="0" onclick="noteItemsController.openMenu(${
                       noteItem.id
                     })"></div>
-                    <div role="button" class="note-card-button pin-button" aria-label="Fix note" data-tooltip-text="Fix note" tabindex="0" onclick="noteController.pinNote(${
+                    <div role="button" class="note-card-button pin-button" aria-label="Fix note" data-tooltip-text="Fix note" tabindex="0" onclick="noteItemsController.pinNote(${
                       noteItem.id
                     })"></div>
                 </div>
@@ -42,7 +42,7 @@ class NoteItemView {
                     <label>${noteItem.description}</label>
                     <textarea name="note-description" class="note-card-desc-textarea hide" id="description-textarea" rows="1" maxlength="19999" placeholder="Take a note..." style="height: 1rem;"></textarea>
                 </div>
-                ${(this.toDoItemsController = new ToDoItemsController(noteItem).build())}
+                ${new ToDoItemContainer(noteItem).build()}
                 <button class="note-card-done-button hide [ m-0625rem-lr p-05rem ]" style="user-select: none;">Done</button>
                 <div class="note-lower-toolbar">
                     <div class="lower-toolbar-button">
