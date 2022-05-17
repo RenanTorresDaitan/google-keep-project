@@ -33,7 +33,7 @@ class ColorBallContainer {
                 class="color-ball" 
                 role="button" 
                 data-color="${color}" 
-                onclick="noteController.changeNoteColor(${this.noteItem.id},'${color}')">
+                onclick="noteItemsController.changeNoteColor(${this.noteItem.id},'${color}')">
             </span>`;
   }
 }

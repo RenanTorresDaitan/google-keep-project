@@ -3,7 +3,7 @@ const SEVEN_DAYS_IN_MILLISECONDS = 604800000;
 const MOBILE_SCREEN_SIZE = 900;
 
 const notesArea = document.querySelector("#notes-area");
-const noteItemView = new NoteItemView(notesArea);
+const noteListView = new NoteListView(notesArea);
 const noteItemsList = new NoteListModel();
 const noteItemsController = new NoteItemController();
 const changeToNotesOnMobile = new ResizeObserver((item) => {
@@ -24,14 +24,14 @@ searchIconBtn.addEventListener("click", () => {
 });
 cancelSearchBtn.addEventListener("click", (event) => {
   searchInput.value = "";
-  Array.from(noteItemView.children).forEach((note) => {
+  Array.from(noteListView.children).forEach((note) => {
     show(note);
   });
   hide(searchPanel);
 });
 searchInput.addEventListener("input", (event) => {
   const searchTerm = event.target.value.toLowerCase();
-  Array.from(noteItemView.children).forEach((note) => {
+  Array.from(noteListView.children).forEach((note) => {
     toggleVisibility(note, !note.innerText.toLowerCase().includes(searchTerm));
   });
 });
@@ -218,7 +218,7 @@ const renderNotes = () => {
     sortedList
       .sort((a, b) => b.getTime() - a.getTime())
       .sort((a, b) => Number(b.isPinned) - Number(a.isPinned));
-    noteItemView.update(noteItemsList.getList());
+    noteListView.update(noteItemsList.getList());
     showNotesFromSidebar();
   }
 };
