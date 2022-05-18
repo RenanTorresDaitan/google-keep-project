@@ -12,15 +12,15 @@ class ToDoItemContainer {
   _template() {
     return `
           ${this.uncheckedItems
-            .map((item) => this.createToDoItem(this.noteItem.id,item))
+            .map((item) => ToDoItemContainer.createToDoItem(this.noteItem.id,item))
             .join("")}
           <div class="to-do-item-placeholder ${this.toDoItems.length == 0 ? "" : "hide"}">
           <img class="svg-icon-large" src="./resources/svg/notecard/plus-icon.svg">
-          <textarea class="to-do-item-textarea" placeholder="List item" onkeydown="noteItemsController.createNewToDoItem(${this.noteItem.id})"></textarea>
+          <textarea class="to-do-item-textarea" placeholder="List item" tabindex="0" onkeydown="noteItemsController.createNewToDoItem(${this.noteItem.id})"></textarea>
           </div>
           <div class="completed-items-area ${this.checkedItems.length > 0 ? "" : "hide"}">
           <div class="completed-items-separator"></div>
-            <div class="completed-items-div" onclick="noteItemsController.toggleCompletedItems(${this.noteItem.id})">
+            <div class="completed-items-div" onclick="noteItemsController.toggleCompletedItemsList(${this.noteItem.id})">
               <div class="completed-items-btn rotate-90-cw"></div>
               <label class="completed-items-label">${
                 this.checkedItems.length > 1
@@ -30,7 +30,7 @@ class ToDoItemContainer {
             </div>
               <div class="completed-items-list">
                 ${this.checkedItems
-                  .map((item) => this.createToDoItem(this.noteItem.id,item))
+                  .map((item) => ToDoItemContainer.createToDoItem(this.noteItem.id,item))
                   .join("")}
               </div>
         </div>`;

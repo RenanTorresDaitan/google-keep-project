@@ -70,6 +70,11 @@ class NoteItemModel {
     return this.toDoItems.find((item) => item.id == id);
   }
   addToDoItem(item) {
+    if (this.toDoItems.length == 0) {
+      item.id = 0;
+    } else {
+      item.id = this.getToDoItemById(this.toDoItems.length -1).id + 1;
+    }
     this.toDoItems.push(item);
   }
   removeToDoItemFromList(id) {

@@ -4,20 +4,44 @@ class NoteItemController {
   editNote(id) {
     const note = document.querySelector(`[data-note-id="${id}"]`);
     this.#show(note.querySelector(".note-card-done-button"));
-    this.handleTitleAndDescription(note);
+    this.showNoteTitle(note);
+    if (noteItemsList.getNoteById(id).isToDoList) {
+      this.#show(note.querySelector(".to-do-item-placeholder"));
+    } else {
+      this.showNoteDescription(note);
+    }
   }
   updateNote(id) {
     const note = document.querySelector(`[data-note-id="${id}"]`);
     const updatedNote = {
       ...noteItemsList.getNoteById(id),
       noteTitle: note.querySelector("#title-textarea").value,
-      noteDescription: note.querySelector("#description-textarea").value,
       isPinned: note
         .querySelector(".pin-button")
         .classList.contains("note-pinned"),
       noteTime: { creationDate: Date.now() },
       color: note.getAttribute("data-color"),
     };
+    if (note.querySelector("#description-textarea") != null) {
+      updatedNote.noteDescription = note.querySelector(
+        "#description-textarea"
+      ).value;
+    }
+    const toDoItems = note.querySelectorAll(".to-do-item");
+    if (toDoItems != null) {
+      updatedNote.toDoItems = Array.from(toDoItems).map((item, index) => {
+        return {
+          id: index,
+          label: item.querySelector(".to-do-item-label").textContent,
+          isChecked:
+            item
+              .querySelector(".to-do-item-checkbox")
+              .getAttribute("checked") == "true"
+              ? true
+              : false,
+        };
+      });
+    }
     noteItemsList.removeNoteFromList(id);
     createNewNote(updatedNote);
     updateNotesOnLocalStorage();
@@ -78,106 +102,132 @@ class NoteItemController {
     updateNotesOnLocalStorage();
   }
   // Edit handling methods
-  handleTitleAndDescription(note) {
-    const noteTitle = note.querySelector(".note-card-title");
-    const noteDescription = note.querySelector(".note-card-desc");
+  showNoteTitle(note){
+      // Show and edit Title
+    this.#show(note.querySelector(".note-card-done-button"));
     const titleLabel = note.querySelector(".note-card-title > label");
     const titleTextarea = note.querySelector("#title-textarea");
-    const descriptionLabel = note.querySelector(".note-card-desc > label");
-    const descriptionTextarea = note.querySelector("#description-textarea");
-    note.addEventListener("click", (event) => {
-      // Show editable fields when you click in the note
-      if (event.target == noteTitle || event.target == noteDescription) {
-        if (titleLabel.textContent == "") {
-          this.#show(titleTextarea);
-          this.#hide(titleLabel);
-          titleTextarea.focus();
-        }
-        if (descriptionLabel.textContent == "") {
-          this.#show(descriptionTextarea);
-          this.#hide(descriptionLabel);
-          descriptionTextarea.focus();
-        }
-      }
-      // Show and edit Title
-      if (event.target == titleLabel || event.target == noteTitle) {
-        this.#hide(titleLabel);
-        titleTextarea.value = titleLabel.textContent;
-        this.#show(titleTextarea);
-        titleTextarea.focus();
-      }
-      // Show and edit Description
-      if (event.target == descriptionLabel || event.target == noteDescription) {
-        this.#hide(descriptionLabel);
-        descriptionTextarea.value = descriptionLabel.textContent;
-        this.#show(descriptionTextarea);
-        descriptionTextarea.focus();
-      }
-    });
-    // Handle input on textarea
-    note.addEventListener("keydown", (event) => {
-      if (event.target == titleTextarea) {
-        if (event.key == "Enter") {
-          this.#hide(titleTextarea);
-          this.#show(titleLabel);
-        }
+    if (titleLabel.textContent == "") {
+      this.#show(titleTextarea);
+      this.#hide(titleLabel);
+      titleTextarea.focus();
+    } else {
+      this.#hide(titleLabel);
+      titleTextarea.value = "";
+      titleTextarea.value = titleLabel.textContent;
+      this.#show(titleTextarea);
+      titleTextarea.focus();
+    }
+    titleTextarea.addEventListener("input", (event) => {
+      if (event.keyCode >= 65 && event.keyCode <= 90) {
         titleLabel.textContent = titleTextarea.value;
       }
-      if (event.target == descriptionTextarea) {
-        if (event.key == "Enter") {
-          this.#hide(descriptionTextarea);
-          this.#show(descriptionLabel);
+    });
+    titleTextarea.addEventListener("keydown", (event) => {
+      if (event.key == "Enter") {
+        this.#hide(titleTextarea);
+        this.#show(titleLabel);
+        if (titleLabel.textContent != "") {
+          titleLabel.textContent = titleTextarea.value;
         }
+        event.preventDefault();
+      }
+    });
+  }
+  showNoteDescription(note) {
+      // Show and edit Description
+    this.#show(note.querySelector(".note-card-done-button"));
+    const descriptionLabel = note.querySelector(".note-card-desc > label");
+    const descriptionTextarea = note.querySelector("#description-textarea");
+    if (descriptionLabel.textContent == "") {
+      this.#show(descriptionTextarea);
+      this.#hide(descriptionLabel);
+      descriptionTextarea.focus();
+    } else {
+      this.#hide(descriptionLabel);
+      descriptionTextarea.value = "";
+      descriptionTextarea.value = descriptionLabel.textContent;
+      this.#show(descriptionTextarea);
+      descriptionTextarea.focus();
+    }
+    // Handle input on textarea
+    descriptionTextarea.addEventListener("input", (event) => {
+      if (event.keyCode >= 65 && event.keyCode <= 90) {
         descriptionLabel.textContent = descriptionTextarea.value;
+      }
+    });
+    descriptionTextarea.addEventListener("keydown", (event) => {
+      if (event.key == "Enter") {
+        this.#hide(descriptionTextarea);
+        this.#show(descriptionLabel);
+        if (descriptionLabel.textContent != "") {
+          descriptionLabel.textContent = descriptionTextarea.value;
+        }
+        event.preventDefault();
       }
     });
   }
   changeToDoItemLabel(id, itemId) {
+    const itemPlaceholder = document.querySelector(
+      `[data-note-id="${id}"] .to-do-item-placeholder`
+    );
+    this.#show(itemPlaceholder);
+
     const toDoItem = document
       .querySelector(`[data-note-id="${id}"]`)
       .querySelector(`[data-item-id="${itemId}"]`);
     const toDoItemLabel = toDoItem.querySelector(".to-do-item-label");
     const toDoItemTextarea = toDoItem.querySelector(".to-do-item-textarea");
     this.#show(toDoItemTextarea);
-    this.#hide(toDoItemLabel);
     toDoItemTextarea.focus();
+    toDoItemTextarea.value = "";
+    toDoItemTextarea.value = toDoItemLabel.textContent;
+    this.#hide(toDoItemLabel);
+    toDoItemTextarea.addEventListener("blur", () => {
+      toDoItemLabel.textContent = toDoItemTextarea.value;
+    });
+    toDoItemTextarea.addEventListener("input", (event) => {
+      if (event.keyCode >= 65 && event.keyCode <= 90) {
+        toDoItemLabel.textContent = toDoItemTextarea.value;
+      }
+    });
     toDoItemTextarea.addEventListener("keydown", (event) => {
       if (event.key == "Enter") {
         this.#hide(toDoItemTextarea);
         this.#show(toDoItemLabel);
         if (toDoItemLabel.textContent != "") {
-          noteItemsList.getNoteById(id).getToDoItemById(itemId).label =
-            toDoItemLabel.textContent;
+          toDoItemLabel.textContent = toDoItemTextarea.value;
+          this.updateNote(id);
         } else {
           this.deleteToDoItem(id, itemId);
         }
+        this.#hide(itemPlaceholder);
+        event.preventDefault();
       }
-      toDoItemLabel.textContent = toDoItemTextarea.value;
     });
   }
   createNewToDoItem(id) {
-    // TODO -- Add new items to the right place
-    const newToDoItem = {
-      id: 10,
-      label: "teste",
-      checked: false,
-    };
-    const toDoItemList = document
-    .querySelector(`[data-note-id="${id}"]`)
-    .querySelector(".completed-items-list");
-    toDoItemList.innerHTML += ToDoItemContainer.createToDoItem(id,newToDoItem);
-    event.preventDefault();
-    // itemPlaceholderTextArea.addEventListener("keydown", (event) => {
-    //   const newToDoItem = createToDoItem();
-    //   event.preventDefault();
-    //   newToDoItem.querySelector(".newnote-item-placeholder-textarea").focus();
-    //   if (event.keyCode >= 65 && event.keyCode <= 90) {
-    //     newToDoItem.querySelector(".newnote-item-placeholder-textarea").value =
-    //       event.key;
-    //   }
-    // });
+    const noteToUpdate = noteItemsList.getNoteById(id);
+    if (event.keyCode >= 65 && event.keyCode <= 90) {
+      const newToDoItem = {
+        label: event.key,
+        isChecked: false,
+      };
+      noteToUpdate.addToDoItem(newToDoItem);
+      updateNotesOnLocalStorage();
+      const newToDoItemEl = document.querySelector(
+        `[data-note-id="${id}"] [data-item-id="${
+          noteToUpdate.getToDoItemById(noteToUpdate.getToDoItems().length - 1)
+            .id
+        }"] > label`
+      );
+      newToDoItemEl.click();
+      event.preventDefault();
+    } else {
+      event.preventDefault();
+    }
   }
-  toggleCompletedItems(id) {
+  toggleCompletedItemsList(id) {
     this.#toggle(
       document.querySelector(`[data-note-id="${id}"] .completed-items-btn`),
       "rotate-90-cw"
