@@ -2,9 +2,12 @@ const APP_NAME = "Keep-Notes";
 const SEVEN_DAYS_IN_MILLISECONDS = 604800000;
 const MOBILE_SCREEN_SIZE = 900;
 
+
+const noteItemsList = new NoteListModel();
+const pageHeadersView = new PageHeadersView(document.querySelector(".content"));
 const notesArea = document.querySelector("#notes-area");
 const noteListView = new NoteListView(notesArea);
-const noteItemsList = new NoteListModel();
+const newNoteController = new NewNoteController();
 const noteItemsController = new NoteItemController();
 const changeToNotesOnMobile = new ResizeObserver((item) => {
   if (item[0].contentRect.width < MOBILE_SCREEN_SIZE) {
@@ -131,7 +134,6 @@ function showNotesFromSidebar() {
     if (activeSidebar == trashSideBarBtn && noteItem.isTrashed) show(note);
   });
 }
-
 function showDefaultSidebarContent(activeSidebar) {
   const noNotesDiv = document.querySelector(".no-notes-found");
   const noRemindersDiv = document.querySelector(".no-reminders-found");
@@ -218,7 +220,7 @@ const renderNotes = () => {
     sortedList
       .sort((a, b) => b.getTime() - a.getTime())
       .sort((a, b) => Number(b.isPinned) - Number(a.isPinned));
-    noteListView.update(noteItemsList.getList());
+    noteListView.update(sortedList);
     showNotesFromSidebar();
   }
 };
