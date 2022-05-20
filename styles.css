@@ -61,7 +61,23 @@ input {
   padding: 0.5rem;
   z-index: 1;
 }
-
+.empty-trash-btn {
+  cursor: pointer;
+  color: rgba(0, 0, 0, 0.87);
+  overflow: hidden;
+  font-family: "Google Sans", Roboto, Arial, sans-serif;
+  font-size: 0.875rem;
+  font-style: normal;
+  color: #1a73e8;
+  font-weight: 500;
+  height: 36px;
+  padding: 0.5rem 1.5rem;
+  margin-left: 1rem;
+  border-radius: 0.25rem;
+}
+.empty-trash-btn:hover {
+  background-color: rgba(66, 133, 244, 0.039);
+}
 .header-title {
   color: var(--tc-gray-2);
   display: block;
@@ -183,23 +199,6 @@ input {
   }
   .search-cancel-btn {
     display: none;
-  }
-  .empty-trash-btn {
-    cursor: pointer;
-    color: rgba(0, 0, 0, 0.87);
-    overflow: hidden;
-    font-family: "Google Sans", Roboto, Arial, sans-serif;
-    font-size: 0.875rem;
-    font-style: normal;
-    color: #1a73e8;
-    font-weight: 500;
-    height: 36px;
-    padding: 0.5rem 1.5rem;
-    margin-left: 1rem;
-    border-radius: 0.25rem;
-  }
-  .empty-trash-btn:hover {
-    background-color: rgba(66, 133, 244, 0.039);
   }
 }
 

@@ -71,6 +71,12 @@ class NoteItemController {
     noteItemsList.removeNoteFromList(id);
     updateNotesOnLocalStorage();
   }
+  deleteTrashedNotes() {
+    noteItemsList.getList().forEach((item) => {
+      if (item.isTrashed) noteItemsList.removeNoteFromList(item.id);
+    });
+    updateNotesOnLocalStorage();
+  }
   restoreNote(id) {
     noteItemsList.getNoteById(id).isTrashed = false;
     noteItemsList.getNoteById(id).noteTime.deletionDate = null;
@@ -102,8 +108,8 @@ class NoteItemController {
     updateNotesOnLocalStorage();
   }
   // Edit handling methods
-  showNoteTitle(note){
-      // Show and edit Title
+  showNoteTitle(note) {
+    // Show and edit Title
     this.#show(note.querySelector(".note-card-done-button"));
     const titleLabel = note.querySelector(".note-card-title > label");
     const titleTextarea = note.querySelector("#title-textarea");
@@ -135,7 +141,7 @@ class NoteItemController {
     });
   }
   showNoteDescription(note) {
-      // Show and edit Description
+    // Show and edit Description
     this.#show(note.querySelector(".note-card-done-button"));
     const descriptionLabel = note.querySelector(".note-card-desc > label");
     const descriptionTextarea = note.querySelector("#description-textarea");

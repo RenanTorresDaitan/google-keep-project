@@ -1,6 +1,7 @@
 class NoteListView {
-  constructor(element) {
-    this._element = element;
+  constructor() {
+    this._element = document.createElement("section");
+    this._element.setAttribute("id", "notes-area");
   }
 
   _template(list) {
@@ -8,5 +9,8 @@ class NoteListView {
   }
   update(list) {
     this._element.innerHTML = this._template(list);
+  }
+  build() {
+    return this._element.outerHTML;
   }
 }

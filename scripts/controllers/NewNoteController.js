@@ -185,29 +185,3 @@ class NewNoteController {
     domElement.classList.remove("hide");
   }
 }
-
-// Creating new to-do items
-
-// Event Listener for elements inside new note
-// editingNote.addEventListener("click", (event) => {
-//
-//   const emptyFields =
-//     newNoteDesc.value == "" &&
-//     newNoteTitle.value == "" &&
-//     newNoteToDoItems.length == 0;
-//   hide(cardMenu);
-//   if (
-//     emptyFields &&
-//     (event.target == deleteMenuBtn ||
-//       event.target == archiveMenuBtn ||
-//       event.target == doneBtn)
-//   ) {
-//     endEditingNewNote();
-//     return;
-//   }
-//
-//     newNoteToCreate.toDoItems = toDoItems;
-
-//   }
-// });
-// // Event Listener for keydown events
