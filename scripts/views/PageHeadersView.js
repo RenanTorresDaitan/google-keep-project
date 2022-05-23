@@ -35,7 +35,11 @@ class PageHeadersView {
       `;
   }
 
-  update(sidebar) {
+  update(sidebar, list) {
+    console.log(sidebar, list);
+    this.noteListView.update(list);
     this._element.innerHTML = this._template(sidebar);
+
+    console.log(this._element);
   }
 }

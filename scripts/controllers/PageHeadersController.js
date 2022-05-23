@@ -1,10 +1,16 @@
 class PageHeadersController {
-    constructor(noteItemsList) {
-        this.noteItemsList = noteItemsList;
-        this.pageHeadersView = new PageHeadersView(document.querySelector(".content"));
-    }
-    changeToNotesPage(){
-        this.pageHeadersView.noteListView.update(this.noteItemsList.getList().filter(item => (!item.isArchived && !item.isTrashed)));
-        this.pageHeadersView.update("NOTES");
-    }
+  constructor() {
+    this.pageHeadersView = new PageHeadersView(
+      document.querySelector(".content")
+    );
+  }
+  update(list){
+    this.pageHeadersView.update("NOTES",list);
+  }
+  changeToNotesPage() {
+    const notesList = noteItemsList
+      .getList()
+      .filter((item) => !item.isArchived && !item.isTrashed);
+    this.pageHeadersView.update("NOTES", notesList);
+  }
 }

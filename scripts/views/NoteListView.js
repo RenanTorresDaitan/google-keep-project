@@ -5,7 +5,11 @@ class NoteListView {
   }
 
   _template(list) {
-    return list.map((noteItem) => {return new NoteItemView(noteItem).build();}).join("");
+    return list
+      .map((noteItem) => {
+        return new NoteItemView(noteItem).build();
+      })
+      .join("");
   }
   update(list) {
     this._element.innerHTML = this._template(list);

@@ -1,7 +1,7 @@
 class NoteItemView {
   constructor(noteItem) {
-    this._element = document.createElement("div");
     this.noteItem = noteItem;
+    this._element = this.build().outerHTML;
   }
 
   _template(noteItem) {

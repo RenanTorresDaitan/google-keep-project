@@ -73,7 +73,7 @@ class NewNoteController {
     });
     newNoteToCreate.isToDoList =
       newNoteToCreate.toDoItems.length > 0 ? true : false;
-    createAndSaveNewItem(newNoteToCreate);
+    createNewNoteItem(newNoteToCreate);
     this._endEditingNewNote();
   }
 

@@ -10,7 +10,7 @@ class NoteListModel {
     this._list = [];
   }
   addNoteToList(noteObj) {
-    noteObj.id = this.#calculateNextId();
+    noteObj.id = noteObj.id != null ? noteObj.id : this.#calculateNextId();
     this._list.push(noteObj);
   }
   getNoteById(id) {
