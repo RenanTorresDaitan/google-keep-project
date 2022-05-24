@@ -1,42 +1,48 @@
 class NewNoteController {
-  constructor() {
-    this.newNoteDialog = document.querySelector("#new-note-dialog");
-    this.newNoteTitle = document.querySelector(".newnote-title-textarea");
-    this.newNoteToDoItemsArea = document.querySelector(
-      ".newnote-to-do-items-area"
-    );
-    this.completedToDoItemsArea = document.querySelector(
-      ".completed-items-area"
-    );
-    this.completedTodoItemsList = document.querySelector(
-      ".completed-items-list"
-    );
-    this.newNoteDesc = document.querySelector(".newnote-desc-textarea");
-    this.pinBtn = document.querySelector(".newnote-pin-button");
-    this.cardItemPlaceholder = document.querySelector(
-      ".newnote-item-placeholder"
-    );
-    this.itemPlaceholderTextArea = document.querySelector(
-      ".newnote-item-placeholder-textarea"
-    );
-  }
+  constructor() {}
 
   startEditingNewNote(noteType) {
-    this.newNoteDialog.setAttribute("editing", "true");
+    const noteItemPlaceholder = document.querySelector(
+      ".newnote-item-placeholder"
+    );
+    const noteDescTextarea = document.querySelector(".newnote-desc-textarea");
+    const newNoteDialog = document.querySelector("#new-note-dialog");
+
+    newNoteDialog.setAttribute("editing", "true");
     this._deleteExistingToDoItems();
     this.#show(document.querySelector(".editing-note"));
-    this.pinBtn.classList.remove("note-pinned");
+    document
+      .querySelector(".newnote-pin-button")
+      .classList.remove("note-pinned");
     if (noteType == "list") {
-      this.#hide(this.newNoteDesc);
-      this.#show(this.cardItemPlaceholder);
-      this.#hide(this.completedToDoItemsArea);
-      this.itemPlaceholderTextArea.focus();
+      this.#hide(noteDescTextarea);
+      this.#show(noteItemPlaceholder);
+      this.#hide(document.querySelector(".completed-items-area"));
+      document.querySelector(".newnote-item-placeholder-textarea").focus();
     } else {
-      this.#hide(this.cardItemPlaceholder);
-      this.newNoteDesc.focus();
+      this.#hide(noteItemPlaceholder);
+      noteDescTextarea.focus();
     }
   }
-  createNewNote() {
+  _endEditingNewNote() {
+    const noteTitleTextarea = document.querySelector(".newnote-title-textarea");
+    const noteDescTextarea = document.querySelector(".newnote-desc-textarea");
+    const newNoteDialog = document.querySelector("#new-note-dialog");
+
+    noteTitleTextarea.value = "";
+    noteDescTextarea.value = "";
+    newNoteDialog.setAttribute("editing", "false");
+    this.#hide(document.querySelector(".editing-note"));
+    this.closeNewNoteMenu();
+    this.#show(noteDescTextarea);
+  }
+  createNewNote(action) {
+    const noteTitleTextarea = document.querySelector(".newnote-title-textarea").value;
+    const noteDescTextarea = document.querySelector(".newnote-desc-textarea").value;
+    const newNotePinned = document.querySelector(".newnote-pin-button").classList.contains("note-pinned");
+    const newNoteToDoItems = document.querySelector(".newnote-to-do-items-area").querySelectorAll(".newnote-to-do-item");
+    const emptyFields = noteTitleTextarea == "" && noteDescTextarea == "";
+
     const newNoteToCreate = {
       noteTitle: "",
       noteDescription: "",
@@ -48,36 +54,40 @@ class NewNoteController {
       isTrashed: false,
       toDoItems: [],
     };
+
     // Update Note fields
-    newNoteToCreate.noteTitle = this.newNoteTitle.value;
-    newNoteToCreate.noteDescription = this.newNoteDesc.value;
-    newNoteToCreate.isPinned = this.pinBtn.classList.contains("note-pinned");
+    newNoteToCreate.noteTitle = noteTitleTextarea;
+    newNoteToCreate.noteDescription = noteDescTextarea;
+    newNoteToCreate.isPinned = newNotePinned;
+    if (action === "Archive") newNoteToCreate.isArchived = true;
+
     // To do items handling
-    newNoteToCreate.toDoItems = Array.from(
-      this.newNoteToDoItemsArea.querySelectorAll(".newnote-to-do-item")
-    ).map((item, index) => {
-      if (item != this.cardItemPlaceholder) {
-        const checkbox = item.querySelector(".newnote-to-do-item-checkbox");
-        const textArea = item.querySelector(
-          ".newnote-item-placeholder-textarea"
-        );
-        if (textArea.value != "") {
-          return {
-            id: index,
-            label: textArea.value,
-            isChecked:
-              checkbox.getAttribute("checked") == "true" ? true : false,
-          };
+    newNoteToCreate.toDoItems = Array.from(newNoteToDoItems).map(
+      (item, index) => {
+        if (item != document.querySelector(".newnote-item-placeholder")) {
+          const checkbox = item.querySelector(".newnote-to-do-item-checkbox");
+          const textArea = item.querySelector(".newnote-item-placeholder-textarea");
+          if (textArea.value !== "") {
+            return {
+              id: index,
+              label: textArea.value,
+              isChecked:
+                checkbox.getAttribute("checked") == "true" ? true : false,
+            };
+          }
         }
       }
-    });
+    );
     newNoteToCreate.isToDoList =
       newNoteToCreate.toDoItems.length > 0 ? true : false;
-    createNewNoteItem(newNoteToCreate);
-    this._endEditingNewNote();
+    if (emptyFields && !newNoteToCreate.isToDoList) {
+      this._endEditingNewNote();
+    } else {
+      createNewNoteItem(newNoteToCreate);
+    }
   }
-
   createNewToDoItem(event) {
+    if (event.key == 'Tab') return;
     event.preventDefault();
     const newToDoItem = document.createElement("div");
     newToDoItem.classList.add("newnote-to-do-item");
@@ -86,10 +96,12 @@ class NewNoteController {
       <textarea class="newnote-item-placeholder-textarea" placeholder="List item" onkeydown="newNoteController.editText(event)"></textarea>
       <div class="newnote-to-do-item-delete" onclick="newNoteController.deleteToDoItem(this)"></div>
     `;
-    this.newNoteToDoItemsArea.insertBefore(
-      newToDoItem,
-      this.cardItemPlaceholder
-    );
+    document
+      .querySelector(".newnote-to-do-items-area")
+      .insertBefore(
+        newToDoItem,
+        document.querySelector(".newnote-item-placeholder")
+      );
     if (event.keyCode >= 65 && event.keyCode <= 90) {
       const newNoteTextArea = newToDoItem.querySelector(
         ".newnote-item-placeholder-textarea"
@@ -99,19 +111,21 @@ class NewNoteController {
     }
   }
   editText(event) {
-    if (event.key === "Enter") {
-      this.itemPlaceholderTextArea.focus();
+    if (event.key == 'Enter') {
+      document.querySelector("#new-item-placeholder").focus();
       event.preventDefault();
     }
   }
   deleteToDoItem(deleteBtn) {
-    this.newNoteToDoItemsArea.removeChild(deleteBtn.parentNode);
+    document
+      .querySelector(".newnote-to-do-items-area")
+      .removeChild(deleteBtn.parentNode);
   }
   toggleCompletedItems() {
     document
       .querySelector(".completed-items-btn")
       .classList.toggle("rotate-90-cw");
-    this.completedTodoItemsList.classList.toggle("hide");
+    document.querySelector(".completed-items-list").classList.toggle("hide");
   }
   toggleCheckbox(checkbox) {
     checkbox.setAttribute(
@@ -122,7 +136,9 @@ class NewNoteController {
   }
   _organizeToDoItems() {
     const newNoteToDoItems = Array.from(
-      this.newNoteToDoItemsArea.querySelectorAll(".newnote-to-do-item")
+      document
+        .querySelector(".newnote-to-do-items-area")
+        .querySelectorAll(".newnote-to-do-item")
     );
     const checkboxChecked = (item) => {
       return (
@@ -133,15 +149,21 @@ class NewNoteController {
     };
     newNoteToDoItems.forEach((item) => {
       if (checkboxChecked(item)) {
-        this.completedTodoItemsList.append(item);
+        document.querySelector(".completed-items-list").append(item);
       } else {
-        this.newNoteToDoItemsArea.insertBefore(item, this.cardItemPlaceholder);
+        document
+          .querySelector(".newnote-to-do-items-area")
+          .insertBefore(
+            item,
+            document.querySelector(".newnote-item-placeholder")
+          );
       }
     });
-    const completedItems = this.completedTodoItemsList.children.length;
+    const completedItems = document.querySelector(".completed-items-list")
+      .children.length;
     completedItems > 0
-      ? this.#show(this.completedToDoItemsArea)
-      : this.#hide(this.completedToDoItemsArea);
+      ? this.#show(document.querySelector(".completed-items-area"))
+      : this.#hide(document.querySelector(".completed-items-area"));
     document.querySelector(".completed-items-label").textContent =
       completedItems > 1
         ? `${completedItems} Completed items`
@@ -155,24 +177,23 @@ class NewNoteController {
     this.#hide(document.querySelector(".newnote-menu"));
   }
   pinNewNote() {
-    this.#toggle(this.pinBtn, "note-pinned");
+    this.#toggle(document.querySelector(".newnote-pin-button"), "note-pinned");
   }
   _deleteExistingToDoItems() {
-    Array.from(this.newNoteToDoItemsArea.children).forEach((el) => {
-      if (el !== this.cardItemPlaceholder && el !== this.completedToDoItemsArea)
-        this.newNoteToDoItemsArea.removeChild(el);
+    Array.from(
+      document.querySelector(".newnote-to-do-items-area").children
+    ).forEach((el) => {
+      if (
+        el !== document.querySelector(".newnote-item-placeholder") &&
+        el !== document.querySelector(".completed-items-area")
+      )
+        document.querySelector(".newnote-to-do-items-area").removeChild(el);
     });
-    Array.from(this.completedTodoItemsList.children).forEach((el) => {
-      this.completedTodoItemsList.removeChild(el);
+    Array.from(
+      document.querySelector(".completed-items-list").children
+    ).forEach((el) => {
+      document.querySelector(".completed-items-list").removeChild(el);
     });
-  }
-  _endEditingNewNote() {
-    this.newNoteTitle.value = "";
-    this.newNoteDesc.value = "";
-    this.newNoteDialog.setAttribute("editing", "false");
-    this.#hide(this.newNoteDialog.querySelector(".editing-note"));
-    this.closeNewNoteMenu();
-    this.#show(this.newNoteDesc);
   }
   // Visibility Helper Methods
   #toggle(domElement, className) {

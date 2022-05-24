@@ -12,24 +12,24 @@ class NoteItemController {
     }
   }
   updateNote(id) {
-    const note = document.querySelector(`[data-note-id="${id}"]`);
-    const updatedNote = {
+    const noteCard = document.querySelector(`[data-note-id="${id}"]`);
+    const noteItem = {
       ...noteItemsList.getNoteById(id),
-      noteTitle: note.querySelector("#title-textarea").value,
-      isPinned: note
+      noteTitle: noteCard.querySelector("#title-textarea").value,
+      isPinned: noteCard
         .querySelector(".pin-button")
         .classList.contains("note-pinned"),
       noteTime: { creationDate: Date.now() },
-      color: note.getAttribute("data-color"),
+      color: noteCard.getAttribute("data-color"),
     };
-    if (note.querySelector("#description-textarea") != null) {
-      updatedNote.noteDescription = note.querySelector(
+    if (noteCard.querySelector("#description-textarea") != null) {
+      noteItem.noteDescription = noteCard.querySelector(
         "#description-textarea"
       ).value;
     }
-    const toDoItems = note.querySelectorAll(".to-do-item");
+    const toDoItems = noteCard.querySelectorAll(".to-do-item");
     if (toDoItems != null) {
-      updatedNote.toDoItems = Array.from(toDoItems).map((item, index) => {
+      noteItem.toDoItems = Array.from(toDoItems).map((item, index) => {
         return {
           id: index,
           label: item.querySelector(".to-do-item-label").textContent,
@@ -43,7 +43,7 @@ class NoteItemController {
       });
     }
     noteItemsList.removeNoteFromList(id);
-    createNewNote(updatedNote);
+    createNewNoteItem(noteItem);
     updateNotesOnLocalStorage();
   }
   // Buttons methods

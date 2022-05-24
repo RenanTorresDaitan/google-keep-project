@@ -20,8 +20,8 @@ class NewNoteComponent {
       <!-- Note card to be edited after clicking -->
       <div class="editing-note hide">
         <div class="newnote-menu hide">
-          <div id="archive-menu-button" class="newnote-menu-option">Archive</div>
-          <div id="delete-menu-button" class="newnote-menu-option">Delete</div>
+          <div id="archive-menu-button" class="newnote-menu-option" onclick="newNoteController.createNewNote('Archive')">Archive</div>
+          <div id="delete-menu-button" class="newnote-menu-option" onclick="newNoteController._endEditingNewNote()">Delete</div>
           <div id="open-menu-button" class="newnote-menu-option" style="display:flex; justify-content: center;">
             <div style=" margin-right: 0.375rem;">Open in Keep</div>
             <svg xmlns="http://www.w3.org/2000/svg" width="18px" height="18px" viewBox="0 0 24 24" fill="#333"
@@ -53,7 +53,7 @@ class NewNoteComponent {
               <path d="m19 13h-6v6h-2v-6h-6v-2h6v-6h2v6h6v2z" />
               <path d="m0 0h24v24h-24z" fill="none" />
             </svg>
-            <textarea name="" id="" cols="30" rows="10" placeholder=" List item"
+            <textarea name="" id="new-item-placeholder" cols="30" rows="10" placeholder=" List item"
               class="newnote-item-placeholder-textarea" onkeydown="newNoteController.createNewToDoItem(event)"></textarea>
           </div>
           <div class="completed-items-area hide">
@@ -66,7 +66,7 @@ class NewNoteComponent {
           </div>
         </div>
         <div class="newnote-card-button-container">
-          <div class="newnote-card-done-button" onclick="newNoteController.createNewNote()">Done</div>
+          <div class="newnote-card-done-button" tabindex="0" onclick="newNoteController.createNewNote('Create')">Done</div>
         </div>
       </div>
       `;
