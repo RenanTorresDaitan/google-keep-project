@@ -3,7 +3,7 @@ class PageHeadersView {
     this._element = element;
     this.noteListView = new NoteListView();
     this.newNoteComponent = new NewNoteComponent();
-    this._element.innerHTML = this._template("NOTES");
+    this._element.innerHTML = this._template("NOTES",0);
   }
 
   _template(sidebar, notes) {

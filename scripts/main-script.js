@@ -5,6 +5,7 @@ const noteItemsList = new NoteListModel();
 const pageHeadersController = new PageHeadersController();
 const newNoteController = new NewNoteController();
 const noteItemsController = new NoteItemController();
+const searchPanelController = new SearchPanelController();
 
 document.addEventListener("readystatechange", (event) => {
   if (event.target.readyState === "complete") {
@@ -51,32 +52,33 @@ notesSideBarBtn.addEventListener("click", () =>
 );
 const remindersSideBarBtn = document.querySelector("#sidebar-item-reminders");
 remindersSideBarBtn.addEventListener("click", () => {
-  pageHeadersController.changeToRemindersPage()
-})
+  pageHeadersController.changeToRemindersPage();
+});
 const archiveSideBarBtn = document.querySelector("#sidebar-item-archive");
 archiveSideBarBtn.addEventListener("click", () => {
-  pageHeadersController.changeToArchivePage()
-})
+  pageHeadersController.changeToArchivePage();
+});
 const trashSideBarBtn = document.querySelector("#sidebar-item-trash");
 trashSideBarBtn.addEventListener("click", () => {
-  pageHeadersController.changeToTrashPage()
-})
-// // Change active Sidebar Item
-// [
-//   notesSideBarBtn,
-//   remindersSideBarBtn,
-//   editLabelsSideBarBtn,
-//   archiveSideBarBtn,
-//   trashSideBarBtn,
-// ].forEach((item) => {
-//   item.addEventListener("click", (event) => {
-//     removeActiveFromSidebarItems();
-//     item.setAttribute("active", "");
-//     // showNotesFromSidebar(item);
-//   });
-// });
+  pageHeadersController.changeToTrashPage();
+});
 
+// Change active Sidebar Item
+[
+  notesSideBarBtn,
+  remindersSideBarBtn,
+  archiveSideBarBtn,
+  trashSideBarBtn,
+].forEach((item) => {
+  item.addEventListener("click", (event) => {
+    removeActiveFromSidebarItems();
+    item.setAttribute("active", "");
+  });
+});
 
+function removeActiveFromSidebarItems() {
+  document.querySelector("[active]").removeAttribute("active");
+}
 
 // const appIcon = document.querySelector(".header-icon");
 // const pageTitle = document.querySelector(".header-title");
