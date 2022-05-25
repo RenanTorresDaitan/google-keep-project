@@ -1,78 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Keep Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css?family=Google+Sans:300,400,500,700|Roboto:300,400,400italic,500,700|Product+Sans:300,400,400italic,500,700"
+      rel="stylesheet"
+      nonce=""
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="./scripts/components/ColorBallContainer.js" defer></script>
+    <script src="./scripts/components/LowerToolbarComponent.js" defer></script>
+    <script src="./scripts/components/NewNoteComponent.js" defer></script>
+    <script src="./scripts/components/ToDoItemContainer.js" defer></script>
+    <script src="./scripts/controllers/AppHeaderController.js" defer></script>
+    <script src="./scripts/controllers/NewNoteController.js" defer></script>
+    <script src="./scripts/controllers/NoteItemController.js" defer></script>
+    <script src="./scripts/controllers/PageHeadersController.js" defer></script>
+    <script src="./scripts/controllers/SearchPanelController.js" defer></script>
+    <script src="./scripts/controllers/SidebarController.js" defer></script>
+    <script src="./scripts/models/NoteItemModel.js" defer></script>
+    <script src="./scripts/models/NoteListModel.js" defer></script>
+    <script src="./scripts/views/AppHeaderView.js" defer></script>
+    <script src="./scripts/views/NoteListView.js" defer></script>
+    <script src="./scripts/views/NoteItemView.js" defer></script>
+    <script src="./scripts/views/PageHeadersView.js" defer></script>
+    <script src="./scripts/views/SearchPanelView.js" defer></script>
+    <script src="./scripts/views/SidebarView.js" defer></script>
+    <script src="./scripts/main-script.js" defer></script>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Keep Notes</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css?family=Google+Sans:300,400,500,700|Roboto:300,400,400italic,500,700|Product+Sans:300,400,400italic,500,700"
-    rel="stylesheet" nonce="" />
-  <link rel="stylesheet" href="styles.css" />
-  <script src="./scripts/components/ColorBallContainer.js" defer></script>
-  <script src="./scripts/components/NewNoteComponent.js" defer></script>
-  <script src="./scripts/components/ToDoItemContainer.js" defer></script>
-  <script src="./scripts/controllers/AppHeaderController.js" defer></script>
-  <script src="./scripts/controllers/NewNoteController.js" defer></script>
-  <script src="./scripts/controllers/NoteItemController.js" defer></script>
-  <script src="./scripts/controllers/PageHeadersController.js" defer></script>
-  <script src="./scripts/controllers/SearchPanelController.js" defer></script>
-  <script src="./scripts/models/NoteItemModel.js" defer></script>
-  <script src="./scripts/models/NoteListModel.js" defer></script>
-  <script src="./scripts/views/AppHeaderView.js" defer></script>
-  <script src="./scripts/views/NoteListView.js" defer></script>
-  <script src="./scripts/views/NoteItemView.js" defer></script>
-  <script src="./scripts/views/PageHeadersView.js" defer></script>
-  <script src="./scripts/views/SearchPanelView.js" defer></script>
-  <script src="./scripts/main-script.js" defer></script>
-</head>
-
-<body>
-  <!-- App Header -->
-  <header id="app-header" class="h-4rem p-05rem-lr"></header>
-  <!-- Main notes section -->
-  <section class="main-section" id="main-section">
-    <!-- Side bar navigation -->
-    <div class="sidebar-container">
-      <nav class="sidebar">
-        <div class="sidebar-item" id="sidebar-item-notes" active>
-          <div class="sidebar-item-icon">
-            <img class="svg-icon-large" src="./resources/svg/lamp-icon.svg" alt="">
-            <span class="sidebar-item-label">Notes</span>
-          </div>
-        </div>
-        <div class="sidebar-item" id="sidebar-item-reminders">
-          <div class="sidebar-item-icon">
-            <img class="svg-icon-large" src="./resources/svg/bell-icon.svg" alt="">
-            <span class="sidebar-item-label">Reminders</span>
-          </div>
-        </div>
-        <div class="sidebar-item" id="sidebar-item-edit-labels">
-          <div class="sidebar-item-icon">
-            <img class="svg-icon-large" src="./resources/svg/pencil-icon.svg" alt="">
-            <span class="sidebar-item-label">Edit labels</span>
-          </div>
-        </div>
-        <div class="sidebar-item" id="sidebar-item-archive">
-          <div class="sidebar-item-icon">
-            <img class="svg-icon-large" src="./resources/svg/box-icon.svg" alt="">
-            <span class="sidebar-item-label">Archive</span>
-          </div>
-        </div>
-        <div class="sidebar-item" id="sidebar-item-trash">
-          <div class="sidebar-item-icon">
-            <img class="svg-icon-large" src="./resources/svg/trash-icon.svg" alt="">
-            <span class="sidebar-item-label">Trash</span>
-          </div>
-        </div>
-      </nav>
-    </div>
-    <div class="content"></div>
-    </div>
-  </section>
-</body>
-
+  <body>
+    <!-- App Header -->
+    <header id="app-header" class="h-4rem p-05rem-lr"></header>
+    <!-- Main notes section -->
+    <section class="main-section" id="main-section">
+      <!-- Side bar navigation -->
+      <div class="sidebar-container"></div>
+      <div class="content"></div>
+    </section>
+  </body>
 </html>

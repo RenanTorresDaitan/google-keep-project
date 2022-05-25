@@ -1,5 +1,6 @@
 const APP_NAME = "Keep-Notes";
 const SEVEN_DAYS_IN_MILLISECONDS = 604800000;
+const MOBILE_SCREEN_SIZE = 900;
 
 const noteItemsList = new NoteListModel();
 const appHeaderController = new AppHeaderController();
@@ -7,6 +8,15 @@ const pageHeadersController = new PageHeadersController();
 const newNoteController = new NewNoteController();
 const noteItemsController = new NoteItemController();
 const searchPanelController = new SearchPanelController();
+const sidebarController = new SidebarController();
+
+// If window is smaller than 900px, change to Notes page
+const changeToNotesOnMobile = new ResizeObserver((item) => {
+  if (item[0].contentRect.width < MOBILE_SCREEN_SIZE) {
+    pageHeadersController.changeToNotesPage();
+  }
+});
+changeToNotesOnMobile.observe(document.body);
 
 document.addEventListener("readystatechange", (event) => {
   if (event.target.readyState === "complete") {
@@ -45,50 +55,3 @@ function updateNotesOnLocalStorage() {
   localStorage.setItem(APP_NAME, JSON.stringify(noteItemsList));
   reloadNotes();
 }
-
-// // Get side bar buttons
-const notesSideBarBtn = document.querySelector("#sidebar-item-notes");
-notesSideBarBtn.addEventListener("click", () =>
-  pageHeadersController.changeToNotesPage()
-);
-const remindersSideBarBtn = document.querySelector("#sidebar-item-reminders");
-remindersSideBarBtn.addEventListener("click", () => {
-  pageHeadersController.changeToRemindersPage();
-});
-const archiveSideBarBtn = document.querySelector("#sidebar-item-archive");
-archiveSideBarBtn.addEventListener("click", () => {
-  pageHeadersController.changeToArchivePage();
-});
-const trashSideBarBtn = document.querySelector("#sidebar-item-trash");
-trashSideBarBtn.addEventListener("click", () => {
-  pageHeadersController.changeToTrashPage();
-});
-
-// Change active Sidebar Item
-[
-  notesSideBarBtn,
-  remindersSideBarBtn,
-  archiveSideBarBtn,
-  trashSideBarBtn,
-].forEach((item) => {
-  item.addEventListener("click", (event) => {
-    removeActiveFromSidebarItems();
-    item.setAttribute("active", "");
-  });
-});
-
-function removeActiveFromSidebarItems() {
-  document.querySelector("[active]").removeAttribute("active");
-}
-
-// const appIcon = document.querySelector(".header-icon");
-// const pageTitle = document.querySelector(".header-title");
-// function changeAppHeader(activeSidebar) {
-//   pageTitle.textContent = activeSidebar;
-//   if (activeSidebar === "Keep") {
-//     show(appIcon);
-//     show(pageTitle);
-//   } else {
-//     hide(appIcon);
-//   }
-// }

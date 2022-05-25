@@ -9,7 +9,10 @@ class PageHeadersController {
       if (
         item.noteTitle.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item.noteDescription.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.toDoItems.map(item => item.label.toLowerCase()).join('').includes(searchTerm)
+        item.toDoItems
+          .map((item) => item.label.toLowerCase())
+          .join(" ")
+          .includes(searchTerm)
       ) {
         return item;
       }
@@ -30,21 +33,25 @@ class PageHeadersController {
       (item) => !item.isArchived && !item.isTrashed
     );
     this.pageHeadersView.update("NOTES", notesList);
+    appHeaderController.changeAppHeader("Keep", true);
   }
   changeToRemindersPage() {
     const notesList = this.sortList().filter(
       (item) => item.isReminder && !item.isTrashed
     );
     this.pageHeadersView.update("REMINDERS", notesList);
+    appHeaderController.changeAppHeader("Reminders", false);
   }
   changeToArchivePage() {
     const notesList = this.sortList().filter(
       (item) => item.isArchived && !item.isTrashed
     );
     this.pageHeadersView.update("ARCHIVED", notesList);
+    appHeaderController.changeAppHeader("Archive", false);
   }
   changeToTrashPage() {
     const notesList = this.sortList().filter((item) => item.isTrashed);
     this.pageHeadersView.update("TRASH", notesList);
+    appHeaderController.changeAppHeader("Trash", false);
   }
 }

@@ -28,20 +28,7 @@ class NoteItemView {
                 </div>
                 ${this.typeOfNoteContainer(noteItem)}
                 <button class="note-card-done-button hide [ m-0625rem-lr p-05rem ]" style="user-select: none;" onclick="noteItemsController.updateNote(${noteItem.id})">Done</button>
-                <div class="note-lower-toolbar">
-                    <div class="lower-toolbar-button">
-                        <img class="svg-icon" src="./resources/svg/notecard/add-reminder-icon.svg">
-                    </div>
-                    <div class="lower-toolbar-button">
-                        <img class="svg-icon" src="./resources/svg/notecard/color-palette-icon.svg">
-                    </div>
-                    <div class="lower-toolbar-button">
-                        <img class="svg-icon" src="./resources/svg/notecard/archive-note-icon.svg">
-                    </div>
-                    <div class="lower-toolbar-button">
-                        <img class="svg-icon" src="./resources/svg/notecard/menu-circles.svg">
-                    </div>
-                </div>
+                ${new LowerToolbarComponent(noteItem).build()}
             </div>
             `;
   }
