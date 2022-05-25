@@ -191,6 +191,12 @@ class NoteItemController {
     this.#hide(toDoItemLabel);
     toDoItemTextarea.addEventListener("blur", () => {
       toDoItemLabel.textContent = toDoItemTextarea.value;
+      toDoItemTextarea.dispatchEvent(new KeyboardEvent("keydown", {
+        key: "Enter",
+        code: "Enter", 
+        shiftKey: false, 
+        ctrlKey: false,  
+        metaKey: false   }));
     });
     toDoItemTextarea.addEventListener("input", (event) => {
       if (event.keyCode >= 65 && event.keyCode <= 90) {

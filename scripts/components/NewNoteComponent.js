@@ -66,7 +66,7 @@ class NewNoteComponent {
           </div>
         </div>
         <div class="newnote-card-button-container">
-          <div class="newnote-card-done-button" tabindex="0" onclick="newNoteController.createNewNote('Create')">Done</div>
+          <div class="newnote-card-done-button" tabindex="0" onclick="newNoteController.createNewNote('Create')" onkeydown="this.click()">Done</div>
         </div>
       </div>
       `;

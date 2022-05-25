@@ -87,7 +87,7 @@ class NewNoteController {
     }
   }
   createNewToDoItem(event) {
-    if (event.key == 'Tab') return;
+    if (event.key == 'Tab' || event.key == 'Shift'|| event.key == 'Control'|| event.key == 'Alt') return;
     event.preventDefault();
     const newToDoItem = document.createElement("div");
     newToDoItem.classList.add("newnote-to-do-item");

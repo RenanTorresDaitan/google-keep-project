@@ -2,6 +2,7 @@ const APP_NAME = "Keep-Notes";
 const SEVEN_DAYS_IN_MILLISECONDS = 604800000;
 
 const noteItemsList = new NoteListModel();
+const appHeaderController = new AppHeaderController();
 const pageHeadersController = new PageHeadersController();
 const newNoteController = new NewNoteController();
 const noteItemsController = new NoteItemController();
