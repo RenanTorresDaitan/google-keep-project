@@ -1,4 +1,6 @@
 import { PageHeadersView } from "../views/PageHeadersView";
+import { noteItemsList } from "../../main-script";
+import { appHeaderController } from "../../main-script";
 
 export class PageHeadersController {
   constructor() {

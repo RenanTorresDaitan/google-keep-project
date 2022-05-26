@@ -1,4 +1,5 @@
 import { SidebarView } from "../views/SidebarView";
+import { pageHeadersController } from "../../main-script";
 
 export class SidebarController {
   constructor() {

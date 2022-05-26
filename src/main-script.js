@@ -5,19 +5,19 @@ import { PageHeadersController } from "./scripts/controllers/PageHeadersControll
 import { NewNoteController } from "./scripts/controllers/NewNoteController";
 import { NoteItemController } from "./scripts/controllers/NoteItemController";
 import { SearchPanelController } from "./scripts/controllers/SearchPanelController";
-import { SidebarController } from "./scripts/controllers/SidebarController";
+import { SidebarController} from "./scripts/controllers/SidebarController";
 
 const APP_NAME = "Keep-Notes";
 const SEVEN_DAYS_IN_MILLISECONDS = 604800000;
 const MOBILE_SCREEN_SIZE = 900;
 
-const noteItemsList = new NoteListModel();
-const appHeaderController = new AppHeaderController();
-const pageHeadersController = new PageHeadersController();
-const newNoteController = new NewNoteController();
-const noteItemsController = new NoteItemController();
-const searchPanelController = new SearchPanelController();
-const sidebarController = new SidebarController();
+export const noteItemsList = new NoteListModel();
+export const appHeaderController = new AppHeaderController();
+export const pageHeadersController = new PageHeadersController();
+export const newNoteController = new NewNoteController();
+export const noteItemsController = new NoteItemController();
+export const searchPanelController = new SearchPanelController();
+export const sidebarController = new SidebarController();
 
 // If window is smaller than 900px, change to Notes page
 const changeToNotesOnMobile = new ResizeObserver((item) => {
