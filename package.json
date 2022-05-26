@@ -4,7 +4,7 @@
   "description": "Download the project files onto a folder. You can start the app by opening the index.html file.",
   "main": "index.js",
   "scripts": {
-    "start": "webpack",
+    "start": "webpack --config webpack.config.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
