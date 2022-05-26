@@ -1,4 +1,7 @@
-class PageHeadersView {
+import {NoteListView } from "./NoteListView"
+import {NewNoteComponent} from "../components/NewNoteComponent"
+
+export class PageHeadersView {
   constructor(element) {
     this._element = element;
     this.noteListView = new NoteListView();

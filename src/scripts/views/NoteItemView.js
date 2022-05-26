@@ -1,4 +1,4 @@
-class NoteItemView {
+export class NoteItemView {
   constructor(noteItem) {
     this.noteItem = noteItem;
     this._element = this.build().outerHTML;

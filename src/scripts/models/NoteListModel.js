@@ -1,4 +1,4 @@
-class NoteListModel {
+export class NoteListModel {
   constructor() {
     this._list = [];
   }

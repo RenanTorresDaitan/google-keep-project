@@ -1,4 +1,4 @@
-class SidebarView {
+export class SidebarView {
   constructor() {
     this._element = document.querySelector(".sidebar-container");
     this._element.innerHTML = this._template();

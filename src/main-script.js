@@ -1,3 +1,12 @@
+import { NoteListModel } from "./scripts/models/NoteListModel";
+import { NoteItemModel } from "./scripts/models/NoteItemModel";
+import { AppHeaderController } from "./scripts/controllers/AppHeaderController";
+import { PageHeadersController } from "./scripts/controllers/PageHeadersController";
+import { NewNoteController } from "./scripts/controllers/NewNoteController";
+import { NoteItemController } from "./scripts/controllers/NoteItemController";
+import { SearchPanelController } from "./scripts/controllers/SearchPanelController";
+import { SidebarController } from "./scripts/controllers/SidebarController";
+
 const APP_NAME = "Keep-Notes";
 const SEVEN_DAYS_IN_MILLISECONDS = 604800000;
 const MOBILE_SCREEN_SIZE = 900;
@@ -18,13 +27,7 @@ const changeToNotesOnMobile = new ResizeObserver((item) => {
 });
 changeToNotesOnMobile.observe(document.body);
 
-document.addEventListener("readystatechange", (event) => {
-  if (event.target.readyState === "complete") {
-    loadNotesFromLocalStorage();
-  }
-});
-
-const loadNotesFromLocalStorage = () => {
+export const loadNotesFromLocalStorage = () => {
   const storedList = localStorage.getItem(APP_NAME);
   if (typeof storedList !== "string") return;
   const parsedList = JSON.parse(storedList);

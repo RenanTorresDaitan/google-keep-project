@@ -1,4 +1,4 @@
-class SearchPanelView {
+export class SearchPanelView {
   constructor() {
     this._element = document.querySelector("#search-panel");
     this._element.innerHTML = this._template();

@@ -1,4 +1,6 @@
-class PageHeadersController {
+import { PageHeadersView } from "../views/PageHeadersView";
+
+export class PageHeadersController {
   constructor() {
     this.pageHeadersView = new PageHeadersView(
       document.querySelector(".content")

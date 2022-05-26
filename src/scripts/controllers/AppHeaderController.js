@@ -1,4 +1,6 @@
-class AppHeaderController {
+import { AppHeaderView } from "../views/AppHeaderView";
+
+export class AppHeaderController {
   constructor() {
     this.appHeaderView = new AppHeaderView();
   }

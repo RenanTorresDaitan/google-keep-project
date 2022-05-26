@@ -1,4 +1,4 @@
-class NewNoteController {
+export class NewNoteController {
   constructor() {}
 
   startEditingNewNote(noteType) {

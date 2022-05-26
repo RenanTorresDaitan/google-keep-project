@@ -1,4 +1,4 @@
-class NewNoteComponent {
+export class NewNoteComponent {
   constructor() {
     this._element = document.createElement("div");
     this._element.setAttribute("class", "newnote");

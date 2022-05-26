@@ -1,4 +1,4 @@
-class NoteItemController {
+export class NoteItemController {
   constructor() {}
 
   editNote(id) {

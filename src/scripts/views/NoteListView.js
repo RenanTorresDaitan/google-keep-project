@@ -1,4 +1,6 @@
-class NoteListView {
+import {NoteItemView} from "./NoteItemView" 
+
+export class NoteListView {
   constructor() {
     this._element = document.createElement("section");
     this._element.setAttribute("id", "notes-area");

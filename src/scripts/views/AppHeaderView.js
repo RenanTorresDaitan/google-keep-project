@@ -1,4 +1,4 @@
-class AppHeaderView {
+export class AppHeaderView {
   constructor() {
     this._element = document.querySelector("#app-header");
     this._element.innerHTML = this._template();
