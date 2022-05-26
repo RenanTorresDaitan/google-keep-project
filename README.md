@@ -1,6 +1,8 @@
 # Google Keep Project
 
 Download the project files onto a folder.
-Serve the folder as a server and open the index.html file
+You can start the app by opening the index.html file.
 
-You can open the folder on Visual Studio Code, and use the Live Server extension to serve the index.html file to use the App.
+The mobile mode is displayed if the window's width is less than 900px.
+
+The app can save notes and to-do lists on the localStorage.

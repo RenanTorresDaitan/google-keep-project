@@ -1,186 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Keep Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css?family=Google+Sans:300,400,500,700|Roboto:300,400,400italic,500,700|Product+Sans:300,400,400italic,500,700"
+      rel="stylesheet"
+      nonce=""
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="./scripts/components/ColorBallContainer.js" defer></script>
+    <script src="./scripts/components/LowerToolbarComponent.js" defer></script>
+    <script src="./scripts/components/NewNoteComponent.js" defer></script>
+    <script src="./scripts/components/ToDoItemContainer.js" defer></script>
+    <script src="./scripts/controllers/AppHeaderController.js" defer></script>
+    <script src="./scripts/controllers/NewNoteController.js" defer></script>
+    <script src="./scripts/controllers/NoteItemController.js" defer></script>
+    <script src="./scripts/controllers/PageHeadersController.js" defer></script>
+    <script src="./scripts/controllers/SearchPanelController.js" defer></script>
+    <script src="./scripts/controllers/SidebarController.js" defer></script>
+    <script src="./scripts/models/NoteItemModel.js" defer></script>
+    <script src="./scripts/models/NoteListModel.js" defer></script>
+    <script src="./scripts/views/AppHeaderView.js" defer></script>
+    <script src="./scripts/views/NoteListView.js" defer></script>
+    <script src="./scripts/views/NoteItemView.js" defer></script>
+    <script src="./scripts/views/PageHeadersView.js" defer></script>
+    <script src="./scripts/views/SearchPanelView.js" defer></script>
+    <script src="./scripts/views/SidebarView.js" defer></script>
+    <script src="./scripts/main-script.js" defer></script>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Keep Notes</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css?family=Google+Sans:300,400,500,700|Roboto:300,400,400italic,500,700|Product+Sans:300,400,400italic,500,700"
-    rel="stylesheet" nonce="" />
-  <link rel="stylesheet" href="styles.css" />
-  <script src="./scripts/main-script.js" type="module" defer></script>
-</head>
-
-<body>
-  <!-- App Header -->
-  <header id="app-header" class="h-4rem p-05rem-lr">
-    <div class="header-container">
-      <div class="icon-button icon-size" id="menu-bars">
-        <img class="svg-icon-large" src="./resources/svg/menu-bars.svg" alt="">
-      </div>
-      <div class="header-icon icon-size"></div>
-      <h2 class="header-title" tabindex="-1">Keep</h2>
-      <h3 class="header-subtitle" tabindex="-1">Notes</h3>
-    </div>
-    <!-- Search for notes panel  -->
-    <div id="search-panel" class="search-panel">
-      <div class="icon-button icon-size">
-        <img class="svg-icon" src="./resources/svg/search-icon.svg" alt="Search" srcset="" />
-      </div>
-      <input id="search-input" class="search-input" placeholder="Search Keep..." aria-label="Search Keep..." />
-      <div id="search-cancel-btn" class="icon-button icon-size" role="button" aria-label="Cancel" tabindex="0">
-        <img class="svg-icon" src="./resources/svg/close-icon.svg" alt="Close Search" />
-      </div>
-    </div>
-    <!-- Icon buttons -->
-    <div id="search-icon-btn" class="icon-button icon-size" role="button" aria-label="Search" tabindex="0">
-      <img class="svg-icon" src="./resources/svg/search-icon.svg" alt="" />
-    </div>
-    <div class="icon-button icon-size" role="button" aria-label="Open in new tab" tabindex="0">
-      <img class="svg-icon" src="./resources/svg/open-new-tab-icon.svg" alt="Open in a new Tab" />
-    </div>
-    <div class="icon-button icon-size" role="button" aria-label="Close" tabindex="0">
-      <img class="svg-icon" src="./resources/svg/close-icon.svg" alt="Close App" />
-    </div>
-  </header>
-  <!-- Main notes section -->
-  <section class="main-section" id="main-section">
-    <!-- Side bar navigation -->
-    <div class="sidebar-container">
-      <nav class="sidebar">
-        <div class="sidebar-item" id="sidebar-item-notes" active>
-          <div class="sidebar-item-icon">
-            <img class="svg-icon-large" src="./resources/svg/lamp-icon.svg" alt="">
-            <span class="sidebar-item-label">Notes</span>
-          </div>
-        </div>
-        <div class="sidebar-item" id="sidebar-item-reminders">
-          <div class="sidebar-item-icon">
-            <img class="svg-icon-large" src="./resources/svg/bell-icon.svg" alt="">
-            <span class="sidebar-item-label">Reminders</span>
-          </div>
-        </div>
-        <div class="sidebar-item" id="sidebar-item-edit-labels">
-          <div class="sidebar-item-icon">
-            <img class="svg-icon-large" src="./resources/svg/pencil-icon.svg" alt="">
-            <span class="sidebar-item-label">Edit labels</span>
-          </div>
-        </div>
-        <div class="sidebar-item" id="sidebar-item-archive">
-          <div class="sidebar-item-icon">
-            <img class="svg-icon-large" src="./resources/svg/box-icon.svg" alt="">
-            <span class="sidebar-item-label">Archive</span>
-          </div>
-        </div>
-        <div class="sidebar-item" id="sidebar-item-trash">
-          <div class="sidebar-item-icon">
-            <img class="svg-icon-large" src="./resources/svg/trash-icon.svg" alt="">
-            <span class="sidebar-item-label">Trash</span>
-          </div>
-        </div>
-      </nav>
-    </div>
-    <div class="content">
-      <!-- New note button -->
-      <div class="newnote" id="new-note-div">
-        <!-- New note and new list buttons -->
-        <div role="button" id="new-note-button" class="[ m-0625rem-r p-05rem-0625rem ]" tabindex="0"
-          style="user-select: none">
-          <img class="icon-size" src="./resources/svg/notecard/plus-icon.svg" alt="">
-          <span>Take a note…</span>
-        </div>
-        <div role="button" id="new-list-button" class="icon-button icon-size" tabindex="0" style="user-select: none"
-          data-tooltip-text="New list" aria-label="New list">
-          <img class="svg-icon" src="./resources/svg/new-list-icon.svg" alt="">
-        </div>
-        <!-- Note card to be edited after clicking -->
-        <div class="editing-note hide">
-          <div class="newnote-menu hide">
-            <div id="archive-menu-button" class="newnote-menu-option">Archive</div>
-            <div id="delete-menu-button" class="newnote-menu-option">Delete</div>
-            <div id="open-menu-button" class="newnote-menu-option" style="display:flex; justify-content: center;">
-              <div style=" margin-right: 0.375rem;">Open in Keep</div>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18px" height="18px" viewBox="0 0 24 24" fill="#333"
-                focusable="false">
-                <path
-                  d="m15.444 15.444h-10.888v-10.888h5.444v-1.556h-5.444c-0.86 0-1.556 0.696-1.556 1.556v10.888c0 0.86 0.696 1.556 1.556 1.556h10.888c0.86 0 1.556-0.696 1.556-1.556v-5.444h-1.556v5.444zm-3.888-12.444v1.556h2.788l-7.646 7.644 1.1 1.102 7.646-7.646v2.788h1.556v-5.444h-5.444z">
-                </path>
-              </svg>
-            </div>
-          </div>
-          <div class="newnote-menu-button">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18px" height="18px" viewBox="0 0 24 24">
-              <path
-                d="M12,8.5c1,0,1.8-0.8,1.8-1.8S13,5,12,5s-1.8,0.8-1.8,1.8S11,8.5,12,8.5z M12,10.2c-1,0-1.8,0.8-1.8,1.8s0.8,1.8,1.8,1.8
-              s1.8-0.8,1.8-1.8S13,10.2,12,10.2z M12,15.5c-1,0-1.8,0.8-1.8,1.8S11,19,12,19s1.8-0.8,1.8-1.8S13,15.5,12,15.5z" />
-            </svg>
-          </div>
-          <div class="newnote-pin-button">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18px" height="18px" viewBox="0 0 24 24">
-              <path d="M16 5h.99L17 3H7v2h1v7l-2 2v2h5v6l1 1 1-1v-6h5v-2l-2-2V5z"></path>
-            </svg>
-          </div>
-          <textarea class="newnote-title-textarea" placeholder="Title"></textarea>
-          <textarea class="newnote-desc-textarea" placeholder="Take a note..."></textarea>
-          <!-- To do items area -->
-          <div class="newnote-to-do-items-area">
-            <div class="newnote-item-placeholder">
-              <svg class="newnote-card-item-svg" width="20px" height="20px" viewBox="0 0 24 24" fill="#000000de">
-                <path d="m19 13h-6v6h-2v-6h-6v-2h6v-6h2v6h6v2z" />
-                <path d="m0 0h24v24h-24z" fill="none" />
-              </svg>
-              <textarea name="" id="" cols="30" rows="10" placeholder=" List item"
-                class="newnote-item-placeholder-textarea"></textarea>
-            </div>
-            <div class="completed-items-area hide">
-              <div class="completed-items-separator"></div>
-              <div class="completed-items-div">
-                <div class="completed-items-btn rotate-90-cw"></div>
-                <div class="completed-items-label">1 Completed item</div>
-              </div>
-              <div class="completed-items-list"></div>
-            </div>
-          </div>
-          <div class="newnote-card-button-container">
-            <div class="newnote-card-done-button">Done</div>
-          </div>
-        </div>
-      </div>
-      <!-- Trash area header -->
-      <div class="trash-header hide">Notes in Trash are deleted after 7 days.
-        <div role="button" class="empty-trash-btn" aria-hidden="false" tabindex="0" style="user-select: none;">Empty
-          Trash
-        </div>
-      </div>
-      <!-- Notes not found banners -->
-      <div class="no-notes-found">
-        <img src="./resources/no-notes-folder.png" width="236px" alt="No notes found">
-        <h2>No notes yet</h2>
-        <h4>Your notes from Google Keep will show up here.</h4>
-        </img>
-      </div>
-      <div class="no-reminders-found hide">
-        <div class="no-reminders-img"></div>
-        <div class="no-reminders-label">Notes with upcoming reminders appear here</div>
-      </div>
-      <div class="no-archived-found hide">
-        <div class="no-archived-img"></div>
-        <div class="no-archived-label">Your archived notes appear here</div>
-      </div>
-      <div class="no-trashed-found hide">
-        <div class="no-trashed-img"></div>
-        <div class="no-trashed-label">No notes in Trash</div>
-      </div>
-      <!-- Notes content area -->
-      <section id="notes-area">
-      </section>
-    </div>
-    </div>
-  </section>
-</body>
-
+  <body>
+    <!-- App Header -->
+    <header id="app-header" class="h-4rem p-05rem-lr"></header>
+    <!-- Main notes section -->
+    <section class="main-section" id="main-section">
+      <!-- Side bar navigation -->
+      <div class="sidebar-container"></div>
+      <div class="content"></div>
+    </section>
+  </body>
 </html>

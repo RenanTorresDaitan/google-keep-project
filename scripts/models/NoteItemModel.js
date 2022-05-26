@@ -1,9 +1,9 @@
-export default class NoteItem {
+class NoteItemModel {
   constructor({
     _id = null,
     noteTitle = "",
     noteDescription = "",
-    noteTime = { creationDate: 0, deletionDate: null},
+    noteTime = { creationDate: 0, deletionDate: null },
     isPinned = false,
     isToDoList = false,
     isReminder = false,
@@ -25,19 +25,22 @@ export default class NoteItem {
     this.color = color;
   }
 
-  getId() {
+  get id() {
     return this._id;
   }
-  getTitle() {
+  set id(newId) {
+    this._id = newId;
+  }
+  get title() {
     return this.noteTitle;
   }
-  setTitle(noteTitle) {
+  set title(noteTitle) {
     this.noteTitle = noteTitle;
   }
-  getDescription() {
+  get description() {
     return this.noteDescription;
   }
-  setDescription(noteDescription) {
+  set description(noteDescription) {
     this.noteDescription = noteDescription;
   }
   getTime() {
@@ -63,7 +66,18 @@ export default class NoteItem {
   getToDoItems() {
     return this.toDoItems;
   }
+  getToDoItemById(id) {
+    return this.toDoItems.find((item) => item.id == id);
+  }
   addToDoItem(item) {
+    if (this.toDoItems.length == 0) {
+      item.id = 0;
+    } else {
+      item.id = this.getToDoItemById(this.toDoItems.length -1).id + 1;
+    }
     this.toDoItems.push(item);
+  }
+  removeToDoItemFromList(id) {
+    this.toDoItems = this.getToDoItems().filter((item) => item.id != id);
   }
 }
