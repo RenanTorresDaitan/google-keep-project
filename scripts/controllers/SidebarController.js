@@ -5,6 +5,9 @@ class SidebarController {
   removeActiveFromSidebarItems() {
     document.querySelector("[active]").removeAttribute("active");
   }
+  changeToActiveSidebar(){
+   document.querySelector("[active]").click();
+  }
   changeToNotesPage(sidebar) {
     this.removeActiveFromSidebarItems();
     sidebar.setAttribute("active", "" );

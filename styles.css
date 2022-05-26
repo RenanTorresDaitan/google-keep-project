@@ -817,6 +817,9 @@ input {
   .note-card:hover .notecard-pin-button {
     opacity: 1;
   }
+  [class="notecard-pin-button note-pinned"] {
+    opacity: 1;
+  }
   .completed-items-list {
     display: flex;
   }

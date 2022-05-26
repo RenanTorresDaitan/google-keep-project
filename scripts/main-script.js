@@ -48,7 +48,7 @@ function reloadNotes() {
       return item;
     }
   });
-  pageHeadersController.changeToNotesPage();
+  sidebarController.changeToActiveSidebar();
 }
 
 function updateNotesOnLocalStorage() {

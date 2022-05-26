@@ -11,7 +11,7 @@ class NoteItemView {
             }" data-note-id="${noteItem.id}" data-color="${noteItem.color}">
                 ${new ColorBallContainer(noteItem).build()}
                 <div class="menu-panel hide">
-                    <div role="button" class="menu-option" onclick="noteItemsController.archiveNote(${noteItem.id})">Archive</div>
+                    <div role="button" class="menu-option ${noteItem.isArchived ? "hide" : ""}" onclick="noteItemsController.archiveNote(${noteItem.id})">Archive</div>
                     <div role="button" class="menu-option" onclick="noteItemsController.trashNote(${noteItem.id})">Delete</div>
                 </div>
                 <div class="note-card-buttons-container">
@@ -19,8 +19,8 @@ class NoteItemView {
                     <div role="button" class="note-card-button menu-button" aria-label="Menu" data-tooltip-text="Menu" tabindex="0" onclick="noteItemsController.openMenu(${noteItem.id})"></div>
                     <div role="button" class="note-card-button pin-button ${noteItem.isPinned ? "note-pinned" : ""}" aria-label="Fix note" data-tooltip-text="Fix note" tabindex="0" onclick="noteItemsController.pinNote(${noteItem.id})"></div>
                 </div>
-                <div role="button" class="notecard-pin-button">
-                    <img class="svg-icon-large" src="./resources/svg/notecard/pin-large-icon.svg">
+                <div role="button" class="notecard-pin-button ${noteItem.isPinned ? "note-pinned" : ""}" aria-label="Fix note" data-tooltip-text="Fix note" tabindex="0" onclick="noteItemsController.pinNote(${noteItem.id})">
+                    <img class="svg-icon-large"  ${noteItem.isPinned ? 'src="./resources/svg/notecard/pin-large-pinned-icon.svg"' : 'src="./resources/svg/notecard/pin-large-icon.svg"'}>
                 </div>
                 <div class="note-card-title" onclick="noteItemsController.showNoteTitle(this.parentNode)">
                     <label>${noteItem.title}</label>
