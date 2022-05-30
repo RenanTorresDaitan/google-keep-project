@@ -1,3 +1,9 @@
+import lampIcon from "../../resources/svg/lamp-icon.svg";
+import bellIcon from "../../resources/svg/bell-icon.svg";
+import pencilIcon from "../../resources/svg/pencil-icon.svg";
+import boxIcon from "../../resources/svg/box-icon.svg";
+import trashIcon from "../../resources/svg/trash-icon.svg";
+
 export class SidebarView {
   constructor() {
     this._element = document.querySelector(".sidebar-container");
@@ -8,31 +14,31 @@ export class SidebarView {
       <nav class="sidebar">
         <div class="sidebar-item" id="sidebar-item-notes" active onclick="sidebarController.changeToNotesPage(this)">
           <div class="sidebar-item-icon">
-            <img class="svg-icon-large" src="./resources/svg/lamp-icon.svg">
+            <img class="svg-icon-large" src="${lampIcon}">
             <span class="sidebar-item-label">Notes</span>
           </div>
         </div>
         <div class="sidebar-item" id="sidebar-item-reminders" onclick="sidebarController.changeToRemindersPage(this)">
           <div class="sidebar-item-icon">
-            <img class="svg-icon-large" src="./resources/svg/bell-icon.svg">
+            <img class="svg-icon-large" src="${bellIcon}">
             <span class="sidebar-item-label">Reminders</span>
           </div>
         </div>
         <div class="sidebar-item" id="sidebar-item-edit-labels">
           <div class="sidebar-item-icon">
-            <img class="svg-icon-large" src="./resources/svg/pencil-icon.svg">
+            <img class="svg-icon-large" src="${pencilIcon}">
             <span class="sidebar-item-label">Edit labels</span>
           </div>
         </div>
         <div class="sidebar-item" id="sidebar-item-archive" onclick="sidebarController.changeToArchivePage(this)">
           <div class="sidebar-item-icon">
-            <img class="svg-icon-large" src="./resources/svg/box-icon.svg">
+            <img class="svg-icon-large" src="${boxIcon}">
             <span class="sidebar-item-label">Archive</span>
           </div>
         </div>
         <div class="sidebar-item" id="sidebar-item-trash" onclick="sidebarController.changeToTrashPage(this)">
           <div class="sidebar-item-icon">
-            <img class="svg-icon-large" src="./resources/svg/trash-icon.svg">
+            <img class="svg-icon-large" src="${trashIcon}">
             <span class="sidebar-item-label">Trash</span>
           </div>
         </div>

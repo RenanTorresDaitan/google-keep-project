@@ -44,7 +44,7 @@ function createNewNoteItem(noteInfo) {
 }
 
 function reloadNotes() {
-  const sortedList = noteItemsList.getList().filter((item) => {
+  noteItemsList.getList().filter((item) => {
     if (item.checkTimeToDelete()) {
       noteItemsList.removeNoteFromList(item.getId());
     } else {

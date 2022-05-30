@@ -1,5 +1,6 @@
 import {NoteListView } from "./NoteListView"
 import {NewNoteComponent} from "../components/NewNoteComponent"
+import noNotesFolder from "../../resources/no-notes-folder.png"
 
 export class PageHeadersView {
   constructor(element) {
@@ -18,7 +19,7 @@ export class PageHeadersView {
         <div role="button" class="empty-trash-btn" aria-hidden="false" tabindex="0" style="user-select: none;" onclick="noteItemsController.deleteTrashedNotes()">Empty Trash</div>
       </div>
       <div class="no-notes-found ${(sidebar == "NOTES" && notes == 0 ) ? "" : "hide"}">
-        <img src="./resources/no-notes-folder.png" width="236px" alt="No notes found">
+        <img src="${noNotesFolder}" width="236px" alt="No notes found">
         <h2>No notes yet</h2>
         <h4>Your notes from Google Keep will show up here.</h4>
         </img>

@@ -1,3 +1,6 @@
+import largePinIcon from "../../resources/svg/notecard/pin-large-icon.svg"
+import largePinnedIcon from "../../resources/svg/notecard/pin-large-pinned-icon.svg"
+
 export class NoteItemView {
   constructor(noteItem) {
     this.noteItem = noteItem;
@@ -20,7 +23,7 @@ export class NoteItemView {
                     <div role="button" class="note-card-button pin-button ${noteItem.isPinned ? "note-pinned" : ""}" aria-label="Fix note" data-tooltip-text="Fix note" tabindex="0" onclick="noteItemsController.pinNote(${noteItem.id})"></div>
                 </div>
                 <div role="button" class="notecard-pin-button ${noteItem.isPinned ? "note-pinned" : ""}" aria-label="Fix note" data-tooltip-text="Fix note" tabindex="0" onclick="noteItemsController.pinNote(${noteItem.id})">
-                    <img class="svg-icon-large"  ${noteItem.isPinned ? 'src="./resources/svg/notecard/pin-large-pinned-icon.svg"' : 'src="./resources/svg/notecard/pin-large-icon.svg"'}>
+                    <img class="svg-icon-large"  ${noteItem.isPinned ? `src="${largePinnedIcon}"` : `src="${largePinIcon}"`}>
                 </div>
                 <div class="note-card-title" onclick="noteItemsController.showNoteTitle(this.parentNode)">
                     <label>${noteItem.title}</label>
