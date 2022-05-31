@@ -1,5 +1,5 @@
 import { SidebarView } from "../views/SidebarView";
-import { pageHeadersController } from "../../main-script";
+import { app } from "../../index";
 
 export class SidebarController {
   constructor() {
@@ -14,7 +14,7 @@ export class SidebarController {
   changeToNotesPage(sidebar) {
     this.removeActiveFromSidebarItems();
     sidebar.setAttribute("active", "");
-    pageHeadersController.changeToNotesPage();
+    app.pageHeadersController.changeToNotesPage();
   }
   changeToRemindersPage(sidebar) {
     this.removeActiveFromSidebarItems();

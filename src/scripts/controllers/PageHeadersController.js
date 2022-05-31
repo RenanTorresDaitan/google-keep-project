@@ -1,6 +1,5 @@
 import { PageHeadersView } from "../views/PageHeadersView";
-import { noteItemsList } from "../../main-script";
-import { appHeaderController } from "../../main-script";
+import { app } from "../../index";
 
 export class PageHeadersController {
   constructor() {
@@ -24,7 +23,7 @@ export class PageHeadersController {
     this.pageHeadersView.update("NOTES", searchList);
   }
   sortList() {
-    const sortedList = noteItemsList.getList();
+    const sortedList = app.noteItemsList.getList();
     if (sortedList.length) {
       sortedList
         .sort((a, b) => b.getTime() - a.getTime())
@@ -37,7 +36,7 @@ export class PageHeadersController {
       (item) => !item.isArchived && !item.isTrashed
     );
     this.pageHeadersView.update("NOTES", notesList);
-    appHeaderController.changeAppHeader("Keep", true);
+    app.appHeaderController.changeAppHeader("Keep", true);
   }
   changeToRemindersPage() {
     const notesList = this.sortList().filter(

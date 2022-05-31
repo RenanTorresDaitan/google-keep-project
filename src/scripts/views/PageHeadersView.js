@@ -1,6 +1,7 @@
 import {NoteListView } from "./NoteListView"
 import {NewNoteComponent} from "../components/NewNoteComponent"
 import noNotesFolder from "../../resources/no-notes-folder.png"
+import {app} from "../../index"
 
 export class PageHeadersView {
   constructor(element) {
@@ -8,6 +9,10 @@ export class PageHeadersView {
     this.noteListView = new NoteListView();
     this.newNoteComponent = new NewNoteComponent();
     this._element.innerHTML = this._template("NOTES",0);
+
+    document.querySelector("#new-note-button").addEventListener("click", () => app.newNoteController.startEditingNewNote("note"));
+    document.querySelector("#new-list-button").addEventListener("click", () => app.newNoteController.startEditingNewNote('list'));
+    document.querySelector(".empty-trash-btn").addEventListener("click", () => app.noteItemsController.deleteTrashedNotes())
   }
 
   _template(sidebar, notes) {
@@ -16,7 +21,7 @@ export class PageHeadersView {
       <div class="trash-header ${
         sidebar == "TRASH" ? "" : "hide"
       }">Notes in Trash are deleted after 7 days.
-        <div role="button" class="empty-trash-btn" aria-hidden="false" tabindex="0" style="user-select: none;" onclick="noteItemsController.deleteTrashedNotes()">Empty Trash</div>
+        <div role="button" class="empty-trash-btn" aria-hidden="false" tabindex="0" style="user-select: none;">Empty Trash</div>
       </div>
       <div class="no-notes-found ${(sidebar == "NOTES" && notes == 0 ) ? "" : "hide"}">
         <img src="${noNotesFolder}" width="236px" alt="No notes found">

@@ -1,5 +1,6 @@
 import plusIcon from "../../resources/svg/notecard/plus-icon.svg";
 import newListIcon from "../../resources/svg/new-list-icon.svg";
+import {app} from "../../index"
 
 
 
@@ -13,13 +14,12 @@ export class NewNoteComponent {
   _template() {
     return `
       <!-- New note and new list buttons -->
-      <div role="button" id="new-note-button" class="[ m-0625rem-r p-05rem-0625rem ]" tabindex="0"
-        style="user-select: none" onclick="newNoteController.startEditingNewNote('note')">
+      <div role="button" id="new-note-button" class="new-note-button" class="[ m-0625rem-r p-05rem-0625rem ]" tabindex="0" style="user-select: none" >
         <img class="icon-size" src="${plusIcon}" alt="">
         <span>Take a note…</span>
       </div>
       <div role="button" id="new-list-button" class="icon-button icon-size" tabindex="0" style="user-select: none"
-        data-tooltip-text="New list" aria-label="New list" onclick="newNoteController.startEditingNewNote('list')">
+        data-tooltip-text="New list" aria-label="New list" >
         <img class="svg-icon" src="${newListIcon}" alt="">
       </div>
       <!-- Note card to be edited after clicking -->

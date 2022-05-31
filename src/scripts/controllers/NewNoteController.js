@@ -2,6 +2,7 @@ export class NewNoteController {
   constructor() {}
 
   startEditingNewNote(noteType) {
+    console.log(noteType);
     const noteItemPlaceholder = document.querySelector(
       ".newnote-item-placeholder"
     );
