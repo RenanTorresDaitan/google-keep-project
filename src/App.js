@@ -1,11 +1,12 @@
-import { NoteListModel } from "./scripts/models/NoteListModel";
-import { NoteItemModel } from "./scripts/models/NoteItemModel";
-import { AppHeaderController } from "./scripts/controllers/AppHeaderController";
-import { PageHeadersController } from "./scripts/controllers/PageHeadersController";
-import { NewNoteController } from "./scripts/controllers/NewNoteController";
-import { NoteItemController } from "./scripts/controllers/NoteItemController";
-import { SearchPanelController } from "./scripts/controllers/SearchPanelController";
-import { SidebarController} from "./scripts/controllers/SidebarController";
+import { NoteListModel } from "./models/NoteListModel";
+import { NoteItemModel } from "./models/NoteItemModel";
+import { AppHeaderView } from "./views/AppHeaderView";
+import { PageHeadersController } from "./controllers/PageHeadersController";
+import { NewNoteController } from "./controllers/NewNoteController";
+import { NoteItemController } from "./controllers/NoteItemController";
+import { SearchPanelView } from "./views/SearchPanelView";
+import { SidebarView} from "./views/SidebarView";
+import { PageHeadersView } from "./views/PageHeadersView";
 
 export class App {
   constructor() {
@@ -13,13 +14,14 @@ export class App {
     this.SEVEN_DAYS_IN_MILLISECONDS = 604800000;
     this.MOBILE_SCREEN_SIZE = 900;
     
+    this.pageHeadersView = new PageHeadersView();
     this.pageHeadersController = new PageHeadersController();
     this.noteItemsList = new NoteListModel();
     this.newNoteController = new NewNoteController();
     this.noteItemsController = new NoteItemController();
-    this.sidebarController = new SidebarController();
-    this.appHeaderController = new AppHeaderController();
-    this.searchPanelController = new SearchPanelController();
+    this.sidebarView = new SidebarView();
+    this.appHeaderView = new AppHeaderView();
+    this.searchPanelView = new SearchPanelView();
     
     this.changeToNotesOnMobile = new ResizeObserver((item) => {
       if (item[0].contentRect.width < this.MOBILE_SCREEN_SIZE) {
@@ -52,11 +54,11 @@ export class App {
        return item;
      }
    });
-   this.sidebarController.changeToActiveSidebar();
+   this.sidebarView.changeToActiveSidebar();
   }
   
   updateNotesOnLocalStorage() {
-   localStorage.setItem(APP_NAME, JSON.stringify(noteItemsList));
+   localStorage.setItem(this.APP_NAME, JSON.stringify(this.noteItemsList));
    this.reloadNotes();
   }
 }

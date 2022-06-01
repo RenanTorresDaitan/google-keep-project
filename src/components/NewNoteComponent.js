@@ -1,18 +1,17 @@
-import plusIcon from "../../resources/svg/notecard/plus-icon.svg";
-import newListIcon from "../../resources/svg/new-list-icon.svg";
-import {app} from "../../index"
-
-
+import plusIcon from "../resources/svg/notecard/plus-icon.svg";
+import newListIcon from "../resources/svg/new-list-icon.svg";
+import {app} from "../index"
 
 export class NewNoteComponent {
   constructor() {
-    this._element = document.createElement("div");
-    this._element.setAttribute("class", "newnote");
-    this._element.setAttribute("id", "new-note-dialog");
-    this._element.innerHTML = this._template();
+    this._element = this._template();
+    return this._element;
   }
   _template() {
-    return `
+    const element = document.createElement("div");
+    element.setAttribute("class", "newnote");
+    element.setAttribute("id", "new-note-dialog");
+    element.innerHTML = `
       <!-- New note and new list buttons -->
       <div role="button" id="new-note-button" class="new-note-button" class="[ m-0625rem-r p-05rem-0625rem ]" tabindex="0" style="user-select: none" >
         <img class="icon-size" src="${plusIcon}" alt="">
@@ -75,8 +74,16 @@ export class NewNoteComponent {
         </div>
       </div>
       `;
-  }
-  build() {
-    return this._element.outerHTML;
+    element
+      .querySelector("#new-note-button")
+      .addEventListener("click", () =>
+        app.newNoteController.startEditingNewNote("note")
+      );
+    element
+      .querySelector("#new-list-button")
+      .addEventListener("click", () =>
+        app.newNoteController.startEditingNewNote("list")
+      );
+      return element;
   }
 }
