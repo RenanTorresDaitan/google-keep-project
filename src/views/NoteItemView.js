@@ -44,13 +44,29 @@ export class NoteItemView {
           <label>${title}</label>
           <textarea name="note-title" class="note-card-title-textarea hide" id="title-textarea" rows="1" maxlength="999" placeholder="Title" style="height: 1rem;">${title}</textarea>
       </div>
-      ${this.typeOfNoteContainer(noteItem)}
       <button class="note-card-done-button hide [ m-0625rem-lr p-05rem ]" style="user-select: none;" >Done</button>
     `;
     element.insertBefore(
       new ColorBallContainer(noteItem),
       element.querySelector(".menu-panel")
     );
+    if (noteItem.isToDoList) {
+      element.insertBefore(
+        new ToDoItemContainer(noteItem),
+        element.querySelector(".notecard-done-button")
+      );
+    } else {
+      const descriptionEl = document.createElement("div");
+      descriptionEl.classList.add("note-card-desc");
+      descriptionEl.innerHTML = `
+          <label>${noteItem.description}</label>
+          <textarea name="note-description" class="note-card-desc-textarea hide" id="description-textarea" rows="1" maxlength="19999" placeholder="Take a note..." style="height: 1rem;">${noteItem.description}</textarea>
+        `;
+      element.insertBefore(
+        descriptionEl,
+        element.querySelector(".notecard-done-button")
+      );
+    }
     element.append(new LowerToolbarComponent(noteItem));
     element
       .querySelector(".note-card-done-button")
@@ -87,18 +103,7 @@ export class NoteItemView {
     element
       .querySelector(".notecard-pin-button")
       .addEventListener("click", () => app.noteItemsController.pinNote(id));
+
     return element;
-  }
-  typeOfNoteContainer(noteItem) {
-    const { description, isToDoList } = noteItem;
-    if (isToDoList) {
-      return new ToDoItemContainer(noteItem);
-    }
-    return `
-    <div class="note-card-desc ${isToDoList ? "hide" : ""}">
-      <label>${description}</label>
-      <textarea name="note-description" class="note-card-desc-textarea hide" id="description-textarea" rows="1" maxlength="19999" placeholder="Take a note..." style="height: 1rem;">${description}</textarea>
-    </div>
-    `;
   }
 }
