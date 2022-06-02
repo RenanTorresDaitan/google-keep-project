@@ -1,8 +1,9 @@
+import { app } from "../index";
+
 export class NewNoteController {
   constructor() {}
 
   startEditingNewNote(noteType) {
-    console.log(noteType);
     const noteItemPlaceholder = document.querySelector(
       ".newnote-item-placeholder"
     );
@@ -38,10 +39,18 @@ export class NewNoteController {
     this.#show(noteDescTextarea);
   }
   createNewNote(action) {
-    const noteTitleTextarea = document.querySelector(".newnote-title-textarea").value;
-    const noteDescTextarea = document.querySelector(".newnote-desc-textarea").value;
-    const newNotePinned = document.querySelector(".newnote-pin-button").classList.contains("note-pinned");
-    const newNoteToDoItems = document.querySelector(".newnote-to-do-items-area").querySelectorAll(".newnote-to-do-item");
+    const noteTitleTextarea = document.querySelector(
+      ".newnote-title-textarea"
+    ).value;
+    const noteDescTextarea = document.querySelector(
+      ".newnote-desc-textarea"
+    ).value;
+    const newNotePinned = document
+      .querySelector(".newnote-pin-button")
+      .classList.contains("note-pinned");
+    const newNoteToDoItems = document
+      .querySelector(".newnote-to-do-items-area")
+      .querySelectorAll(".newnote-to-do-item");
     const emptyFields = noteTitleTextarea == "" && noteDescTextarea == "";
 
     const newNoteToCreate = {
@@ -67,7 +76,9 @@ export class NewNoteController {
       (item, index) => {
         if (item != document.querySelector(".newnote-item-placeholder")) {
           const checkbox = item.querySelector(".newnote-to-do-item-checkbox");
-          const textArea = item.querySelector(".newnote-item-placeholder-textarea");
+          const textArea = item.querySelector(
+            ".newnote-item-placeholder-textarea"
+          );
           if (textArea.value !== "") {
             return {
               id: index,
@@ -84,11 +95,17 @@ export class NewNoteController {
     if (emptyFields && !newNoteToCreate.isToDoList) {
       this._endEditingNewNote();
     } else {
-      createNewNoteItem(newNoteToCreate);
+      app.createNewNoteItem(newNoteToCreate);
     }
   }
   createNewToDoItem(event) {
-    if (event.key == 'Tab' || event.key == 'Shift'|| event.key == 'Control'|| event.key == 'Alt') return;
+    if (
+      event.key == "Tab" ||
+      event.key == "Shift" ||
+      event.key == "Control" ||
+      event.key == "Alt"
+    )
+      return;
     event.preventDefault();
     const newToDoItem = document.createElement("div");
     newToDoItem.classList.add("newnote-to-do-item");
@@ -112,7 +129,7 @@ export class NewNoteController {
     }
   }
   editText(event) {
-    if (event.key == 'Enter') {
+    if (event.key == "Enter") {
       document.querySelector("#new-item-placeholder").focus();
       event.preventDefault();
     }

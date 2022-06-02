@@ -1,4 +1,3 @@
-import { PageHeadersView } from "../views/PageHeadersView";
 import { app } from "../index";
 
 export class PageHeadersController {

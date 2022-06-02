@@ -14,14 +14,14 @@ export class App {
     this.SEVEN_DAYS_IN_MILLISECONDS = 604800000;
     this.MOBILE_SCREEN_SIZE = 900;
     
-    this.pageHeadersView = new PageHeadersView();
-    this.pageHeadersController = new PageHeadersController();
     this.noteItemsList = new NoteListModel();
     this.newNoteController = new NewNoteController();
+    this.searchPanelView = new SearchPanelView();
+    this.appHeaderView = new AppHeaderView();
+    this.pageHeadersView = new PageHeadersView();
+    this.pageHeadersController = new PageHeadersController();
     this.noteItemsController = new NoteItemController();
     this.sidebarView = new SidebarView();
-    this.appHeaderView = new AppHeaderView();
-    this.searchPanelView = new SearchPanelView();
     
     this.changeToNotesOnMobile = new ResizeObserver((item) => {
       if (item[0].contentRect.width < this.MOBILE_SCREEN_SIZE) {
@@ -36,9 +36,9 @@ export class App {
     if (typeof storedList !== "string") return;
     const parsedList = JSON.parse(storedList);
     parsedList._list.forEach((storedNote) => {
-      noteItemsList.addNoteToList(new NoteItemModel(storedNote));
+      this.noteItemsList.addNoteToList(new NoteItemModel(storedNote));
     });
-    reloadNotes();
+    this.reloadNotes();
   };
   createNewNoteItem(noteInfo) {
    const newNoteItem = new NoteItemModel(noteInfo);

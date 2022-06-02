@@ -1,8 +1,9 @@
 import {NoteItemView} from "./NoteItemView" 
 
 export class NoteListView {
-  constructor() {
+  constructor(list) {
     this._element = this._template();
+    this.update(list);
     return this._element;
   }
 

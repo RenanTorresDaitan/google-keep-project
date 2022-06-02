@@ -665,7 +665,7 @@ input {
 }
 .menu-button {
   background-size: 24px 24px;
-  background-image: url(./resources/svg/notecard/menu-circles.svg);
+  background-image: url(./resources/svg/notecard/menu-circles-icon.svg);
 }
 .color-button {
   background-image: url(./resources/svg/notecard/drop-icon.svg);

@@ -1,4 +1,4 @@
-class ColorBallContainer {
+export class ColorBallContainer {
   constructor(noteItem) {
     this.noteItem = noteItem;
     this.colors = [

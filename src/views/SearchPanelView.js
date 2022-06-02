@@ -5,7 +5,6 @@ import { app } from "../index";
 export class SearchPanelView {
   constructor() {
     this._element = this._template();
-
     return this._element;
   }
   _template() {

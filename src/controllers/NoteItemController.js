@@ -3,13 +3,13 @@ export class NoteItemController {
   constructor() {}
 
   editNote(id) {
-    const note = document.querySelector(`[data-note-id="${id}"]`);
-    this.#show(note.querySelector(".note-card-done-button"));
-    this.showNoteTitle(note);
+    const noteCard = document.querySelector(`[data-note-id="${id}"]`);
+    this.#show(noteCard.querySelector(".note-card-done-button"));
+    this.showNoteTitle(noteCard);
     if (app.noteItemsList.getNoteById(id).isToDoList) {
-      this.#show(note.querySelector(".to-do-item-placeholder"));
+      this.#show(noteCard.querySelector(".to-do-item-placeholder"));
     } else {
-      this.showNoteDescription(note);
+      this.showNoteDescription(noteCard);
     }
   }
   updateNote(id) {
@@ -43,8 +43,8 @@ export class NoteItemController {
         };
       });
     }
-    noteItemsList.removeNoteFromList(id);
-    createNewNoteItem(noteItem);
+    app.noteItemsList.removeNoteFromList(id);
+    this.createNewNoteItem(noteItem);
     app.updateNotesOnLocalStorage();
   }
   // Buttons methods

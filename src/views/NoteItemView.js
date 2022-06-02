@@ -1,9 +1,12 @@
 import largePinIcon from "../resources/svg/notecard/pin-large-icon.svg";
 import largePinnedIcon from "../resources/svg/notecard/pin-large-pinned-icon.svg";
+import { ColorBallContainer } from "../components/ColorBallContainer";
+import { LowerToolbarComponent } from "../components/LowerToolbarComponent";
 
 export class NoteItemView {
   constructor(noteItem) {
     this._element = this._template(noteItem);
+    return this._element;
   }
 
   _template(noteItem) {
@@ -42,8 +45,8 @@ export class NoteItemView {
       </div>
       ${this.typeOfNoteContainer(noteItem)}
       <button class="note-card-done-button hide [ m-0625rem-lr p-05rem ]" style="user-select: none;" onclick="noteItemsController.updateNote(${id})">Done</button>
-      ${new LowerToolbarComponent(noteItem).build()}
     `;
+    element.append(new LowerToolbarComponent(noteItem));
     return element;
   }
   typeOfNoteContainer(noteItem) {

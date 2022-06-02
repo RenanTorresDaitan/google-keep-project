@@ -4,8 +4,8 @@
   "description": "Download the project files onto a folder. You can start the app by opening the index.html file.",
   "main": "index.js",
   "scripts": {
-    "start": "webpack --config webpack.config.js",
-    "dev": "webpack serve"
+    "dev": "webpack serve",
+    "build": "webpack --config webpack.config.js"
   },
   "repository": {
     "type": "git",

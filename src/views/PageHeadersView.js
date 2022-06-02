@@ -5,7 +5,7 @@ import { app } from "../index";
 
 export class PageHeadersView {
   constructor() {
-    this._element = this._template("NOTES", 0);
+    this._element = this._template("NOTES", []);
   }
 
   _template(sidebar, notes) {
@@ -17,7 +17,7 @@ export class PageHeadersView {
         <div role="button" class="empty-trash-btn" aria-hidden="false" tabindex="0" style="user-select: none;">Empty Trash</div>
       </div>
       <div class="no-notes-found ${
-        sidebar == "NOTES" && notes == 0 ? "" : "hide"
+        sidebar == "NOTES" && notes.length == 0 ? "" : "hide"
       }">
         <img src="${noNotesFolder}" width="236px" alt="No notes found">
         <h2>No notes yet</h2>
@@ -25,19 +25,19 @@ export class PageHeadersView {
         </img>
       </div>
       <div class="no-reminders-found ${
-        sidebar == "REMINDERS" && notes == 0 ? "" : "hide"
+        sidebar == "REMINDERS" && notes.length == 0 ? "" : "hide"
       }">
         <div class="no-reminders-img"></div>
         <div class="no-reminders-label">Notes with upcoming reminders appear here</div>
       </div>
       <div class="no-archived-found ${
-        sidebar == "ARCHIVED" && notes == 0 ? "" : "hide"
+        sidebar == "ARCHIVED" && notes.length == 0 ? "" : "hide"
       }">
         <div class="no-archived-img"></div>
         <div class="no-archived-label">Your archived notes appear here</div>
       </div>
       <div class="no-trashed-found ${
-        sidebar == "TRASH" && notes == 0 ? "" : "hide"
+        sidebar == "TRASH" && notes.length == 0 ? "" : "hide"
       }">
         <div class="no-trashed-img"></div>
         <div class="no-trashed-label">No notes in Trash</div>
@@ -48,14 +48,17 @@ export class PageHeadersView {
       .addEventListener("click", () =>
         app.noteItemsController.deleteTrashedNotes()
       );
-      if (sidebar != "TRASH") {
-        element.insertBefore(new NewNoteComponent(),element.querySelector('.trash-header'))
-      }
-    element.append(new NoteListView());
+    if (sidebar != "TRASH") {
+      element.insertBefore(
+        new NewNoteComponent(),
+        element.querySelector(".trash-header")
+      );
+    }
+    element.append(new NoteListView(notes));
     return element;
   }
 
   update(sidebar, list) {
-    this._element = this._template(sidebar, list.length);
+    this._element = this._template(sidebar, list);
   }
 }

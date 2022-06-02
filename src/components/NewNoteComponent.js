@@ -1,6 +1,6 @@
 import plusIcon from "../resources/svg/notecard/plus-icon.svg";
 import newListIcon from "../resources/svg/new-list-icon.svg";
-import {app} from "../index"
+import { app } from "../index";
 
 export class NewNoteComponent {
   constructor() {
@@ -24,8 +24,8 @@ export class NewNoteComponent {
       <!-- Note card to be edited after clicking -->
       <div class="editing-note hide">
         <div class="newnote-menu hide">
-          <div id="archive-menu-button" class="newnote-menu-option" onclick="newNoteController.createNewNote('Archive')">Archive</div>
-          <div id="delete-menu-button" class="newnote-menu-option" onclick="newNoteController._endEditingNewNote()">Delete</div>
+          <div id="archive-menu-button" class="newnote-menu-option">Archive</div>
+          <div id="delete-menu-button" class="newnote-menu-option">Delete</div>
           <div id="open-menu-button" class="newnote-menu-option" style="display:flex; justify-content: center;">
             <div style=" margin-right: 0.375rem;">Open in Keep</div>
             <svg xmlns="http://www.w3.org/2000/svg" width="18px" height="18px" viewBox="0 0 24 24" fill="#333"
@@ -36,14 +36,14 @@ export class NewNoteComponent {
             </svg>
           </div>
         </div>
-        <div class="newnote-menu-button" onclick="newNoteController.openNewNoteMenu()">
+        <div class="newnote-menu-button" >
           <svg xmlns="http://www.w3.org/2000/svg" width="18px" height="18px" viewBox="0 0 24 24">
             <path
               d="M12,8.5c1,0,1.8-0.8,1.8-1.8S13,5,12,5s-1.8,0.8-1.8,1.8S11,8.5,12,8.5z M12,10.2c-1,0-1.8,0.8-1.8,1.8s0.8,1.8,1.8,1.8
             s1.8-0.8,1.8-1.8S13,10.2,12,10.2z M12,15.5c-1,0-1.8,0.8-1.8,1.8S11,19,12,19s1.8-0.8,1.8-1.8S13,15.5,12,15.5z" />
           </svg>
         </div>
-        <div class="newnote-pin-button" onclick="newNoteController.pinNewNote()">
+        <div class="newnote-pin-button">
           <svg xmlns="http://www.w3.org/2000/svg" width="18px" height="18px" viewBox="0 0 24 24">
             <path d="M16 5h.99L17 3H7v2h1v7l-2 2v2h5v6l1 1 1-1v-6h5v-2l-2-2V5z"></path>
           </svg>
@@ -58,11 +58,11 @@ export class NewNoteComponent {
               <path d="m0 0h24v24h-24z" fill="none" />
             </svg>
             <textarea name="" id="new-item-placeholder" cols="30" rows="10" placeholder=" List item"
-              class="newnote-item-placeholder-textarea" onkeydown="newNoteController.createNewToDoItem(event)"></textarea>
+              class="newnote-item-placeholder-textarea"></textarea>
           </div>
           <div class="completed-items-area hide">
             <div class="completed-items-separator"></div>
-            <div class="completed-items-div" onclick="newNoteController.toggleCompletedItems()">
+            <div class="completed-items-div">
               <div class="completed-items-btn rotate-90-cw"></div>
               <div class="completed-items-label">1 Completed item</div>
             </div>
@@ -70,10 +70,38 @@ export class NewNoteComponent {
           </div>
         </div>
         <div class="newnote-card-button-container">
-          <div class="newnote-card-done-button" tabindex="0" onclick="newNoteController.createNewNote('Create')" onkeydown="this.click()">Done</div>
+          <div class="newnote-card-done-button" tabindex="0">Done</div>
         </div>
       </div>
       `;
+    element
+      .querySelector("#archive-menu-button")
+      .addEventListener("click", () =>
+        app.newNoteController.createNewNote("Archive")
+      );
+    element
+      .querySelector("#delete-menu-button")
+      .addEventListener("click", () =>
+        app.newNoteController._endEditingNewNote()
+      );
+    element
+      .querySelector("#new-item-placeholder")
+      .addEventListener("keydown", (event) => app.newNoteController.createNewToDoItem(event));
+    element
+      .querySelector(".newnote-menu-button")
+      .addEventListener("click", () => app.newNoteController.openNewNoteMenu());
+    element
+      .querySelector(".newnote-pin-button")
+      .addEventListener("click", () => app.newNoteController.pinNewNote());
+    element
+      .querySelector(".completed-items-div")
+      .addEventListener("click", () => app.newNoteController.toggleCompletedItems());
+    element
+      .querySelector(".newnote-card-done-button")
+      .addEventListener("click", () => app.newNoteController.createNewNote("Create"));
+    element
+      .querySelector(".newnote-card-done-button")
+      .addEventListener("keydown", () => element.click());
     element
       .querySelector("#new-note-button")
       .addEventListener("click", () =>
@@ -84,6 +112,6 @@ export class NewNoteComponent {
       .addEventListener("click", () =>
         app.newNoteController.startEditingNewNote("list")
       );
-      return element;
+    return element;
   }
 }
