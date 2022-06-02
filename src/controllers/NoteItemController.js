@@ -1,20 +1,21 @@
-class NoteItemController {
+import { app } from "../index";
+export class NoteItemController {
   constructor() {}
 
   editNote(id) {
-    const note = document.querySelector(`[data-note-id="${id}"]`);
-    this.#show(note.querySelector(".note-card-done-button"));
-    this.showNoteTitle(note);
-    if (noteItemsList.getNoteById(id).isToDoList) {
-      this.#show(note.querySelector(".to-do-item-placeholder"));
+    const noteCard = document.querySelector(`[data-note-id="${id}"]`);
+    this.#show(noteCard.querySelector(".note-card-done-button"));
+    this.showNoteTitle(noteCard);
+    if (app.noteItemsList.getNoteById(id).isToDoList) {
+      this.#show(noteCard.querySelector(".to-do-item-placeholder"));
     } else {
-      this.showNoteDescription(note);
+      this.showNoteDescription(noteCard);
     }
   }
   updateNote(id) {
     const noteCard = document.querySelector(`[data-note-id="${id}"]`);
     const noteItem = {
-      ...noteItemsList.getNoteById(id),
+      ...app.noteItemsList.getNoteById(id),
       noteTitle: noteCard.querySelector("#title-textarea").value,
       isPinned: noteCard
         .querySelector(".pin-button")
@@ -42,9 +43,9 @@ class NoteItemController {
         };
       });
     }
-    noteItemsList.removeNoteFromList(id);
-    createNewNoteItem(noteItem);
-    updateNotesOnLocalStorage();
+    app.noteItemsList.removeNoteFromList(id);
+    app.createNewNoteItem(noteItem);
+    app.updateNotesOnLocalStorage();
   }
   // Buttons methods
   openMenu(id) {
@@ -56,56 +57,56 @@ class NoteItemController {
     );
   }
   changeNoteColor(id, color) {
-    noteItemsList.getNoteById(id).color = color;
-    updateNotesOnLocalStorage();
+    app.noteItemsList.getNoteById(id).color = color;
+    app.updateNotesOnLocalStorage();
   }
   addReminder(id) {
-    noteItemsList.getNoteById(id).isReminder = true;
-    updateNotesOnLocalStorage();
+    app.noteItemsList.getNoteById(id).isReminder = true;
+    app.updateNotesOnLocalStorage();
   }
   archiveNote(id) {
-    noteItemsList.getNoteById(id).isArchived = true;
-    updateNotesOnLocalStorage();
+    app.noteItemsList.getNoteById(id).isArchived = true;
+    app.updateNotesOnLocalStorage();
   }
   deleteNote(id) {
-    noteItemsList.removeNoteFromList(id);
-    updateNotesOnLocalStorage();
+    app.noteItemsList.removeNoteFromList(id);
+    app.updateNotesOnLocalStorage();
   }
   deleteTrashedNotes() {
-    noteItemsList.getList().forEach((item) => {
-      if (item.isTrashed) noteItemsList.removeNoteFromList(item.id);
+    app.noteItemsList.getList().forEach((item) => {
+      if (item.isTrashed) app.noteItemsList.removeNoteFromList(item.id);
     });
-    updateNotesOnLocalStorage();
+    app.updateNotesOnLocalStorage();
   }
   restoreNote(id) {
-    noteItemsList.getNoteById(id).isTrashed = false;
-    noteItemsList.getNoteById(id).noteTime.deletionDate = null;
-    updateNotesOnLocalStorage();
+    app.noteItemsList.getNoteById(id).isTrashed = false;
+    app.noteItemsList.getNoteById(id).noteTime.deletionDate = null;
+    app.updateNotesOnLocalStorage();
   }
   trashNote(id) {
-    noteItemsList.getNoteById(id).isTrashed = true;
-    noteItemsList.getNoteById(id).noteTime.deletionDate =
-      Date.now() + SEVEN_DAYS_IN_MILLISECONDS;
-    updateNotesOnLocalStorage();
+    app.noteItemsList.getNoteById(id).isTrashed = true;
+    app.noteItemsList.getNoteById(id).noteTime.deletionDate =
+      Date.now() + app.SEVEN_DAYS_IN_MILLISECONDS;
+    app.updateNotesOnLocalStorage();
   }
   unarchiveNote(id) {
-    noteItemsList.getNoteById(id).isArchived = false;
-    updateNotesOnLocalStorage();
+    app.noteItemsList.getNoteById(id).isArchived = false;
+    app.updateNotesOnLocalStorage();
   }
   pinNote(id) {
-    const noteToPin = noteItemsList.getNoteById(id);
+    const noteToPin = app.noteItemsList.getNoteById(id);
     noteToPin.isPinned = !noteToPin.isPinned;
-    updateNotesOnLocalStorage();
+    app.updateNotesOnLocalStorage();
   }
   // Todo items
   toggleChecked(noteId, itemId) {
-    const item = noteItemsList.getNoteById(noteId).getToDoItemById(itemId);
+    const item = app.noteItemsList.getNoteById(noteId).getToDoItemById(itemId);
     item.isChecked = !item.isChecked;
-    updateNotesOnLocalStorage();
+    app.updateNotesOnLocalStorage();
   }
   deleteToDoItem(noteId, itemId) {
-    noteItemsList.getNoteById(noteId).removeToDoItemFromList(itemId);
-    updateNotesOnLocalStorage();
+    app.noteItemsList.getNoteById(noteId).removeToDoItemFromList(itemId);
+    app.updateNotesOnLocalStorage();
   }
   // Edit handling methods
   showNoteTitle(note) {
@@ -191,12 +192,15 @@ class NoteItemController {
     this.#hide(toDoItemLabel);
     toDoItemTextarea.addEventListener("blur", () => {
       toDoItemLabel.textContent = toDoItemTextarea.value;
-      toDoItemTextarea.dispatchEvent(new KeyboardEvent("keydown", {
-        key: "Enter",
-        code: "Enter", 
-        shiftKey: false, 
-        ctrlKey: false,  
-        metaKey: false   }));
+      toDoItemTextarea.dispatchEvent(
+        new KeyboardEvent("keydown", {
+          key: "Enter",
+          code: "Enter",
+          shiftKey: false,
+          ctrlKey: false,
+          metaKey: false,
+        })
+      );
     });
     toDoItemTextarea.addEventListener("input", (event) => {
       if (event.keyCode >= 65 && event.keyCode <= 90) {
@@ -219,14 +223,14 @@ class NoteItemController {
     });
   }
   createNewToDoItem(id) {
-    const noteToUpdate = noteItemsList.getNoteById(id);
+    const noteToUpdate = app.noteItemsList.getNoteById(id);
     if (event.keyCode >= 65 && event.keyCode <= 90) {
       const newToDoItem = {
         label: event.key,
         isChecked: false,
       };
       noteToUpdate.addToDoItem(newToDoItem);
-      updateNotesOnLocalStorage();
+      app.updateNotesOnLocalStorage();
       const newToDoItemEl = document.querySelector(
         `[data-note-id="${id}"] [data-item-id="${
           noteToUpdate.getToDoItemById(noteToUpdate.getToDoItems().length - 1)

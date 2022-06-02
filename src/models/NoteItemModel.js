@@ -1,4 +1,4 @@
-class NoteItemModel {
+export class NoteItemModel {
   constructor({
     _id = null,
     noteTitle = "",

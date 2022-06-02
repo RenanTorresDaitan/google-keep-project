@@ -1,8 +1,7 @@
-class PageHeadersController {
+import { app } from "../index";
+
+export class PageHeadersController {
   constructor() {
-    this.pageHeadersView = new PageHeadersView(
-      document.querySelector(".content")
-    );
   }
   showSearchedNotes(searchTerm) {
     const searchList = this.sortList().filter((item) => {
@@ -17,10 +16,10 @@ class PageHeadersController {
         return item;
       }
     });
-    this.pageHeadersView.update("NOTES", searchList);
+    app.pageHeadersView.update("NOTES", searchList);
   }
   sortList() {
-    const sortedList = noteItemsList.getList();
+    const sortedList = app.noteItemsList.getList();
     if (sortedList.length) {
       sortedList
         .sort((a, b) => b.getTime() - a.getTime())
@@ -32,26 +31,26 @@ class PageHeadersController {
     const notesList = this.sortList().filter(
       (item) => !item.isArchived && !item.isTrashed
     );
-    this.pageHeadersView.update("NOTES", notesList);
-    appHeaderController.changeAppHeader("Keep", true);
+    app.pageHeadersView.update("NOTES", notesList);
+    app.appHeaderView.changeAppHeader("Keep", true);
   }
   changeToRemindersPage() {
     const notesList = this.sortList().filter(
       (item) => item.isReminder && !item.isTrashed
     );
-    this.pageHeadersView.update("REMINDERS", notesList);
-    appHeaderController.changeAppHeader("Reminders", false);
+    app.pageHeadersView.update("REMINDERS", notesList);
+    app.appHeaderView.changeAppHeader("Reminders", false);
   }
   changeToArchivePage() {
     const notesList = this.sortList().filter(
       (item) => item.isArchived && !item.isTrashed
     );
-    this.pageHeadersView.update("ARCHIVED", notesList);
-    appHeaderController.changeAppHeader("Archive", false);
+    app.pageHeadersView.update("ARCHIVED", notesList);
+    app.appHeaderView.changeAppHeader("Archive", false);
   }
   changeToTrashPage() {
     const notesList = this.sortList().filter((item) => item.isTrashed);
-    this.pageHeadersView.update("TRASH", notesList);
-    appHeaderController.changeAppHeader("Trash", false);
+    app.pageHeadersView.update("TRASH", notesList);
+    app.appHeaderView.changeAppHeader("Trash", false);
   }
 }
