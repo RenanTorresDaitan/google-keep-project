@@ -1,3 +1,5 @@
+import { app } from "..";
+
 export class ColorBallContainer {
   constructor(noteItem) {
     this.noteItem = noteItem;
@@ -15,25 +17,30 @@ export class ColorBallContainer {
       "gray",
       "default",
     ];
+    this._element = this._template();
+    return this._element;
   }
   _template() {
-    return `
-    <div class="color-ball-container hide">
-    ${this.colors.reduce(
-      (colorBalls, color) => (colorBalls += this.createColorBall(color)),
-      ""
-    )}
-    </div>`;
-  }
-  build() {
-    return this._template();
+    const element = document.createElement("div");
+    element.classList.add("color-ball-container", "hide");
+    this.colors.map((color) => element.append(this.createColorBall(color)));
+    element
+      .querySelectorAll(".color-ball")
+      .forEach((ball) =>
+        ball.addEventListener("click", () =>
+          app.noteItemsController.changeNoteColor(
+            this.noteItem.id,
+            ball.getAttribute("data-color")
+          )
+        )
+      );
+    return element;
   }
   createColorBall(color) {
-    return `<span 
-                class="color-ball" 
-                role="button" 
-                data-color="${color}" 
-                onclick="noteItemsController.changeNoteColor(${this.noteItem.id},'${color}')">
-            </span>`;
+    const element = document.createElement("span");
+    element.classList.add("color-ball");
+    element.setAttribute("role", "button");
+    element.setAttribute("data-color", color);
+    return element;
   }
 }

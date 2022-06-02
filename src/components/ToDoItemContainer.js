@@ -1,26 +1,35 @@
-class ToDoItemContainer {
+export class ToDoItemContainer {
   constructor(noteItem) {
-    this._element = document.createElement("div");
-    this._element.setAttribute("class", "note-to-do-items");
     this.noteItem = noteItem;
     this.toDoItems = noteItem.getToDoItems();
     this.uncheckedItems = [];
     this.checkedItems = [];
-
+    this._element = this._template();
     this.update();
+    return this._element;
   }
   _template() {
-    return `
-          ${this.uncheckedItems
-            .map((item) => ToDoItemContainer.createToDoItem(this.noteItem.id,item))
-            .join("")}
-          <div class="to-do-item-placeholder ${this.toDoItems.length == 0 ? "" : "hide"}">
+    const element = document.createElement("div");
+    element.setAttribute("class", "note-to-do-items");
+    element.innerHTML = `
+      ${this.uncheckedItems
+        .map((item) => ToDoItemContainer.createToDoItem(this.noteItem.id, item))
+        .join("")}
+          <div class="to-do-item-placeholder ${
+            this.toDoItems.length == 0 ? "" : "hide"
+          }">
           <img class="svg-icon-large" src="./resources/svg/notecard/plus-icon.svg">
-          <textarea class="to-do-item-textarea" placeholder="List item" tabindex="0" onkeydown="noteItemsController.createNewToDoItem(${this.noteItem.id})"></textarea>
+          <textarea class="to-do-item-textarea" placeholder="List item" tabindex="0" onkeydown="noteItemsController.createNewToDoItem(${
+            this.noteItem.id
+          })"></textarea>
           </div>
-          <div class="completed-items-area ${this.checkedItems.length > 0 ? "" : "hide"}">
+          <div class="completed-items-area ${
+            this.checkedItems.length > 0 ? "" : "hide"
+          }">
           <div class="completed-items-separator"></div>
-            <div class="completed-items-div" onclick="noteItemsController.toggleCompletedItemsList(${this.noteItem.id})">
+            <div class="completed-items-div" onclick="noteItemsController.toggleCompletedItemsList(${
+              this.noteItem.id
+            })">
               <div class="completed-items-btn rotate-90-cw"></div>
               <label class="completed-items-label">${
                 this.checkedItems.length > 1
@@ -30,13 +39,13 @@ class ToDoItemContainer {
             </div>
               <div class="completed-items-list">
                 ${this.checkedItems
-                  .map((item) => ToDoItemContainer.createToDoItem(this.noteItem.id,item))
+                  .map((item) =>
+                    ToDoItemContainer.createToDoItem(this.noteItem.id, item)
+                  )
                   .join("")}
               </div>
         </div>`;
-  }
-  build() {
-    return this._element.outerHTML;
+    return element;
   }
   update() {
     this.uncheckedItems = [];
@@ -45,9 +54,9 @@ class ToDoItemContainer {
       if (!item.isChecked) this.uncheckedItems.push(item);
       else this.checkedItems.push(item);
     });
-    this._element.innerHTML = this._template();
+    this._element = this._template();
   }
-  static createToDoItem(noteId,toDoItem) {
+  static createToDoItem(noteId, toDoItem) {
     return `
       <div class="to-do-item" data-item-id="${toDoItem.id}">
         <div class="to-do-item-checkbox" checked="${toDoItem.isChecked}" onclick="noteItemsController.toggleChecked(${noteId},${toDoItem.id})"></div>

@@ -1,7 +1,9 @@
 import largePinIcon from "../resources/svg/notecard/pin-large-icon.svg";
 import largePinnedIcon from "../resources/svg/notecard/pin-large-pinned-icon.svg";
 import { ColorBallContainer } from "../components/ColorBallContainer";
+import { ToDoItemContainer } from "../components/ToDoItemContainer";
 import { LowerToolbarComponent } from "../components/LowerToolbarComponent";
+import { app } from "..";
 
 export class NoteItemView {
   constructor(noteItem) {
@@ -10,7 +12,7 @@ export class NoteItemView {
   }
 
   _template(noteItem) {
-    const { title, id, color, isArchived, isPinned } = noteItem;
+    const { title, id, color, isArchived, isPinned, isToDoList } = noteItem;
     const element = document.createElement("div");
     element.setAttribute("class", "note-card");
     element.setAttribute("tabindex", "0");
@@ -18,46 +20,82 @@ export class NoteItemView {
     element.setAttribute("data-note-id", `${id}`);
     element.setAttribute("data-color", `${color}`);
     element.innerHTML = `
-      ${new ColorBallContainer(noteItem).build()}
       <div class="menu-panel hide">
           <div role="button" class="menu-option ${
             isArchived ? "hide" : ""
-          }" onclick="noteItemsController.archiveNote(${id})">Archive</div>
-          <div role="button" class="menu-option" onclick="noteItemsController.trashNote(${id})">Delete</div>
+          }" data-button="archive-button">Archive</div>
+          <div role="button" class="menu-option" data-button="delete-button">Delete</div>
       </div>
       <div class="note-card-buttons-container">
-          <div role="button" class="note-card-button color-button" aria-label="Change Note Color" data-tooltip-text="Change Note Color" tabindex="0" onclick="noteItemsController.openColorMenu(${id})"></div>
-          <div role="button" class="note-card-button menu-button" aria-label="Menu" data-tooltip-text="Menu" tabindex="0" onclick="noteItemsController.openMenu(${id})"></div>
+          <div role="button" class="note-card-button color-button" aria-label="Change Note Color" data-tooltip-text="Change Note Color" tabindex="0" ></div>
+          <div role="button" class="note-card-button menu-button" aria-label="Menu" data-tooltip-text="Menu" tabindex="0" ></div>
           <div role="button" class="note-card-button pin-button ${
             isPinned ? "note-pinned" : ""
-          }" aria-label="Fix note" data-tooltip-text="Fix note" tabindex="0" onclick="noteItemsController.pinNote(${id})"></div>
+          }" aria-label="Fix note" data-tooltip-text="Fix note" tabindex="0" ></div>
       </div>
       <div role="button" class="notecard-pin-button ${
         isPinned ? "note-pinned" : ""
-      }" aria-label="Fix note" data-tooltip-text="Fix note" tabindex="0" onclick="noteItemsController.pinNote(${id})">
+      }" aria-label="Fix note" data-tooltip-text="Fix note" tabindex="0" >
           <img class="svg-icon-large"  ${
             isPinned ? `src="${largePinnedIcon}"` : `src="${largePinIcon}"`
           }>
       </div>
-      <div class="note-card-title" onclick="noteItemsController.showNoteTitle(this.parentNode)">
+      <div class="note-card-title">
           <label>${title}</label>
           <textarea name="note-title" class="note-card-title-textarea hide" id="title-textarea" rows="1" maxlength="999" placeholder="Title" style="height: 1rem;">${title}</textarea>
       </div>
       ${this.typeOfNoteContainer(noteItem)}
-      <button class="note-card-done-button hide [ m-0625rem-lr p-05rem ]" style="user-select: none;" onclick="noteItemsController.updateNote(${id})">Done</button>
+      <button class="note-card-done-button hide [ m-0625rem-lr p-05rem ]" style="user-select: none;" >Done</button>
     `;
+    element.insertBefore(
+      new ColorBallContainer(noteItem),
+      element.querySelector(".menu-panel")
+    );
     element.append(new LowerToolbarComponent(noteItem));
+    element
+      .querySelector(".note-card-done-button")
+      .addEventListener("click", () => app.noteItemsController.updateNote(id));
+    element
+      .querySelector(".note-card-title")
+      .addEventListener("click", () =>
+        app.noteItemsController.showNoteTitle(element)
+      );
+    if (!isToDoList) {
+      element
+        .querySelector(".note-card-desc")
+        .addEventListener("click", () =>
+          app.noteItemsController.showNoteDescription(element)
+        );
+    }
+    element
+      .querySelector("[data-button='archive-button']")
+      .addEventListener("click", () => app.noteItemsController.archiveNote(id));
+    element
+      .querySelector("[data-button='delete-button']")
+      .addEventListener("click", () => app.noteItemsController.trashNote(id));
+    element
+      .querySelector(".color-button")
+      .addEventListener("click", () =>
+        app.noteItemsController.openColorMenu(id)
+      );
+    element
+      .querySelector(".menu-button")
+      .addEventListener("click", () => app.noteItemsController.openMenu(id));
+    element
+      .querySelector(".pin-button")
+      .addEventListener("click", () => app.noteItemsController.pinNote(id));
+    element
+      .querySelector(".notecard-pin-button")
+      .addEventListener("click", () => app.noteItemsController.pinNote(id));
     return element;
   }
   typeOfNoteContainer(noteItem) {
-    const { description, id, isToDoList } = noteItem;
+    const { description, isToDoList } = noteItem;
     if (isToDoList) {
-      return new ToDoItemContainer(noteItem).build();
+      return new ToDoItemContainer(noteItem);
     }
     return `
-    <div class="note-card-desc ${
-      isToDoList ? "hide" : ""
-    }" onclick="noteItemsController.editNote(${id})">
+    <div class="note-card-desc ${isToDoList ? "hide" : ""}">
       <label>${description}</label>
       <textarea name="note-description" class="note-card-desc-textarea hide" id="description-textarea" rows="1" maxlength="19999" placeholder="Take a note..." style="height: 1rem;">${description}</textarea>
     </div>

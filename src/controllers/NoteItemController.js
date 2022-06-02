@@ -15,7 +15,7 @@ export class NoteItemController {
   updateNote(id) {
     const noteCard = document.querySelector(`[data-note-id="${id}"]`);
     const noteItem = {
-      ...noteItemsList.getNoteById(id),
+      ...app.noteItemsList.getNoteById(id),
       noteTitle: noteCard.querySelector("#title-textarea").value,
       isPinned: noteCard
         .querySelector(".pin-button")
@@ -44,7 +44,7 @@ export class NoteItemController {
       });
     }
     app.noteItemsList.removeNoteFromList(id);
-    this.createNewNoteItem(noteItem);
+    app.createNewNoteItem(noteItem);
     app.updateNotesOnLocalStorage();
   }
   // Buttons methods
@@ -57,19 +57,19 @@ export class NoteItemController {
     );
   }
   changeNoteColor(id, color) {
-    noteItemsList.getNoteById(id).color = color;
+    app.noteItemsList.getNoteById(id).color = color;
     app.updateNotesOnLocalStorage();
   }
   addReminder(id) {
-    noteItemsList.getNoteById(id).isReminder = true;
+    app.noteItemsList.getNoteById(id).isReminder = true;
     app.updateNotesOnLocalStorage();
   }
   archiveNote(id) {
-    noteItemsList.getNoteById(id).isArchived = true;
+    app.noteItemsList.getNoteById(id).isArchived = true;
     app.updateNotesOnLocalStorage();
   }
   deleteNote(id) {
-    noteItemsList.removeNoteFromList(id);
+    app.noteItemsList.removeNoteFromList(id);
     app.updateNotesOnLocalStorage();
   }
   deleteTrashedNotes() {
@@ -86,7 +86,7 @@ export class NoteItemController {
   trashNote(id) {
     app.noteItemsList.getNoteById(id).isTrashed = true;
     app.noteItemsList.getNoteById(id).noteTime.deletionDate =
-      Date.now() + SEVEN_DAYS_IN_MILLISECONDS;
+      Date.now() + app.SEVEN_DAYS_IN_MILLISECONDS;
     app.updateNotesOnLocalStorage();
   }
   unarchiveNote(id) {
