@@ -190,19 +190,24 @@ export class NoteItemController {
     toDoItemTextarea.value = "";
     toDoItemTextarea.value = toDoItemLabel.textContent;
     this.#hide(toDoItemLabel);
-    toDoItemTextarea.addEventListener("input", (event) => {
+   
+    toDoItemTextarea.addEventListener("keydown", (event) => {
+      if (
+        
+        event.key == "Shift" ||
+        event.key == "Control" ||
+        event.key == "Alt"
+      )
+        return;
       if (event.keyCode >= 65 && event.keyCode <= 90) {
+        toDoItemLabel.textContent = "";
+
         toDoItemLabel.textContent = toDoItemTextarea.value;
       }
-    });
-    toDoItemTextarea.addEventListener("blur", () => {
-      toDoItemLabel.textContent = toDoItemTextarea.value;
-    })
-    toDoItemTextarea.addEventListener("keydown", (event) => {
-      
-      if (event.key == "Enter") {
+      if (event.key == "Tab" || event.key == "Enter") {
+        toDoItemLabel.textContent = toDoItemTextarea.value;
         this.#hide(toDoItemTextarea);
-        toDoItemTextarea.blur();
+
         this.#show(toDoItemLabel);
         if (toDoItemLabel.textContent != "") {
           toDoItemLabel.textContent = toDoItemTextarea.value;

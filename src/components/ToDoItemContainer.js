@@ -48,15 +48,20 @@ export class ToDoItemContainer {
     );
     element
       .querySelector(".to-do-item-placeholder .to-do-item-textarea")
-      .addEventListener("keydown", (event) => app.noteItemsController.createNewToDoItem(this.noteItem.id));
+      .addEventListener("keydown", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        app.noteItemsController.createNewToDoItem(this.noteItem.id);
+      });
     element
       .querySelector(".completed-items-div")
-      .addEventListener("click", () =>
-        app.noteItemsController.toggleCompletedItemsList(this.noteItem.id)
-      );
+      .addEventListener("click", (event) => {
+        event.stopPropagation();
+        app.noteItemsController.toggleCompletedItemsList(this.noteItem.id);
+      });
     return element;
   }
-  
+
   update() {
     this.uncheckedItems = [];
     this.checkedItems = [];
@@ -78,19 +83,22 @@ export class ToDoItemContainer {
       `;
     element
       .querySelector(".to-do-item-checkbox")
-      .addEventListener("click", () =>
-        app.noteItemsController.toggleChecked(noteId, toDoItem.id)
-      );
+      .addEventListener("click", (event) => {
+        event.stopPropagation();
+        app.noteItemsController.toggleChecked(noteId, toDoItem.id);
+      });
     element
       .querySelector(".to-do-item-label")
-      .addEventListener("click", () =>
-        app.noteItemsController.changeToDoItemLabel(noteId, toDoItem.id)
-      );
+      .addEventListener("click", (event) => {
+        event.stopPropagation();
+        app.noteItemsController.changeToDoItemLabel(noteId, toDoItem.id);
+      });
     element
       .querySelector(".to-do-item-delete")
-      .addEventListener("click", () =>
-        app.noteItemsController.deleteToDoItem(noteId, toDoItem.id)
-      );
+      .addEventListener("click", (event) => {
+        event.stopPropagation();
+        app.noteItemsController.deleteToDoItem(noteId, toDoItem.id);
+      });
     return element;
   }
 }

@@ -110,10 +110,13 @@ export class NewNoteController {
     const newToDoItem = document.createElement("div");
     newToDoItem.classList.add("newnote-to-do-item");
     newToDoItem.innerHTML = `
-      <div class="newnote-to-do-item-checkbox" checked="false" onclick="newNoteController.toggleCheckbox(this)"></div>
-      <textarea class="newnote-item-placeholder-textarea" placeholder="List item" onkeydown="newNoteController.editText(event)"></textarea>
-      <div class="newnote-to-do-item-delete" onclick="newNoteController.deleteToDoItem(this)"></div>
+      <div class="newnote-to-do-item-checkbox" checked="false"></div>
+      <textarea class="newnote-item-placeholder-textarea" placeholder="List item"></textarea>
+      <div class="newnote-to-do-item-delete"></div>
     `;
+    newToDoItem.querySelector(".newnote-to-do-item-checkbox").addEventListener("click", (event) => app.newNoteController.toggleCheckbox(event.target));
+    newToDoItem.querySelector(".newnote-item-placeholder-textarea").addEventListener("keydown", (event) => app.newNoteController.editText(event));
+    newToDoItem.querySelector(".newnote-to-do-item-delete").addEventListener("click", (event) => app.newNoteController.deleteToDoItem(event.target));
     document
       .querySelector(".newnote-to-do-items-area")
       .insertBefore(

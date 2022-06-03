@@ -68,41 +68,62 @@ export class NoteItemView {
       );
     }
     element.append(new LowerToolbarComponent(noteItem));
+    // Event Listeners
+    element.addEventListener("click", () =>
+      app.noteItemsController.editNote(id)
+    );
     element
       .querySelector(".note-card-done-button")
-      .addEventListener("click", () => app.noteItemsController.updateNote(id));
+      .addEventListener("click", (event) => {
+        event.stopPropagation();
+        app.noteItemsController.updateNote(id);
+      });
     element
       .querySelector(".note-card-title")
-      .addEventListener("click", () =>
-        app.noteItemsController.showNoteTitle(element)
-      );
+      .addEventListener("click", (event) => {
+        event.stopPropagation();
+        app.noteItemsController.showNoteTitle(element);
+      });
     if (!isToDoList) {
       element
         .querySelector(".note-card-desc")
-        .addEventListener("click", () =>
-          app.noteItemsController.showNoteDescription(element)
-        );
+        .addEventListener("click", (event) => {
+          event.stopPropagation();
+          app.noteItemsController.showNoteDescription(element);
+        });
     }
     element
       .querySelector("[data-button='archive-button']")
-      .addEventListener("click", () => app.noteItemsController.archiveNote(id));
+      .addEventListener("click", (event) => {
+        event.stopPropagation();
+        app.noteItemsController.archiveNote(id);
+      });
     element
       .querySelector("[data-button='delete-button']")
-      .addEventListener("click", () => app.noteItemsController.trashNote(id));
+      .addEventListener("click", (event) => {
+        event.stopPropagation();
+        app.noteItemsController.trashNote(id);
+      });
     element
       .querySelector(".color-button")
-      .addEventListener("click", () =>
-        app.noteItemsController.openColorMenu(id)
-      );
-    element
-      .querySelector(".menu-button")
-      .addEventListener("click", () => app.noteItemsController.openMenu(id));
-    element
-      .querySelector(".pin-button")
-      .addEventListener("click", () => app.noteItemsController.pinNote(id));
+      .addEventListener("click", (event) => {
+        event.stopPropagation();
+        app.noteItemsController.openColorMenu(id);
+      });
+    element.querySelector(".menu-button").addEventListener("click", (event) => {
+      event.stopPropagation();
+      app.noteItemsController.openMenu(id);
+    });
+    element.querySelector(".pin-button").addEventListener("click", (event) => {
+      event.stopPropagation();
+      app.noteItemsController.pinNote(id);
+    });
     element
       .querySelector(".notecard-pin-button")
-      .addEventListener("click", () => app.noteItemsController.pinNote(id));
+      .addEventListener("click", (event) => {
+        event.stopPropagation();
+        app.noteItemsController.pinNote(id);
+      });
 
     return element;
   }

@@ -73,6 +73,9 @@ export class NoteItemModel {
     if (this.toDoItems.length == 0) {
       item.id = 0;
     } else {
+      console.log(this.getToDoItems());
+      console.log(this.getToDoItemById(this.getToDoItems().length));
+      console.log(this.getToDoItemById(this.toDoItems.length -1).id);
       item.id = this.getToDoItemById(this.toDoItems.length -1).id + 1;
     }
     this.toDoItems.push(item);
