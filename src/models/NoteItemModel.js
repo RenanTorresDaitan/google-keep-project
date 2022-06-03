@@ -1,8 +1,8 @@
 export class NoteItemModel {
-  constructor({
+  constructor ({
     _id = null,
-    noteTitle = "",
-    noteDescription = "",
+    noteTitle = '',
+    noteDescription = '',
     noteTime = { creationDate: 0, deletionDate: null },
     isPinned = false,
     isToDoList = false,
@@ -10,77 +10,92 @@ export class NoteItemModel {
     isArchived = false,
     isTrashed = false,
     toDoItems = [],
-    color = "white",
+    color = 'white'
   } = {}) {
-    this._id = _id;
-    this.noteTitle = noteTitle;
-    this.noteDescription = noteDescription;
-    this.noteTime = noteTime;
-    this.isPinned = isPinned;
-    this.isToDoList = isToDoList;
-    this.isReminder = isReminder;
-    this.isArchived = isArchived;
-    this.isTrashed = isTrashed;
-    this.toDoItems = toDoItems;
-    this.color = color;
+    this._id = _id
+    this.noteTitle = noteTitle
+    this.noteDescription = noteDescription
+    this.noteTime = noteTime
+    this.isPinned = isPinned
+    this.isToDoList = isToDoList
+    this.isReminder = isReminder
+    this.isArchived = isArchived
+    this.isTrashed = isTrashed
+    this.toDoItems = toDoItems
+    this.color = color
   }
 
-  get id() {
-    return this._id;
+  get id () {
+    return this._id
   }
-  set id(newId) {
-    this._id = newId;
+
+  set id (newId) {
+    this._id = newId
   }
-  get title() {
-    return this.noteTitle;
+
+  get title () {
+    return this.noteTitle
   }
-  set title(noteTitle) {
-    this.noteTitle = noteTitle;
+
+  set title (noteTitle) {
+    this.noteTitle = noteTitle
   }
-  get description() {
-    return this.noteDescription;
+
+  get description () {
+    return this.noteDescription
   }
-  set description(noteDescription) {
-    this.noteDescription = noteDescription;
+
+  set description (noteDescription) {
+    this.noteDescription = noteDescription
   }
-  getTime() {
-    return this.noteTime.creationDate;
+
+  getTime () {
+    return this.noteTime.creationDate
   }
-  setTimeToDelete(time) {
-    this.noteTime.deletionDate = time;
+
+  setTimeToDelete (time) {
+    this.noteTime.deletionDate = time
   }
-  checkTimeToDelete() {
-    if (this.noteTime.deletionDate == null) return false;
-    if (this.noteTime.deletionDate - Date.now() >= 0) return false;
-    return true;
+
+  checkTimeToDelete () {
+    if (this.noteTime.deletionDate == null) return false
+    if (this.noteTime.deletionDate - Date.now() >= 0) return false
+    return true
   }
-  isPinned() {
-    return this.isPinned;
+
+  isPinned () {
+    return this.isPinned
   }
-  getColor() {
-    return this.color;
+
+  getColor () {
+    return this.color
   }
-  setColor(color) {
-    this.color = color;
+
+  setColor (color) {
+    this.color = color
   }
-  getToDoItems() {
-    return this.toDoItems;
+
+  getToDoItems () {
+    return this.toDoItems
   }
-  getToDoItemById(id) {
-    return this.toDoItems.find((item) => item.id == id);
+
+  getToDoItemById (id) {
+    return this.toDoItems.find((item) => item.id === id)
   }
-  addToDoItem(item) {
-    if (this.toDoItems.length == 0) {
-      item.id = 0;
+
+  addToDoItem (item) {
+    if (this.toDoItems.length === 0) {
+      item.id = 0
     } else {
-      console.log(this.getToDoItems());
-      console.log(this.getToDoItemById(this.getToDoItems().length));
-      console.log(this.getToDoItemById(this.toDoItems.length -1).id);
-      item.id = this.getToDoItemById(this.toDoItems.length -1).id + 1;
+      console.log(this.getToDoItems())
+      console.log(this.getToDoItemById(this.getToDoItems().length))
+      console.log(this.getToDoItemById(this.toDoItems.length - 1).id)
+      item.id = this.getToDoItemById(this.toDoItems.length - 1).id + 1
     }
-    this.toDoItems.push(item);
+    this.toDoItems.push(item)
   }
-  removeToDoItemFromList(id) {
-    this.toDoItems = this.getToDoItems().filter((item) => item.id != id);
+
+  removeToDoItemFromList (id) {
+    this.toDoItems = this.getToDoItems().filter((item) => item.id !== id)
   }
 }

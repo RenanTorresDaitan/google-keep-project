@@ -1,46 +1,48 @@
-import { app } from "..";
+import { app } from '..'
 
 export class ColorBallContainer {
-  constructor(noteItem) {
-    this.noteItem = noteItem;
+  constructor (noteItem) {
+    this.noteItem = noteItem
     this.colors = [
-      "red",
-      "orange",
-      "yellow",
-      "green",
-      "teal",
-      "blue",
-      "darkblue",
-      "purple",
-      "pink",
-      "brown",
-      "gray",
-      "default",
-    ];
-    this._element = this._template();
-    return this._element;
+      'red',
+      'orange',
+      'yellow',
+      'green',
+      'teal',
+      'blue',
+      'darkblue',
+      'purple',
+      'pink',
+      'brown',
+      'gray',
+      'default'
+    ]
+    this._element = this._template()
+    return this._element
   }
-  _template() {
-    const element = document.createElement("div");
-    element.classList.add("color-ball-container", "hide");
-    this.colors.map((color) => element.append(this.createColorBall(color)));
+
+  _template () {
+    const element = document.createElement('div')
+    element.classList.add('color-ball-container', 'hide')
+    this.colors.map((color) => element.append(this.createColorBall(color)))
     element
-      .querySelectorAll(".color-ball")
+      .querySelectorAll('.color-ball')
       .forEach((ball) =>
-        ball.addEventListener("click", () =>
+        ball.addEventListener('click', () =>
           app.noteItemsController.changeNoteColor(
             this.noteItem.id,
-            ball.getAttribute("data-color")
+            ball.getAttribute('data-color')
           )
         )
-      );
-    return element;
+      )
+    return element
   }
-  createColorBall(color) {
-    const element = document.createElement("span");
-    element.classList.add("color-ball");
-    element.setAttribute("role", "button");
-    element.setAttribute("data-color", color);
-    return element;
+
+  createColorBall (color) {
+    const element = document.createElement('span')
+    element.classList.add('color-ball')
+    element.setAttribute('role', 'button')
+    element.setAttribute('data-color', color)
+    return element
   }
 }

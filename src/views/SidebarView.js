@@ -1,16 +1,17 @@
-import lampIcon from "../resources/svg/lamp-icon.svg";
-import bellIcon from "../resources/svg/bell-icon.svg";
-import pencilIcon from "../resources/svg/pencil-icon.svg";
-import boxIcon from "../resources/svg/box-icon.svg";
-import trashIcon from "../resources/svg/trash-icon.svg";
-import { app } from "../index";
+import lampIcon from '../resources/svg/lamp-icon.svg'
+import bellIcon from '../resources/svg/bell-icon.svg'
+import pencilIcon from '../resources/svg/pencil-icon.svg'
+import boxIcon from '../resources/svg/box-icon.svg'
+import trashIcon from '../resources/svg/trash-icon.svg'
+import { app } from '../index'
 
 export class SidebarView {
-  constructor() {
-    this._element = this._template();
+  constructor () {
+    this._element = this._template()
   }
-  _template() {
-    const element = document.querySelector(".sidebar-container");
+
+  _template () {
+    const element = document.querySelector('.sidebar-container')
     element.innerHTML = `
       <nav class="sidebar">
         <div class="sidebar-item" id="sidebar-item-notes" active ">
@@ -44,53 +45,59 @@ export class SidebarView {
           </div>
         </div>
       </nav>
-  `;
+  `
     element
-      .querySelector("#sidebar-item-notes")
-      .addEventListener("click", (event) =>
+      .querySelector('#sidebar-item-notes')
+      .addEventListener('click', (event) =>
         this.changeToNotesPage(event.target)
-      );
+      )
     element
-      .querySelector("#sidebar-item-reminders")
-      .addEventListener("click", (event) =>
+      .querySelector('#sidebar-item-reminders')
+      .addEventListener('click', (event) =>
         this.changeToRemindersPage(event.target)
-      );
+      )
     element
-      .querySelector("#sidebar-item-archive")
-      .addEventListener("click", (event) =>
+      .querySelector('#sidebar-item-archive')
+      .addEventListener('click', (event) =>
         this.changeToArchivePage(event.target)
-      );
+      )
     element
-      .querySelector("#sidebar-item-trash")
-      .addEventListener("click", (event) =>
+      .querySelector('#sidebar-item-trash')
+      .addEventListener('click', (event) =>
         this.changeToTrashPage(event.target)
-      );
-    return element;
+      )
+    return element
   }
-  removeActiveFromSidebarItems() {
-    this._element.querySelector("[active]").removeAttribute("active");
+
+  removeActiveFromSidebarItems () {
+    this._element.querySelector('[active]').removeAttribute('active')
   }
-  changeToActiveSidebar() {
-    this._element.querySelector("[active]").click();
+
+  changeToActiveSidebar () {
+    this._element.querySelector('[active]').click()
   }
-  changeToNotesPage(sidebar) {
-    this.removeActiveFromSidebarItems();
-    sidebar.setAttribute("active", "");
-    app.pageHeadersController.changeToNotesPage();
+
+  changeToNotesPage (sidebar) {
+    this.removeActiveFromSidebarItems()
+    sidebar.setAttribute('active', '')
+    app.pageHeadersController.changeToNotesPage()
   }
-  changeToRemindersPage(sidebar) {
-    this.removeActiveFromSidebarItems();
-    sidebar.setAttribute("active", "");
-    app.pageHeadersController.changeToRemindersPage();
+
+  changeToRemindersPage (sidebar) {
+    this.removeActiveFromSidebarItems()
+    sidebar.setAttribute('active', '')
+    app.pageHeadersController.changeToRemindersPage()
   }
-  changeToArchivePage(sidebar) {
-    this.removeActiveFromSidebarItems();
-    sidebar.setAttribute("active", "");
-    app.pageHeadersController.changeToArchivePage();
+
+  changeToArchivePage (sidebar) {
+    this.removeActiveFromSidebarItems()
+    sidebar.setAttribute('active', '')
+    app.pageHeadersController.changeToArchivePage()
   }
-  changeToTrashPage(sidebar) {
-    this.removeActiveFromSidebarItems();
-    sidebar.setAttribute("active", "");
-    app.pageHeadersController.changeToTrashPage();
+
+  changeToTrashPage (sidebar) {
+    this.removeActiveFromSidebarItems()
+    sidebar.setAttribute('active', '')
+    app.pageHeadersController.changeToTrashPage()
   }
 }
