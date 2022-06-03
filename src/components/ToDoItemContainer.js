@@ -48,15 +48,7 @@ export class ToDoItemContainer {
     );
     element
       .querySelector(".to-do-item-placeholder .to-do-item-textarea")
-      .addEventListener("keydown", () =>
-        {
-          event.preventDefault();
-          element.insertBefore(
-            ToDoItemContainer.createToDoItem(this.noteItem.id,{id: 10, label: "ok", isChecked: false}),
-            element.querySelector(".to-do-item-placeholder")
-          )
-          
-        });
+      .addEventListener("keydown", (event) => app.noteItemsController.createNewToDoItem(this.noteItem.id));
     element
       .querySelector(".completed-items-div")
       .addEventListener("click", () =>
@@ -64,6 +56,7 @@ export class ToDoItemContainer {
       );
     return element;
   }
+  
   update() {
     this.uncheckedItems = [];
     this.checkedItems = [];

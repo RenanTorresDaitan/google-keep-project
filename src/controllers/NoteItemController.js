@@ -190,35 +190,28 @@ export class NoteItemController {
     toDoItemTextarea.value = "";
     toDoItemTextarea.value = toDoItemLabel.textContent;
     this.#hide(toDoItemLabel);
-    toDoItemTextarea.addEventListener("blur", () => {
-      toDoItemLabel.textContent = toDoItemTextarea.value;
-      toDoItemTextarea.dispatchEvent(
-        new KeyboardEvent("keydown", {
-          key: "Enter",
-          code: "Enter",
-          shiftKey: false,
-          ctrlKey: false,
-          metaKey: false,
-        })
-      );
-    });
     toDoItemTextarea.addEventListener("input", (event) => {
       if (event.keyCode >= 65 && event.keyCode <= 90) {
         toDoItemLabel.textContent = toDoItemTextarea.value;
       }
     });
+    toDoItemTextarea.addEventListener("blur", () => {
+      toDoItemLabel.textContent = toDoItemTextarea.value;
+    })
     toDoItemTextarea.addEventListener("keydown", (event) => {
+      
       if (event.key == "Enter") {
         this.#hide(toDoItemTextarea);
+        toDoItemTextarea.blur();
         this.#show(toDoItemLabel);
         if (toDoItemLabel.textContent != "") {
           toDoItemLabel.textContent = toDoItemTextarea.value;
-          this.updateNote(id);
+          this.#show(document.querySelector(`[data-note-id="${id}"] .note-card-done-button`));
+          itemPlaceholder.querySelector(".to-do-item-textarea").focus();
         } else {
           this.deleteToDoItem(id, itemId);
         }
-        this.#hide(itemPlaceholder);
-        event.preventDefault();
+
       }
     });
   }
