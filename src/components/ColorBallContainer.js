@@ -1,8 +1,8 @@
-import { app } from '..'
+import { app } from '..';
 
 export class ColorBallContainer {
   constructor (noteItem) {
-    this.noteItem = noteItem
+    this.noteItem = noteItem;
     this.colors = [
       'red',
       'orange',
@@ -16,15 +16,15 @@ export class ColorBallContainer {
       'brown',
       'gray',
       'default'
-    ]
-    this._element = this._template()
-    return this._element
+    ];
+    this._element = this._template();
+    return this._element;
   }
 
   _template () {
-    const element = document.createElement('div')
-    element.classList.add('color-ball-container', 'hide')
-    this.colors.map((color) => element.append(this.createColorBall(color)))
+    const element = document.createElement('div');
+    element.classList.add('color-ball-container', 'hide');
+    this.colors.map((color) => element.append(this.createColorBall(color)));
     element
       .querySelectorAll('.color-ball')
       .forEach((ball) =>
@@ -34,15 +34,15 @@ export class ColorBallContainer {
             ball.getAttribute('data-color')
           )
         )
-      )
-    return element
+      );
+    return element;
   }
 
   createColorBall (color) {
-    const element = document.createElement('span')
-    element.classList.add('color-ball')
-    element.setAttribute('role', 'button')
-    element.setAttribute('data-color', color)
-    return element
+    const element = document.createElement('span');
+    element.classList.add('color-ball');
+    element.setAttribute('role', 'button');
+    element.setAttribute('data-color', color);
+    return element;
   }
 }

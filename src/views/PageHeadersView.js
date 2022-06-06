@@ -1,15 +1,15 @@
-import { NoteListView } from './NoteListView'
-import { NewNoteComponent } from '../components/NewNoteComponent'
-import noNotesFolder from '../resources/no-notes-folder.png'
-import { app } from '../index'
+import { NoteListView } from './NoteListView';
+import { NewNoteComponent } from '../components/NewNoteComponent';
+import noNotesFolder from '../resources/no-notes-folder.png';
+import { app } from '../index';
 
 export class PageHeadersView {
-  constructor () {
-    this._element = this._template('NOTES', [])
+  constructor() {
+    this._element = this._template('NOTES', []);
   }
 
-  _template (sidebar, notes) {
-    const element = document.querySelector('.content')
+  _template(sidebar, notes) {
+    const element = document.querySelector('.content');
     element.innerHTML = `
       <div class="trash-header ${
         sidebar === 'TRASH' ? '' : 'hide'
@@ -42,23 +42,23 @@ export class PageHeadersView {
         <div class="no-trashed-img"></div>
         <div class="no-trashed-label">No notes in Trash</div>
       </div>
-      `
+      `;
     element
       .querySelector('.empty-trash-btn')
       .addEventListener('click', () =>
         app.noteItemsController.deleteTrashedNotes()
-      )
+      );
     if (sidebar !== 'TRASH') {
       element.insertBefore(
         new NewNoteComponent(),
         element.querySelector('.trash-header')
-      )
+      );
     }
-    element.append(new NoteListView(notes))
-    return element
+    element.append(new NoteListView(notes));
+    return element;
   }
 
-  update (sidebar, list) {
-    this._element = this._template(sidebar, list)
+  update(sidebar, list) {
+    this._element = this._template(sidebar, list);
   }
 }
