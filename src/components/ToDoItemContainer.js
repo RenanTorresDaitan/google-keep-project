@@ -54,6 +54,12 @@ export class ToDoItemContainer {
         event.stopPropagation();
         app.noteItemsController.createNewToDoItem(this.noteItem.id);
       });
+      element
+      .querySelector('.to-do-item-placeholder .to-do-item-textarea')
+      .addEventListener('click', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+      });
     element
       .querySelector('.completed-items-div')
       .addEventListener('click', (event) => {

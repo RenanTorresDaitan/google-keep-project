@@ -9,13 +9,13 @@ import deleteForeverIcon from '../resources/svg/notecard/delete-forever-icon.svg
 import { app } from '../index';
 
 export class LowerToolbarComponent {
-  constructor (noteItem) {
+  constructor(noteItem) {
     this.noteItem = noteItem;
     this._element = this._template();
     return this._element;
   }
 
-  _template () {
+  _template() {
     const { id, isArchived, isTrashed } = this.noteItem;
     const element = document.createElement('div');
     element.classList.add('note-lower-toolbar');
@@ -55,28 +55,42 @@ export class LowerToolbarComponent {
     `;
     element
       .querySelector("[data-button='add-reminder']")
-      .addEventListener('click', () => app.noteItemsController.addReminder(id));
+      .addEventListener('click', (event) => {
+        event.stopPropagation();
+        app.noteItemsController.addReminder(id);
+      });
     element
       .querySelector("[data-button='color-button']")
-      .addEventListener('click', () =>
-        app.noteItemsController.openColorMenu(id)
-      );
+      .addEventListener('click', (event) => {
+        event.stopPropagation();
+        app.noteItemsController.openColorMenu(id);
+      });
     element
       .querySelector("[data-button='menu-button']")
-      .addEventListener('click', () => app.noteItemsController.openMenu(id));
+      .addEventListener('click', (event) => {
+        event.stopPropagation();
+        app.noteItemsController.openMenu(id);
+      });
     element
       .querySelector("[data-button='restore-button']")
-      .addEventListener('click', () => app.noteItemsController.restoreNote(id));
+      .addEventListener('click', (event) => {
+        event.stopPropagation();
+        app.noteItemsController.restoreNote(id);
+      });
     element
       .querySelector("[data-button='delete-button']")
-      .addEventListener('click', () => app.noteItemsController.deleteNote(id));
+      .addEventListener('click', (event) => {
+        event.stopPropagation();
+        app.noteItemsController.deleteNote(id);
+      });
     element
       .querySelector("[data-button='archive-button']")
-      .addEventListener('click', () =>
+      .addEventListener('click', (event) => {
+        event.stopPropagation();
         isArchived
           ? app.noteItemsController.unarchiveNote(id)
-          : app.noteItemsController.archiveNote(id)
-      );
+          : app.noteItemsController.archiveNote(id);
+      });
     return element;
   }
 }
