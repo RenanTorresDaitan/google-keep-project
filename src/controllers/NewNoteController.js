@@ -1,7 +1,5 @@
-import { app } from '../index';
-
-export class NewNoteController {
-  startEditingNewNote (noteType) {
+export default class NewNoteController {
+  startEditingNewNote(noteType) {
     const noteItemPlaceholder = document.querySelector(
       '.newnote-item-placeholder'
     );
@@ -25,7 +23,7 @@ export class NewNoteController {
     }
   }
 
-  _endEditingNewNote () {
+  _endEditingNewNote() {
     const noteTitleTextarea = document.querySelector('.newnote-title-textarea');
     const noteDescTextarea = document.querySelector('.newnote-desc-textarea');
     const newNoteDialog = document.querySelector('#new-note-dialog');
@@ -38,7 +36,7 @@ export class NewNoteController {
     this.#show(noteDescTextarea);
   }
 
-  createNewNote (action) {
+  createNewNote(action) {
     const noteTitleTextarea = document.querySelector(
       '.newnote-title-textarea'
     ).value;
@@ -62,7 +60,7 @@ export class NewNoteController {
       isReminder: false,
       isArchived: false,
       isTrashed: false,
-      toDoItems: []
+      toDoItems: [],
     };
 
     // Update Note fields
@@ -72,21 +70,19 @@ export class NewNoteController {
     if (action === 'Archive') newNoteToCreate.isArchived = true;
 
     // To do items handling
-    Array.from(newNoteToDoItems).forEach(
-      (item, index) => {
-        if (item === document.querySelector('.newnote-item-placeholder')) { return; }
-        const checkbox = item.querySelector('.newnote-to-do-item-checkbox');
-        const textArea = item.querySelector(
-          '.newnote-item-placeholder-textarea'
-        );
-        const newToDoItem = {
-          id: index,
-          label: textArea.value,
-          isChecked: checkbox.getAttribute('checked') === 'true'
-        };
-        newNoteToCreate.toDoItems.push(newToDoItem);
+    Array.from(newNoteToDoItems).forEach((item, index) => {
+      if (item === document.querySelector('.newnote-item-placeholder')) {
+        return;
       }
-    );
+      const checkbox = item.querySelector('.newnote-to-do-item-checkbox');
+      const textArea = item.querySelector('.newnote-item-placeholder-textarea');
+      const newToDoItem = {
+        id: index,
+        label: textArea.value,
+        isChecked: checkbox.getAttribute('checked') === 'true',
+      };
+      newNoteToCreate.toDoItems.push(newToDoItem);
+    });
     newNoteToCreate.isToDoList = newNoteToCreate.toDoItems.length > 0;
     if (emptyFields && !newNoteToCreate.isToDoList) {
       this._endEditingNewNote();
@@ -95,7 +91,7 @@ export class NewNoteController {
     }
   }
 
-  createNewToDoItem (event) {
+  createNewToDoItem(event) {
     if (
       event.key === 'Tab' ||
       event.key === 'Shift' ||
@@ -142,27 +138,27 @@ export class NewNoteController {
     }
   }
 
-  editText (event) {
+  editText(event) {
     if (event.key === 'Enter') {
       document.querySelector('#new-item-placeholder').focus();
       event.preventDefault();
     }
   }
 
-  deleteToDoItem (deleteBtn) {
+  deleteToDoItem(deleteBtn) {
     document
       .querySelector('.newnote-to-do-items-area')
       .removeChild(deleteBtn.parentNode);
   }
 
-  toggleCompletedItems () {
+  toggleCompletedItems() {
     document
       .querySelector('.completed-items-btn')
       .classList.toggle('rotate-90-cw');
     document.querySelector('.completed-items-list').classList.toggle('hide');
   }
 
-  toggleCheckbox (checkbox) {
+  toggleCheckbox(checkbox) {
     checkbox.setAttribute(
       'checked',
       checkbox.getAttribute('checked') === 'true' ? 'false' : 'true'
@@ -170,7 +166,7 @@ export class NewNoteController {
     this._organizeToDoItems();
   }
 
-  _organizeToDoItems () {
+  _organizeToDoItems() {
     const newNoteToDoItems = Array.from(
       document
         .querySelector('.newnote-to-do-items-area')
@@ -207,19 +203,19 @@ export class NewNoteController {
     // });
   }
 
-  openNewNoteMenu () {
+  openNewNoteMenu() {
     this.#show(document.querySelector('.newnote-menu'));
   }
 
-  closeNewNoteMenu () {
+  closeNewNoteMenu() {
     this.#hide(document.querySelector('.newnote-menu'));
   }
 
-  pinNewNote () {
+  pinNewNote() {
     this.#toggle(document.querySelector('.newnote-pin-button'), 'note-pinned');
   }
 
-  _deleteExistingToDoItems () {
+  _deleteExistingToDoItems() {
     Array.from(
       document.querySelector('.newnote-to-do-items-area').children
     ).forEach((el) => {
@@ -238,15 +234,15 @@ export class NewNoteController {
   }
 
   // Visibility Helper Methods
-  #toggle (domElement, className) {
+  #toggle(domElement, className) {
     domElement.classList.toggle(className);
   }
 
-  #hide (domElement) {
+  #hide(domElement) {
     domElement.classList.add('hide');
   }
 
-  #show (domElement) {
+  #show(domElement) {
     domElement.classList.remove('hide');
   }
 }

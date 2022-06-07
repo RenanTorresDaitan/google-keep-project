@@ -1,10 +1,13 @@
 import searchIcon from '../resources/svg/search-icon.svg';
 import closeIcon from '../resources/svg/close-icon.svg';
-import { app } from '../index';
 
-export class SearchPanelView {
-  constructor() {
+export default class SearchPanelView {
+  constructor(controller) {
+    this.pageHeadersController = controller;
     this._element = this._template();
+  }
+
+  build() {
     return this._element;
   }
 
@@ -35,11 +38,11 @@ export class SearchPanelView {
     this._element.classList.add('hide');
     document.querySelector('.header-icons').classList.remove('hide');
     document.querySelector('.header-container').classList.remove('hide');
-    app.pageHeadersController.changeToNotesPage();
+    this.pageHeadersController.changeToNotesPage();
   }
 
   searchNotes(event) {
     if (event.key === 'Escape') this.cancelSearch();
-    app.pageHeadersController.showSearchedNotes(event.target.value);
+    this.pageHeadersController.showSearchedNotes(event.target.value);
   }
 }

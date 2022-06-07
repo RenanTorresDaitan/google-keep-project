@@ -1,20 +1,28 @@
-import { app } from '../index';
+import PageHeadersView from '../views/PageHeadersView';
+import NoteItemController from './NoteItemController';
+import AppHeaderView from '../views/AppHeaderView';
 
-export class PageHeadersController {
-  showSearchedNotes (searchTerm) {
-    const searchList = this.sortList().filter((item) => {
-      return (item.noteTitle.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.noteDescription.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.toDoItems
-          .map((item) => item.label.toLowerCase())
-          .join(' ')
-          .includes(searchTerm));
-    });
-    app.pageHeadersView.update('NOTES', searchList);
+export default class PageHeadersController {
+  constructor(db) {
+    this.dbManager = db;
+    this.appHeaderView = new AppHeaderView(this);
+    this.pageHeadersView = new PageHeadersView(new NoteItemController(this.dbManager));
   }
 
-  sortList () {
-    const sortedList = app.noteItemsList.getList();
+  showSearchedNotes(searchTerm) {
+    const searchList = this.sortList().filter(
+      (item) => item.noteTitle.toLowerCase().includes(searchTerm.toLowerCase())
+    || item.noteDescription.toLowerCase().includes(searchTerm.toLowerCase())
+    || item.toDoItems
+      .map((toDoItem) => toDoItem.label.toLowerCase())
+      .join(' ')
+      .includes(searchTerm),
+    );
+    this.pageHeadersView.update('NOTES', searchList);
+  }
+
+  sortList() {
+    const sortedList = this.dbManager.noteItemsList.getList();
     if (sortedList.length) {
       sortedList
         .sort((a, b) => b.getTime() - a.getTime())
@@ -23,33 +31,27 @@ export class PageHeadersController {
     return sortedList;
   }
 
-  changeToNotesPage () {
-    const notesList = this.sortList().filter(
-      (item) => !item.isArchived && !item.isTrashed
-    );
-    app.pageHeadersView.update('NOTES', notesList);
-    app.appHeaderView.changeAppHeader('Keep', true);
+  changeToNotesPage() {
+    const notesList = this.sortList().filter((item) => !item.isArchived && !item.isTrashed);
+    this.pageHeadersView.update('NOTES', notesList);
+    this.appHeaderView.changeAppHeader('Keep', true);
   }
 
-  changeToRemindersPage () {
-    const notesList = this.sortList().filter(
-      (item) => item.isReminder && !item.isTrashed
-    );
-    app.pageHeadersView.update('REMINDERS', notesList);
-    app.appHeaderView.changeAppHeader('Reminders', false);
+  changeToRemindersPage() {
+    const notesList = this.sortList().filter((item) => item.isReminder && !item.isTrashed);
+    this.pageHeadersView.update('REMINDERS', notesList);
+    this.appHeaderView.changeAppHeader('Reminders', false);
   }
 
-  changeToArchivePage () {
-    const notesList = this.sortList().filter(
-      (item) => item.isArchived && !item.isTrashed
-    );
-    app.pageHeadersView.update('ARCHIVED', notesList);
-    app.appHeaderView.changeAppHeader('Archive', false);
+  changeToArchivePage() {
+    const notesList = this.sortList().filter((item) => item.isArchived && !item.isTrashed);
+    this.pageHeadersView.update('ARCHIVED', notesList);
+    this.appHeaderView.changeAppHeader('Archive', false);
   }
 
-  changeToTrashPage () {
+  changeToTrashPage() {
     const notesList = this.sortList().filter((item) => item.isTrashed);
-    app.pageHeadersView.update('TRASH', notesList);
-    app.appHeaderView.changeAppHeader('Trash', false);
+    this.pageHeadersView.update('TRASH', notesList);
+    this.appHeaderView.changeAppHeader('Trash', false);
   }
 }

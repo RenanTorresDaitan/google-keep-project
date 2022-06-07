@@ -3,14 +3,13 @@ import bellIcon from '../resources/svg/bell-icon.svg';
 import pencilIcon from '../resources/svg/pencil-icon.svg';
 import boxIcon from '../resources/svg/box-icon.svg';
 import trashIcon from '../resources/svg/trash-icon.svg';
-import { app } from '../index';
 
-export class SidebarView {
-  constructor () {
+export default class SidebarView {
+  constructor() {
     this._element = this._template();
   }
 
-  _template () {
+  _template() {
     const element = document.querySelector('.sidebar-container');
     element.innerHTML = `
       <nav class="sidebar">
@@ -48,56 +47,48 @@ export class SidebarView {
   `;
     element
       .querySelector('#sidebar-item-notes')
-      .addEventListener('click', (event) =>
-        this.changeToNotesPage(event.target)
-      );
+      .addEventListener('click', (event) => this.changeToNotesPage(event.target));
     element
       .querySelector('#sidebar-item-reminders')
-      .addEventListener('click', (event) =>
-        this.changeToRemindersPage(event.target)
-      );
+      .addEventListener('click', (event) => this.changeToRemindersPage(event.target));
     element
       .querySelector('#sidebar-item-archive')
-      .addEventListener('click', (event) =>
-        this.changeToArchivePage(event.target)
-      );
+      .addEventListener('click', (event) => this.changeToArchivePage(event.target));
     element
       .querySelector('#sidebar-item-trash')
-      .addEventListener('click', (event) =>
-        this.changeToTrashPage(event.target)
-      );
+      .addEventListener('click', (event) => this.changeToTrashPage(event.target));
     return element;
   }
 
-  removeActiveFromSidebarItems () {
+  removeActiveFromSidebarItems() {
     this._element.querySelector('[active]').removeAttribute('active');
   }
 
-  changeToActiveSidebar () {
+  changeToActiveSidebar() {
     this._element.querySelector('[active]').click();
   }
 
-  changeToNotesPage (sidebar) {
+  changeToNotesPage(sidebar) {
     this.removeActiveFromSidebarItems();
     sidebar.setAttribute('active', '');
-    app.pageHeadersController.changeToNotesPage();
+    new PageHeadersController().changeToNotesPage();
   }
 
-  changeToRemindersPage (sidebar) {
+  changeToRemindersPage(sidebar) {
     this.removeActiveFromSidebarItems();
     sidebar.setAttribute('active', '');
-    app.pageHeadersController.changeToRemindersPage();
+    new PageHeadersController().changeToRemindersPage();
   }
 
-  changeToArchivePage (sidebar) {
+  changeToArchivePage(sidebar) {
     this.removeActiveFromSidebarItems();
     sidebar.setAttribute('active', '');
-    app.pageHeadersController.changeToArchivePage();
+    new PageHeadersController().changeToArchivePage();
   }
 
-  changeToTrashPage (sidebar) {
+  changeToTrashPage(sidebar) {
     this.removeActiveFromSidebarItems();
     sidebar.setAttribute('active', '');
-    app.pageHeadersController.changeToTrashPage();
+    new PageHeadersController().changeToTrashPage();
   }
 }

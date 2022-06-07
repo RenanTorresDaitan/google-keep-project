@@ -1,60 +1,59 @@
 import plusIcon from '../resources/svg/notecard/plus-icon.svg';
-import { app } from '..';
 
-export class ToDoItemContainer {
-  constructor (noteItem) {
+export default class ToDoItemContainer {
+  constructor(noteItem, controller) {
     this.noteItem = noteItem;
     this.toDoItems = noteItem.getToDoItems();
+    this.noteItemsController = controller;
     this.uncheckedItems = [];
     this.checkedItems = [];
     this.update();
+  }
+
+  build() {
     return this._element;
   }
 
-  _template () {
+  _template() {
     const element = document.createElement('div');
     element.setAttribute('class', 'note-to-do-items');
     element.innerHTML = `
       <div class="to-do-item-placeholder ${
-        this.toDoItems.length === 0 ? '' : 'hide'
-      }">
+  this.toDoItems.length === 0 ? '' : 'hide'
+}">
           <img class="svg-icon-large" src="${plusIcon}">
           <textarea class="to-do-item-textarea" placeholder="List item" tabindex="0"></textarea>
           </div>
           <div class="completed-items-area ${
-            this.checkedItems.length > 0 ? '' : 'hide'
-          }">
+  this.checkedItems.length > 0 ? '' : 'hide'
+}">
           <div class="completed-items-separator"></div>
             <div class="completed-items-div">
               <div class="completed-items-btn rotate-90-cw"></div>
               <label class="completed-items-label">${
-                this.checkedItems.length > 1
-                  ? `${this.checkedItems.length} Completed items`
-                  : '1 Completed item'
-              }</label>
+  this.checkedItems.length > 1
+    ? `${this.checkedItems.length} Completed items`
+    : '1 Completed item'
+}</label>
             </div>
               <div class="completed-items-list"></div>
         </div>
         `;
-    this.uncheckedItems.forEach((item) =>
-      element.insertBefore(
-        ToDoItemContainer.createToDoItem(this.noteItem.id, item),
-        element.querySelector('.to-do-item-placeholder')
-      )
-    );
-    this.checkedItems.forEach((item) =>
-      element
-        .querySelector('.completed-items-list')
-        .append(ToDoItemContainer.createToDoItem(this.noteItem.id, item))
-    );
+    this.uncheckedItems.forEach((item) => element.insertBefore(
+      ToDoItemContainer.createToDoItem(this.noteItem.id, item),
+      element.querySelector('.to-do-item-placeholder'),
+    ));
+    this.checkedItems.forEach((item) => element
+      .querySelector('.completed-items-list')
+      .append(ToDoItemContainer.createToDoItem(this.noteItem.id, item)));
     element
       .querySelector('.to-do-item-placeholder .to-do-item-textarea')
       .addEventListener('keydown', (event) => {
         event.preventDefault();
         event.stopPropagation();
-        app.noteItemsController.createNewToDoItem(this.noteItem.id);
+        this.noteItemsController.createNewToDoItem(this.noteItem.id);
       });
-      element
+    element
       .querySelector('.to-do-item-placeholder .to-do-item-textarea')
       .addEventListener('click', (event) => {
         event.preventDefault();
@@ -64,12 +63,12 @@ export class ToDoItemContainer {
       .querySelector('.completed-items-div')
       .addEventListener('click', (event) => {
         event.stopPropagation();
-        app.noteItemsController.toggleCompletedItemsList(this.noteItem.id);
+        this.noteItemsController.toggleCompletedItemsList(this.noteItem.id);
       });
     return element;
   }
 
-  update () {
+  update() {
     this.uncheckedItems = [];
     this.checkedItems = [];
     this.toDoItems.forEach((item) => {
@@ -79,7 +78,7 @@ export class ToDoItemContainer {
     this._element = this._template();
   }
 
-  static createToDoItem (noteId, toDoItem) {
+  static createToDoItem(noteId, toDoItem) {
     const element = document.createElement('div');
     element.setAttribute('class', 'to-do-item');
     element.setAttribute('data-item-id', toDoItem.id);
@@ -93,19 +92,19 @@ export class ToDoItemContainer {
       .querySelector('.to-do-item-checkbox')
       .addEventListener('click', (event) => {
         event.stopPropagation();
-        app.noteItemsController.toggleChecked(noteId, toDoItem.id);
+        this.noteItemsController.toggleChecked(noteId, toDoItem.id);
       });
     element
       .querySelector('.to-do-item-label')
       .addEventListener('click', (event) => {
         event.stopPropagation();
-        app.noteItemsController.changeToDoItemLabel(noteId, toDoItem.id);
+        this.noteItemsController.changeToDoItemLabel(noteId, toDoItem.id);
       });
     element
       .querySelector('.to-do-item-delete')
       .addEventListener('click', (event) => {
         event.stopPropagation();
-        app.noteItemsController.deleteToDoItem(noteId, toDoItem.id);
+        this.noteItemsController.deleteToDoItem(noteId, toDoItem.id);
       });
     return element;
   }

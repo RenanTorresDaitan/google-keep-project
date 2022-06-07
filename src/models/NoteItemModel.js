@@ -1,5 +1,5 @@
-export class NoteItemModel {
-  constructor ({
+export default class NoteItemModel {
+  constructor({
     _id = null,
     noteTitle = '',
     noteDescription = '',
@@ -10,7 +10,7 @@ export class NoteItemModel {
     isArchived = false,
     isTrashed = false,
     toDoItems = [],
-    color = 'white'
+    color = 'white',
   } = {}) {
     this._id = _id;
     this.noteTitle = noteTitle;
@@ -25,74 +25,75 @@ export class NoteItemModel {
     this.color = color;
   }
 
-  get id () {
+  get id() {
     return this._id;
   }
 
-  set id (newId) {
+  set id(newId) {
     this._id = newId;
   }
 
-  get title () {
+  get title() {
     return this.noteTitle;
   }
 
-  set title (noteTitle) {
+  set title(noteTitle) {
     this.noteTitle = noteTitle;
   }
 
-  get description () {
+  get description() {
     return this.noteDescription;
   }
 
-  set description (noteDescription) {
+  set description(noteDescription) {
     this.noteDescription = noteDescription;
   }
 
-  getTime () {
+  getTime() {
     return this.noteTime.creationDate;
   }
 
-  setTimeToDelete (time) {
+  setTimeToDelete(time) {
     this.noteTime.deletionDate = time;
   }
 
-  checkTimeToDelete () {
+  checkTimeToDelete() {
     if (this.noteTime.deletionDate == null) return false;
     if (this.noteTime.deletionDate - Date.now() >= 0) return false;
     return true;
   }
 
-  isPinned () {
+  isPinned() {
     return this.isPinned;
   }
 
-  getColor () {
+  getColor() {
     return this.color;
   }
 
-  setColor (color) {
+  setColor(color) {
     this.color = color;
   }
 
-  getToDoItems () {
+  getToDoItems() {
     return this.toDoItems;
   }
 
-  getToDoItemById (id) {
+  getToDoItemById(id) {
     return this.toDoItems.find((item) => item.id === id);
   }
 
-  addToDoItem (item) {
+  addToDoItem(item) {
+    const newToDoItem = item;
     if (this.toDoItems.length === 0) {
-      item.id = 0;
+      newToDoItem.id = 0;
     } else {
-      item.id = this.getToDoItemById(this.toDoItems.length - 1).id + 1;
+      newToDoItem.id = this.getToDoItemById(this.toDoItems.length - 1).id + 1;
     }
-    this.toDoItems.push(item);
+    this.toDoItems.push(newToDoItem);
   }
 
-  removeToDoItemFromList (id) {
+  removeToDoItemFromList(id) {
     this.toDoItems = this.getToDoItems().filter((item) => item.id !== id);
   }
 }

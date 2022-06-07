@@ -1,14 +1,18 @@
 import plusIcon from '../resources/svg/notecard/plus-icon.svg';
 import newListIcon from '../resources/svg/new-list-icon.svg';
-import { app } from '../index';
+import NewNoteController from '../controllers/NewNoteController';
 
-export class NewNoteComponent {
-  constructor () {
+export default class NewNoteComponent {
+  constructor() {
+    this.newNoteController = new NewNoteController();
     this._element = this._template();
+  }
+
+  build() {
     return this._element;
   }
 
-  _template () {
+  _template() {
     const element = document.createElement('div');
     element.setAttribute('class', 'newnote');
     element.setAttribute('id', 'new-note-dialog');
@@ -77,42 +81,34 @@ export class NewNoteComponent {
       `;
     element
       .querySelector('#archive-menu-button')
-      .addEventListener('click', () =>
-        app.newNoteController.createNewNote('Archive')
-      );
+      .addEventListener('click', () => this.newNoteController.createNewNote('Archive'));
     element
       .querySelector('#delete-menu-button')
-      .addEventListener('click', () =>
-        app.newNoteController._endEditingNewNote()
-      );
+      .addEventListener('click', () => this.newNoteController._endEditingNewNote());
     element
       .querySelector('#new-item-placeholder')
-      .addEventListener('keydown', (event) => app.newNoteController.createNewToDoItem(event));
+      .addEventListener('keydown', (event) => this.newNoteController.createNewToDoItem(event));
     element
       .querySelector('.newnote-menu-button')
-      .addEventListener('click', () => app.newNoteController.openNewNoteMenu());
+      .addEventListener('click', () => this.newNoteController.openNewNoteMenu());
     element
       .querySelector('.newnote-pin-button')
-      .addEventListener('click', () => app.newNoteController.pinNewNote());
+      .addEventListener('click', () => this.newNoteController.pinNewNote());
     element
       .querySelector('.completed-items-div')
-      .addEventListener('click', () => app.newNoteController.toggleCompletedItems());
+      .addEventListener('click', () => this.newNoteController.toggleCompletedItems());
     element
       .querySelector('.newnote-card-done-button')
-      .addEventListener('click', () => app.newNoteController.createNewNote('Create'));
+      .addEventListener('click', () => this.newNoteController.createNewNote('Create'));
     element
       .querySelector('.newnote-card-done-button')
       .addEventListener('keydown', () => element.click());
     element
       .querySelector('#new-note-button')
-      .addEventListener('click', () =>
-        app.newNoteController.startEditingNewNote('note')
-      );
+      .addEventListener('click', () => this.newNoteController.startEditingNewNote('note'));
     element
       .querySelector('#new-list-button')
-      .addEventListener('click', () =>
-        app.newNoteController.startEditingNewNote('list')
-      );
+      .addEventListener('click', () => this.newNoteController.startEditingNewNote('list'));
     return element;
   }
 }

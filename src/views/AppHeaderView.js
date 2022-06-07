@@ -2,14 +2,20 @@ import menuBarsIcon from '../resources/svg/menu-bars.svg';
 import searchIcon from '../resources/svg/search-icon.svg';
 import closeIcon from '../resources/svg/close-icon.svg';
 import openNewTabIcon from '../resources/svg/open-new-tab-icon.svg';
-import { SearchPanelView } from './SearchPanelView';
+import SearchPanelView from './SearchPanelView';
 
-export class AppHeaderView {
-  constructor () {
+export default class AppHeaderView {
+  constructor(controller) {
+    this.pageHeadersController = controller;
+    this.searchPanel = new SearchPanelView(this.pageHeadersController);
     this._element = this._template();
   }
 
-  _template () {
+  build() {
+    return this._element;
+  }
+
+  _template() {
     const element = document.querySelector('#app-header');
     element.innerHTML = `
       <div class="header-container">
@@ -36,13 +42,13 @@ export class AppHeaderView {
       .querySelector('#search-icon-btn')
       .addEventListener('click', () => this.openSearchPanel());
     element.insertBefore(
-      new SearchPanelView(),
-      element.querySelector('.header-icons')
+      this.searchPanel.build(),
+      element.querySelector('.header-icons'),
     );
     return element;
   }
 
-  changeAppHeader (title, subtitle) {
+  changeAppHeader(title, subtitle) {
     this._element.querySelector('.header-title').textContent = title;
     if (title !== 'Keep') {
       this._element.querySelector('.header-icon').classList.add('hide');
@@ -56,7 +62,7 @@ export class AppHeaderView {
     }
   }
 
-  openSearchPanel () {
+  openSearchPanel() {
     this._element.querySelector('#search-panel').classList.remove('hide');
     this._element.querySelector('#search-input').focus();
     this._element.querySelector('.header-icons').classList.add('hide');
