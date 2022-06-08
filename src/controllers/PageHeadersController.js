@@ -1,12 +1,15 @@
 import PageHeadersView from '../views/PageHeadersView';
 import NoteItemController from './NoteItemController';
 import AppHeaderView from '../views/AppHeaderView';
+import SidebarView from '../views/SidebarView';
 
 export default class PageHeadersController {
   constructor(db) {
     this.dbManager = db;
     this.appHeaderView = new AppHeaderView(this);
-    this.pageHeadersView = new PageHeadersView(new NoteItemController(this.dbManager));
+    this.sidebarView = new SidebarView(this);
+    this.noteItemController = new NoteItemController(this.dbManager, this.sidebarView);
+    this.pageHeadersView = new PageHeadersView(this.noteItemController);
   }
 
   showSearchedNotes(searchTerm) {

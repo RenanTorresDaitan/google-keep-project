@@ -16,10 +16,10 @@ export default class DBManager {
       const note = storedNote;
       this.noteItemsList.addNoteToList(new NoteItemModel(note));
     });
-    this.reloadNotes();
+    this.deleteOldNotes();
   }
 
-  reloadNotes() {
+  deleteOldNotes() {
     this.noteItemsList.getList().forEach((item) => {
       if (item.checkTimeToDelete()) {
         this.noteItemsList.removeNoteFromList(item.getId());
@@ -29,7 +29,6 @@ export default class DBManager {
 
   updateNotesOnLocalStorage() {
     localStorage.setItem(this.APP_NAME, JSON.stringify(this.noteItemsList));
-    this.reloadNotes();
   }
 
   createNewNoteItem(noteInfo) {

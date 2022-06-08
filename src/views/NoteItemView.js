@@ -9,8 +9,12 @@ export default class NoteItemView {
     this.noteItem = noteItem;
     this.noteItemsController = controller;
     this.colorBallContainer = new ColorBallContainer(this.noteItem, this.noteItemsController);
-    this.lowerToolbarComponent = new LowerToolbarComponent(this.noteItem);
-    this.toDoItemContainer = new ToDoItemContainer(this.noteItem, this.noteItemsController);
+    this.lowerToolbarComponent = new LowerToolbarComponent(
+      this.noteItem,
+      this,
+      this.noteItemsController,
+    );
+    this.toDoItemContainer = new ToDoItemContainer(this.noteItem, this);
     this._element = this._template(this.noteItem);
   }
 
@@ -78,7 +82,7 @@ export default class NoteItemView {
     }
     element.append(this.lowerToolbarComponent.build());
     // Event Listeners
-    element.addEventListener('click', () => this.noteItemsController.editNote(id));
+    element.addEventListener('click', () => this.editNote(id));
     element
       .querySelector('.note-card-done-button')
       .addEventListener('click', (event) => {
@@ -135,12 +139,75 @@ export default class NoteItemView {
     return element;
   }
 
+  toggleChecked(noteId, itemId) {
+    this.noteItemsController.toggleChecked(noteId, itemId);
+  }
+
+  deleteToDoItem(noteId, itemId) {
+    this.noteItemsController.deleteToDoItem(noteId, itemId);
+  }
+
+  editNote() {
+    this._element.querySelector('.note-card-done-button').classList.remove('hide');
+    this.showNoteTitle();
+    if (this.noteItem.isToDoList) {
+      this._element.querySelector('.to-do-item-placeholder').classList.remove('hide');
+    } else {
+      this.showNoteDescription();
+    }
+  }
+
+  changeToDoItemLabel(id, itemId) {
+    const itemPlaceholder = this._element.querySelector('.to-do-item-placeholder');
+    itemPlaceholder.classList.remove('hide');
+    const toDoItem = document
+      .querySelector(`[data-note-id="${id}"]`)
+      .querySelector(`[data-item-id="${itemId}"]`);
+    const toDoItemLabel = toDoItem.querySelector('.to-do-item-label');
+    const toDoItemTextarea = toDoItem.querySelector('.to-do-item-textarea');
+    toDoItemTextarea.classList.remove('hide');
+    toDoItemTextarea.focus();
+    toDoItemTextarea.value = '';
+    toDoItemTextarea.value = toDoItemLabel.textContent;
+    toDoItemLabel.classList.add('hide');
+
+    toDoItemTextarea.addEventListener('keydown', (event) => {
+      if (event.key === 'Shift' || event.key === 'Control' || event.key === 'Alt') return;
+      if (event.keyCode >= 65 && event.keyCode <= 90) {
+        toDoItemLabel.textContent = '';
+        toDoItemLabel.textContent = toDoItemTextarea.value;
+      }
+      if (event.key === 'Tab' || event.key === 'Enter') {
+        toDoItemLabel.textContent = toDoItemTextarea.value;
+        toDoItemTextarea.classList.add('hide');
+        toDoItemLabel.classList.remove('hide');
+
+        if (toDoItemLabel.textContent !== '') {
+          toDoItemLabel.textContent = toDoItemTextarea.value;
+          this._element.querySelector('.note-card-done-button').classList.remove('hide');
+          itemPlaceholder.querySelector('.to-do-item-textarea').focus();
+        } else {
+          this.deleteToDoItem(id, itemId);
+        }
+      }
+    });
+  }
+
+  createNewToDoItem(id, event) {
+    this.noteItemsController.createNewToDoItem(id, event);
+  }
+
   openColorMenu() {
     this._element.querySelector('.color-ball-container').classList.remove('hide');
   }
 
   openMenu() {
     this._element.querySelector('.menu-panel').classList.remove('hide');
+  }
+
+  toggleCompletedItemsList() {
+    this._element.querySelector('.completed-items-btn').classList.toggle('rotate-90-cw');
+    this._element.querySelector('.completed-items-list').classList.toggle('hide');
   }
 
   showNoteTitle() {

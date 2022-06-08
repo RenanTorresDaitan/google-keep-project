@@ -15,4 +15,8 @@ export default class App {
     });
     this.changeToNotesOnMobile.observe(document.body);
   }
+
+  start() {
+    this.pageHeadersController.changeToNotesPage();
+  }
 }

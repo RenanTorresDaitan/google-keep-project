@@ -1,10 +1,10 @@
 import plusIcon from '../resources/svg/notecard/plus-icon.svg';
 
 export default class ToDoItemContainer {
-  constructor(noteItem, controller) {
+  constructor(noteItem, view) {
     this.noteItem = noteItem;
     this.toDoItems = noteItem.getToDoItems();
-    this.noteItemsController = controller;
+    this.noteItemView = view;
     this.uncheckedItems = [];
     this.checkedItems = [];
     this.update();
@@ -40,18 +40,18 @@ export default class ToDoItemContainer {
         </div>
         `;
     this.uncheckedItems.forEach((item) => element.insertBefore(
-      ToDoItemContainer.createToDoItem(this.noteItem.id, item),
+      ToDoItemContainer.createToDoItem(this.noteItem.id, item, this.noteItemView),
       element.querySelector('.to-do-item-placeholder'),
     ));
     this.checkedItems.forEach((item) => element
       .querySelector('.completed-items-list')
-      .append(ToDoItemContainer.createToDoItem(this.noteItem.id, item)));
+      .append(ToDoItemContainer.createToDoItem(this.noteItem.id, item, this.noteItemView)));
     element
       .querySelector('.to-do-item-placeholder .to-do-item-textarea')
       .addEventListener('keydown', (event) => {
         event.preventDefault();
         event.stopPropagation();
-        this.noteItemsController.createNewToDoItem(this.noteItem.id);
+        this.noteItemView.createNewToDoItem(this.noteItem.id, event);
       });
     element
       .querySelector('.to-do-item-placeholder .to-do-item-textarea')
@@ -63,7 +63,7 @@ export default class ToDoItemContainer {
       .querySelector('.completed-items-div')
       .addEventListener('click', (event) => {
         event.stopPropagation();
-        this.noteItemsController.toggleCompletedItemsList(this.noteItem.id);
+        this.noteItemView.toggleCompletedItemsList();
       });
     return element;
   }
@@ -78,7 +78,7 @@ export default class ToDoItemContainer {
     this._element = this._template();
   }
 
-  static createToDoItem(noteId, toDoItem) {
+  static createToDoItem(noteId, toDoItem, view) {
     const element = document.createElement('div');
     element.setAttribute('class', 'to-do-item');
     element.setAttribute('data-item-id', toDoItem.id);
@@ -92,19 +92,19 @@ export default class ToDoItemContainer {
       .querySelector('.to-do-item-checkbox')
       .addEventListener('click', (event) => {
         event.stopPropagation();
-        this.noteItemsController.toggleChecked(noteId, toDoItem.id);
+        view.toggleChecked(noteId, toDoItem.id);
       });
     element
       .querySelector('.to-do-item-label')
       .addEventListener('click', (event) => {
         event.stopPropagation();
-        this.noteItemsController.changeToDoItemLabel(noteId, toDoItem.id);
+        view.changeToDoItemLabel(noteId, toDoItem.id);
       });
     element
       .querySelector('.to-do-item-delete')
       .addEventListener('click', (event) => {
         event.stopPropagation();
-        this.noteItemsController.deleteToDoItem(noteId, toDoItem.id);
+        view.deleteToDoItem(noteId, toDoItem.id);
       });
     return element;
   }

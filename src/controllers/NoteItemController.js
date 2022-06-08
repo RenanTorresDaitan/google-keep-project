@@ -1,18 +1,8 @@
 export default class NoteItemController {
-  constructor(db) {
+  constructor(db, sidebarView) {
     this.dbManager = db;
+    this.sidebarView = sidebarView;
     this.SEVEN_DAYS_IN_MILLISECONDS = 604800000;
-  }
-
-  editNote(id) {
-    const noteCard = document.querySelector(`[data-note-id="${id}"]`);
-    NoteItemController.#show(noteCard.querySelector('.note-card-done-button'));
-    this.showNoteTitle(noteCard);
-    if (this.dbManager.noteItemsList.getNoteById(id).isToDoList) {
-      NoteItemController.#show(noteCard.querySelector('.to-do-item-placeholder'));
-    } else {
-      this.showNoteDescription(noteCard);
-    }
   }
 
   updateNote(id) {
@@ -41,116 +31,82 @@ export default class NoteItemController {
     }
     this.dbManager.noteItemsList.removeNoteFromList(id);
     this.dbManager.createNewNoteItem(noteItem);
+    this.updateNotes();
+  }
+
+  updateNotes() {
     this.dbManager.updateNotesOnLocalStorage();
+    this.sidebarView.changeToActiveSidebar();
   }
 
   // Buttons methods
 
   changeNoteColor(id, color) {
     this.dbManager.noteItemsList.getNoteById(id).color = color;
-    this.dbManager.updateNotesOnLocalStorage();
+    this.updateNotes();
   }
 
   addReminder(id) {
     this.dbManager.noteItemsList.getNoteById(id).isReminder = true;
-    this.dbManager.updateNotesOnLocalStorage();
+    this.updateNotes();
   }
 
   archiveNote(id) {
     this.dbManager.noteItemsList.getNoteById(id).isArchived = true;
-    this.dbManager.updateNotesOnLocalStorage();
+    this.updateNotes();
   }
 
   deleteNote(id) {
     this.dbManager.noteItemsList.removeNoteFromList(id);
-    this.dbManager.updateNotesOnLocalStorage();
+    this.updateNotes();
   }
 
   deleteTrashedNotes() {
     this.dbManager.noteItemsList.getList().forEach((item) => {
       if (item.isTrashed) this.dbManager.noteItemsList.removeNoteFromList(item.id);
     });
-    this.dbManager.updateNotesOnLocalStorage();
+    this.updateNotes();
   }
 
   restoreNote(id) {
     this.dbManager.noteItemsList.getNoteById(id).isTrashed = false;
     this.dbManager.noteItemsList.getNoteById(id).noteTime.deletionDate = null;
-    this.dbManager.updateNotesOnLocalStorage();
+    this.updateNotes();
   }
 
   trashNote(id) {
     const noteToTrash = this.dbManager.noteItemsList.getNoteById(id);
     noteToTrash.isTrashed = true;
     noteToTrash.noteTime.deletionDate = Date.now() + this.SEVEN_DAYS_IN_MILLISECONDS;
-    this.dbManager.updateNotesOnLocalStorage();
+    this.updateNotes();
   }
 
   unarchiveNote(id) {
     this.dbManager.noteItemsList.getNoteById(id).isArchived = false;
-    this.dbManager.updateNotesOnLocalStorage();
+    this.updateNotes();
   }
 
   pinNote(id) {
     const noteToPin = this.dbManager.noteItemsList.getNoteById(id);
     noteToPin.isPinned = !noteToPin.isPinned;
-    this.dbManager.updateNotesOnLocalStorage();
+    this.updateNotes();
   }
 
   // Todo items
+
   toggleChecked(noteId, itemId) {
     const item = this.dbManager.noteItemsList
       .getNoteById(noteId)
       .getToDoItemById(itemId);
     item.isChecked = !item.isChecked;
-    this.dbManager.updateNotesOnLocalStorage();
+    this.updateNotes();
   }
 
   deleteToDoItem(noteId, itemId) {
     this.dbManager.noteItemsList
       .getNoteById(noteId)
       .removeToDoItemFromList(itemId);
-    this.dbManager.updateNotesOnLocalStorage();
-  }
-
-  changeToDoItemLabel(id, itemId) {
-    const itemPlaceholder = document.querySelector(`[data-note-id="${id}"] .to-do-item-placeholder`);
-    NoteItemController.#show(itemPlaceholder);
-
-    const toDoItem = document
-      .querySelector(`[data-note-id="${id}"]`)
-      .querySelector(`[data-item-id="${itemId}"]`);
-    const toDoItemLabel = toDoItem.querySelector('.to-do-item-label');
-    const toDoItemTextarea = toDoItem.querySelector('.to-do-item-textarea');
-    NoteItemController.#show(toDoItemTextarea);
-    toDoItemTextarea.focus();
-    toDoItemTextarea.value = '';
-    toDoItemTextarea.value = toDoItemLabel.textContent;
-    NoteItemController.#hide(toDoItemLabel);
-
-    toDoItemTextarea.addEventListener('keydown', (event) => {
-      if (event.key === 'Shift' || event.key === 'Control' || event.key === 'Alt') return;
-      if (event.keyCode >= 65 && event.keyCode <= 90) {
-        toDoItemLabel.textContent = '';
-
-        toDoItemLabel.textContent = toDoItemTextarea.value;
-      }
-      if (event.key === 'Tab' || event.key === 'Enter') {
-        toDoItemLabel.textContent = toDoItemTextarea.value;
-        NoteItemController.#hide(toDoItemTextarea);
-
-        NoteItemController.#show(toDoItemLabel);
-        if (toDoItemLabel.textContent !== '') {
-          toDoItemLabel.textContent = toDoItemTextarea.value;
-          NoteItemController.#show(
-            document.querySelector(`[data-note-id="${id}"] .note-card-done-button`),
-          );
-          itemPlaceholder.querySelector('.to-do-item-textarea').focus();
-        } else {
-          this.deleteToDoItem(id, itemId);
-        }
-      }
-    });
+    this.updateNotes();
   }
 
   createNewToDoItem(id, event) {
@@ -161,7 +117,7 @@ export default class NoteItemController {
         isChecked: false,
       };
       noteToUpdate.addToDoItem(newToDoItem);
-      this.dbManager.updateNotesOnLocalStorage();
+      this.updateNotes();
       const newToDoItemEl = document.querySelector(
         `[data-note-id="${id}"] [data-item-id="${
           noteToUpdate.getToDoItemById(noteToUpdate.getToDoItems().length - 1)
@@ -173,23 +129,5 @@ export default class NoteItemController {
     } else {
       event.preventDefault();
     }
-  }
-
-  static toggleCompletedItemsList(id) {
-    NoteItemController.#toggle(document.querySelector(`[data-note-id="${id}"] .completed-items-btn`), 'rotate-90-cw');
-    NoteItemController.#toggle(document.querySelector(`[data-note-id="${id}"] .completed-items-list`), 'hide');
-  }
-
-  // Visibility Helper Methods
-  static #toggle(domElement, className) {
-    domElement.classList.toggle(className);
-  }
-
-  static #hide(domElement) {
-    domElement.classList.add('hide');
-  }
-
-  static #show(domElement) {
-    domElement.classList.remove('hide');
   }
 }

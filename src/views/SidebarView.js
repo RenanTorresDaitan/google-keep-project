@@ -5,7 +5,8 @@ import boxIcon from '../resources/svg/box-icon.svg';
 import trashIcon from '../resources/svg/trash-icon.svg';
 
 export default class SidebarView {
-  constructor() {
+  constructor(controller) {
+    this.pageHeadersController = controller;
     this._element = this._template();
   }
 
@@ -71,24 +72,24 @@ export default class SidebarView {
   changeToNotesPage(sidebar) {
     this.removeActiveFromSidebarItems();
     sidebar.setAttribute('active', '');
-    new PageHeadersController().changeToNotesPage();
+    this.pageHeadersController.changeToNotesPage();
   }
 
   changeToRemindersPage(sidebar) {
     this.removeActiveFromSidebarItems();
     sidebar.setAttribute('active', '');
-    new PageHeadersController().changeToRemindersPage();
+    this.pageHeadersController.changeToRemindersPage();
   }
 
   changeToArchivePage(sidebar) {
     this.removeActiveFromSidebarItems();
     sidebar.setAttribute('active', '');
-    new PageHeadersController().changeToArchivePage();
+    this.pageHeadersController.changeToArchivePage();
   }
 
   changeToTrashPage(sidebar) {
     this.removeActiveFromSidebarItems();
     sidebar.setAttribute('active', '');
-    new PageHeadersController().changeToTrashPage();
+    this.pageHeadersController.changeToTrashPage();
   }
 }
