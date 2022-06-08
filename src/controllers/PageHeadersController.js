@@ -36,24 +36,28 @@ export default class PageHeadersController {
 
   changeToNotesPage() {
     const notesList = this.sortList().filter((item) => !item.isArchived && !item.isTrashed);
+    this.sidebarView.changeToNotesPage();
     this.pageHeadersView.update('NOTES', notesList);
     this.appHeaderView.changeAppHeader('Keep', true);
   }
 
   changeToRemindersPage() {
     const notesList = this.sortList().filter((item) => item.isReminder && !item.isTrashed);
+    this.sidebarView.changeToRemindersPage();
     this.pageHeadersView.update('REMINDERS', notesList);
     this.appHeaderView.changeAppHeader('Reminders', false);
   }
 
   changeToArchivePage() {
     const notesList = this.sortList().filter((item) => item.isArchived && !item.isTrashed);
+    this.sidebarView.changeToArchivePage();
     this.pageHeadersView.update('ARCHIVED', notesList);
     this.appHeaderView.changeAppHeader('Archive', false);
   }
 
   changeToTrashPage() {
     const notesList = this.sortList().filter((item) => item.isTrashed);
+    this.sidebarView.changeToTrashPage();
     this.pageHeadersView.update('TRASH', notesList);
     this.appHeaderView.changeAppHeader('Trash', false);
   }

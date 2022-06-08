@@ -48,16 +48,16 @@ export default class SidebarView {
   `;
     element
       .querySelector('#sidebar-item-notes')
-      .addEventListener('click', (event) => this.changeToNotesPage(event.target));
+      .addEventListener('click', () => this.pageHeadersController.changeToNotesPage());
     element
       .querySelector('#sidebar-item-reminders')
-      .addEventListener('click', (event) => this.changeToRemindersPage(event.target));
+      .addEventListener('click', () => this.pageHeadersController.changeToRemindersPage());
     element
       .querySelector('#sidebar-item-archive')
-      .addEventListener('click', (event) => this.changeToArchivePage(event.target));
+      .addEventListener('click', () => this.pageHeadersController.changeToArchivePage());
     element
       .querySelector('#sidebar-item-trash')
-      .addEventListener('click', (event) => this.changeToTrashPage(event.target));
+      .addEventListener('click', () => this.pageHeadersController.changeToTrashPage());
     return element;
   }
 
@@ -69,27 +69,31 @@ export default class SidebarView {
     this._element.querySelector('[active]').click();
   }
 
-  changeToNotesPage(sidebar) {
+  changeToNotesPage() {
     this.removeActiveFromSidebarItems();
-    sidebar.setAttribute('active', '');
-    this.pageHeadersController.changeToNotesPage();
+    this._element
+      .querySelector('#sidebar-item-notes')
+      .setAttribute('active', '');
   }
 
-  changeToRemindersPage(sidebar) {
+  changeToRemindersPage() {
     this.removeActiveFromSidebarItems();
-    sidebar.setAttribute('active', '');
-    this.pageHeadersController.changeToRemindersPage();
+    this._element
+      .querySelector('#sidebar-item-reminders')
+      .setAttribute('active', '');
   }
 
-  changeToArchivePage(sidebar) {
+  changeToArchivePage() {
     this.removeActiveFromSidebarItems();
-    sidebar.setAttribute('active', '');
-    this.pageHeadersController.changeToArchivePage();
+    this._element
+      .querySelector('#sidebar-item-archive')
+      .setAttribute('active', '');
   }
 
-  changeToTrashPage(sidebar) {
+  changeToTrashPage() {
     this.removeActiveFromSidebarItems();
-    sidebar.setAttribute('active', '');
-    this.pageHeadersController.changeToTrashPage();
+    this._element
+      .querySelector('#sidebar-item-trash')
+      .setAttribute('active', '');
   }
 }

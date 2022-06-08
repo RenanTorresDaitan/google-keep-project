@@ -5,7 +5,7 @@ import NewNoteComponent from '../components/NewNoteComponent';
 export default class PageHeadersView {
   constructor(controller) {
     this.noteItemController = controller;
-    this.newNoteComponent = new NewNoteComponent().build();
+    this.newNoteComponent = new NewNoteComponent(this.noteItemController.dbManager).build();
     this.noteListView = new NoteListView(this.noteItemController);
     this._element = this._template('NOTES', []);
   }
