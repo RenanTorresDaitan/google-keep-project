@@ -1,11 +1,10 @@
 import plusIcon from '../resources/svg/notecard/plus-icon.svg';
 import newListIcon from '../resources/svg/new-list-icon.svg';
-import NewNoteController from '../controllers/NewNoteController';
 
 export default class NewNoteComponent {
-  constructor(db) {
-    this.dbManager = db;
-    this.newNoteController = new NewNoteController(this.dbManager);
+  constructor(controller) {
+    this.noteItemController = controller;
+    this.dbManager = controller.dbManager;
     this._element = this._template();
   }
 
@@ -92,15 +91,13 @@ export default class NewNoteComponent {
     element
       .querySelector('.newnote-menu-button')
       .addEventListener('click', () => this.openNewNoteMenu());
-    element
-      .querySelector('.newnote-pin-button')
-      .addEventListener('click', () => this.pinNewNote());
+    element.querySelector('.newnote-pin-button').addEventListener('click', () => this.pinNewNote());
     element
       .querySelector('.completed-items-div')
       .addEventListener('click', () => this.toggleCompletedItems());
     element
       .querySelector('.newnote-card-done-button')
-      .addEventListener('click', () => this.createNewNote('Create'));
+      .addEventListener('click', () => this.createNewNote());
     element
       .querySelector('.newnote-card-done-button')
       .addEventListener('keydown', () => element.click());
@@ -114,8 +111,8 @@ export default class NewNoteComponent {
   }
 
   createNewNote(action) {
+    this.noteItemController.createNewNote(action);
     this._endEditingNewNote();
-    this.newNoteController.createNewNote(action);
   }
 
   startEditingNewNote(noteType) {
@@ -125,9 +122,7 @@ export default class NewNoteComponent {
     this._element.setAttribute('editing', 'true');
     this._deleteExistingToDoItems();
     this._element.querySelector('.editing-note').classList.remove('hide');
-    this._element
-      .querySelector('.newnote-pin-button')
-      .classList.remove('note-pinned');
+    this._element.querySelector('.newnote-pin-button').classList.remove('note-pinned');
     if (noteType === 'list') {
       noteDescTextarea.classList.add('hide');
       noteItemPlaceholder.classList.remove('hide');
@@ -153,10 +148,10 @@ export default class NewNoteComponent {
 
   createNewToDoItem(event) {
     if (
-      event.key === 'Tab'
-      || event.key === 'Shift'
-      || event.key === 'Control'
-      || event.key === 'Alt'
+      event.key === 'Tab' ||
+      event.key === 'Shift' ||
+      event.key === 'Control' ||
+      event.key === 'Alt'
     ) {
       return;
     }
@@ -190,8 +185,8 @@ export default class NewNoteComponent {
   _deleteExistingToDoItems() {
     Array.from(this._element.querySelector('.newnote-to-do-items-area').children).forEach((el) => {
       if (
-        el !== this._element.querySelector('.newnote-item-placeholder')
-        && el !== this._element.querySelector('.completed-items-area')
+        el !== this._element.querySelector('.newnote-item-placeholder') &&
+        el !== this._element.querySelector('.completed-items-area')
       ) {
         this._element.querySelector('.newnote-to-do-items-area').removeChild(el);
       }
@@ -213,22 +208,24 @@ export default class NewNoteComponent {
   }
 
   toggleCompletedItems() {
-    this._element
-      .querySelector('.completed-items-btn')
-      .classList.toggle('rotate-90-cw');
-    this._element
-      .querySelector('.completed-items-list')
-      .classList.toggle('hide');
+    this._element.querySelector('.completed-items-btn').classList.toggle('rotate-90-cw');
+    this._element.querySelector('.completed-items-list').classList.toggle('hide');
   }
 
   toggleCheckbox(checkbox) {
-    checkbox.setAttribute('checked', checkbox.getAttribute('checked') === 'true' ? 'false' : 'true');
+    checkbox.setAttribute(
+      'checked',
+      checkbox.getAttribute('checked') === 'true' ? 'false' : 'true'
+    );
     this._organizeToDoItems();
   }
 
   _organizeToDoItems() {
-    const newNoteToDoItems = Array.from(this._element.querySelectorAll('.newnote-to-do-items-area .newnote-to-do-item'));
-    const checkboxChecked = (item) => (item.querySelector('.newnote-to-do-item-checkbox').getAttribute('checked') === 'true');
+    const newNoteToDoItems = Array.from(
+      this._element.querySelectorAll('.newnote-to-do-items-area .newnote-to-do-item')
+    );
+    const checkboxChecked = (item) =>
+      item.querySelector('.newnote-to-do-item-checkbox').getAttribute('checked') === 'true';
 
     newNoteToDoItems.forEach((item) => {
       if (checkboxChecked(item)) {
@@ -239,20 +236,14 @@ export default class NewNoteComponent {
           .insertBefore(item, this._element.querySelector('.newnote-item-placeholder'));
       }
     });
-    const completedItems = this._element.querySelector('.completed-items-list')
-      .children.length;
+    const completedItems = this._element.querySelector('.completed-items-list').children.length;
     if (completedItems > 0) {
-      this._element
-        .querySelector('.completed-items-area')
-        .classList.remove('hide');
+      this._element.querySelector('.completed-items-area').classList.remove('hide');
     } else {
-      this._element
-        .querySelector('.completed-items-area')
-        .classList.add('hide');
+      this._element.querySelector('.completed-items-area').classList.add('hide');
     }
-    this._element.querySelector('.completed-items-label').textContent = completedItems > 1
-      ? `${completedItems} Completed items`
-      : '1 Completed item';
+    this._element.querySelector('.completed-items-label').textContent =
+      completedItems > 1 ? `${completedItems} Completed items` : '1 Completed item';
     // });
   }
 
@@ -265,8 +256,6 @@ export default class NewNoteComponent {
   }
 
   pinNewNote() {
-    this._element
-      .querySelector('.newnote-pin-button')
-      .classList.toggle('note-pinned');
+    this._element.querySelector('.newnote-pin-button').classList.toggle('note-pinned');
   }
 }

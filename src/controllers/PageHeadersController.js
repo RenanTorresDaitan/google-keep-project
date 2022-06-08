@@ -14,12 +14,13 @@ export default class PageHeadersController {
 
   showSearchedNotes(searchTerm) {
     const searchList = this.sortList().filter(
-      (item) => item.noteTitle.toLowerCase().includes(searchTerm.toLowerCase())
-    || item.noteDescription.toLowerCase().includes(searchTerm.toLowerCase())
-    || item.toDoItems
-      .map((toDoItem) => toDoItem.label.toLowerCase())
-      .join(' ')
-      .includes(searchTerm),
+      (item) =>
+        item.noteTitle.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.noteDescription.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.toDoItems
+          .map((toDoItem) => toDoItem.label.toLowerCase())
+          .join(' ')
+          .includes(searchTerm)
     );
     this.pageHeadersView.update('NOTES', searchList);
   }

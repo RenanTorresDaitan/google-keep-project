@@ -71,29 +71,21 @@ export default class SidebarView {
 
   changeToNotesPage() {
     this.removeActiveFromSidebarItems();
-    this._element
-      .querySelector('#sidebar-item-notes')
-      .setAttribute('active', '');
+    this._element.querySelector('#sidebar-item-notes').setAttribute('active', '');
   }
 
   changeToRemindersPage() {
     this.removeActiveFromSidebarItems();
-    this._element
-      .querySelector('#sidebar-item-reminders')
-      .setAttribute('active', '');
+    this._element.querySelector('#sidebar-item-reminders').setAttribute('active', '');
   }
 
   changeToArchivePage() {
     this.removeActiveFromSidebarItems();
-    this._element
-      .querySelector('#sidebar-item-archive')
-      .setAttribute('active', '');
+    this._element.querySelector('#sidebar-item-archive').setAttribute('active', '');
   }
 
   changeToTrashPage() {
     this.removeActiveFromSidebarItems();
-    this._element
-      .querySelector('#sidebar-item-trash')
-      .setAttribute('active', '');
+    this._element.querySelector('#sidebar-item-trash').setAttribute('active', '');
   }
 }
