@@ -1,4 +1,4 @@
-export class NoteListModel {
+export default class NoteListModel {
   constructor() {
     this._list = [];
   }
@@ -6,19 +6,25 @@ export class NoteListModel {
   getList() {
     return this._list;
   }
+
   clearList() {
     this._list = [];
   }
+
   addNoteToList(noteObj) {
-    noteObj.id = noteObj.id != null ? noteObj.id : this.#calculateNextId();
-    this._list.push(noteObj);
+    const newNoteObj = noteObj;
+    newNoteObj.id = newNoteObj.id != null ? newNoteObj.id : this.#calculateNextId();
+    this._list.push(newNoteObj);
   }
+
   getNoteById(id) {
-    return this.getList().find((item) => item.id == id);
+    return this.getList().find((item) => item.id === id);
   }
+
   removeNoteFromList(id) {
-    this._list = this.getList().filter((item) => item.id != id);
+    this._list = this.getList().filter((item) => item.id !== id);
   }
+
   #calculateNextId() {
     const list = this.getList().sort((a, b) => a.id - b.id);
     let nextId = 1;

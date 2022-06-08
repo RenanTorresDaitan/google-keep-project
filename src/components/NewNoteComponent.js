@@ -1,16 +1,21 @@
-import plusIcon from "../resources/svg/notecard/plus-icon.svg";
-import newListIcon from "../resources/svg/new-list-icon.svg";
-import { app } from "../index";
+import plusIcon from '../resources/svg/notecard/plus-icon.svg';
+import newListIcon from '../resources/svg/new-list-icon.svg';
 
-export class NewNoteComponent {
-  constructor() {
+export default class NewNoteComponent {
+  constructor(controller) {
+    this.noteItemController = controller;
+    this.dbManager = controller.dbManager;
     this._element = this._template();
+  }
+
+  build() {
     return this._element;
   }
+
   _template() {
-    const element = document.createElement("div");
-    element.setAttribute("class", "newnote");
-    element.setAttribute("id", "new-note-dialog");
+    const element = document.createElement('div');
+    element.setAttribute('class', 'newnote');
+    element.setAttribute('id', 'new-note-dialog');
     element.innerHTML = `
       <!-- New note and new list buttons -->
       <div role="button" id="new-note-button" class="new-note-button" class="[ m-0625rem-r p-05rem-0625rem ]" tabindex="0" style="user-select: none" >
@@ -75,43 +80,182 @@ export class NewNoteComponent {
       </div>
       `;
     element
-      .querySelector("#archive-menu-button")
-      .addEventListener("click", () =>
-        app.newNoteController.createNewNote("Archive")
-      );
+      .querySelector('#archive-menu-button')
+      .addEventListener('click', () => this.createNewNote('Archive'));
     element
-      .querySelector("#delete-menu-button")
-      .addEventListener("click", () =>
-        app.newNoteController._endEditingNewNote()
-      );
+      .querySelector('#delete-menu-button')
+      .addEventListener('click', () => this._endEditingNewNote());
     element
-      .querySelector("#new-item-placeholder")
-      .addEventListener("keydown", (event) => app.newNoteController.createNewToDoItem(event));
+      .querySelector('#new-item-placeholder')
+      .addEventListener('keydown', (event) => this.createNewToDoItem(event));
     element
-      .querySelector(".newnote-menu-button")
-      .addEventListener("click", () => app.newNoteController.openNewNoteMenu());
+      .querySelector('.newnote-menu-button')
+      .addEventListener('click', () => this.openNewNoteMenu());
+    element.querySelector('.newnote-pin-button').addEventListener('click', () => this.pinNewNote());
     element
-      .querySelector(".newnote-pin-button")
-      .addEventListener("click", () => app.newNoteController.pinNewNote());
+      .querySelector('.completed-items-div')
+      .addEventListener('click', () => this.toggleCompletedItems());
     element
-      .querySelector(".completed-items-div")
-      .addEventListener("click", () => app.newNoteController.toggleCompletedItems());
+      .querySelector('.newnote-card-done-button')
+      .addEventListener('click', () => this.createNewNote());
     element
-      .querySelector(".newnote-card-done-button")
-      .addEventListener("click", () => app.newNoteController.createNewNote("Create"));
+      .querySelector('.newnote-card-done-button')
+      .addEventListener('keydown', () => element.click());
     element
-      .querySelector(".newnote-card-done-button")
-      .addEventListener("keydown", () => element.click());
+      .querySelector('#new-note-button')
+      .addEventListener('click', () => this.startEditingNewNote('note'));
     element
-      .querySelector("#new-note-button")
-      .addEventListener("click", () =>
-        app.newNoteController.startEditingNewNote("note")
-      );
-    element
-      .querySelector("#new-list-button")
-      .addEventListener("click", () =>
-        app.newNoteController.startEditingNewNote("list")
-      );
+      .querySelector('#new-list-button')
+      .addEventListener('click', () => this.startEditingNewNote('list'));
     return element;
+  }
+
+  createNewNote(action) {
+    this.noteItemController.createNewNote(action);
+    this._endEditingNewNote();
+  }
+
+  startEditingNewNote(noteType) {
+    const noteItemPlaceholder = this._element.querySelector('.newnote-item-placeholder');
+    const noteDescTextarea = this._element.querySelector('.newnote-desc-textarea');
+
+    this._element.setAttribute('editing', 'true');
+    this._deleteExistingToDoItems();
+    this._element.querySelector('.editing-note').classList.remove('hide');
+    this._element.querySelector('.newnote-pin-button').classList.remove('note-pinned');
+    if (noteType === 'list') {
+      noteDescTextarea.classList.add('hide');
+      noteItemPlaceholder.classList.remove('hide');
+      this._element.querySelector('.completed-items-area').classList.add('hide');
+      this._element.querySelector('.newnote-item-placeholder-textarea').focus();
+    } else {
+      noteItemPlaceholder.classList.add('hide');
+      noteDescTextarea.focus();
+    }
+  }
+
+  _endEditingNewNote() {
+    const noteTitleTextarea = this._element.querySelector('.newnote-title-textarea');
+    const noteDescTextarea = this._element.querySelector('.newnote-desc-textarea');
+
+    noteTitleTextarea.value = '';
+    noteDescTextarea.value = '';
+    this._element.setAttribute('editing', 'false');
+    this._element.querySelector('.editing-note').classList.add('hide');
+    this.closeNewNoteMenu();
+    noteDescTextarea.classList.remove('hide');
+  }
+
+  createNewToDoItem(event) {
+    if (
+      event.key === 'Tab' ||
+      event.key === 'Shift' ||
+      event.key === 'Control' ||
+      event.key === 'Alt'
+    ) {
+      return;
+    }
+    event.preventDefault();
+    const newToDoItem = document.createElement('div');
+    newToDoItem.classList.add('newnote-to-do-item');
+    newToDoItem.innerHTML = `
+      <div class="newnote-to-do-item-checkbox" checked="false"></div>
+      <textarea class="newnote-item-placeholder-textarea" placeholder="List item"></textarea>
+      <div class="newnote-to-do-item-delete"></div>
+    `;
+    newToDoItem
+      .querySelector('.newnote-to-do-item-checkbox')
+      .addEventListener('click', (btn) => this.toggleCheckbox(btn.target));
+    newToDoItem
+      .querySelector('.newnote-item-placeholder-textarea')
+      .addEventListener('keydown', (key) => this.editText(key));
+    newToDoItem
+      .querySelector('.newnote-to-do-item-delete')
+      .addEventListener('click', (btn) => this.deleteToDoItem(btn.target));
+    this._element
+      .querySelector('.newnote-to-do-items-area')
+      .insertBefore(newToDoItem, this._element.querySelector('.newnote-item-placeholder'));
+    if (event.keyCode >= 65 && event.keyCode <= 90) {
+      const newNoteTextArea = newToDoItem.querySelector('.newnote-item-placeholder-textarea');
+      newNoteTextArea.value = event.key;
+      newNoteTextArea.focus();
+    }
+  }
+
+  _deleteExistingToDoItems() {
+    Array.from(this._element.querySelector('.newnote-to-do-items-area').children).forEach((el) => {
+      if (
+        el !== this._element.querySelector('.newnote-item-placeholder') &&
+        el !== this._element.querySelector('.completed-items-area')
+      ) {
+        this._element.querySelector('.newnote-to-do-items-area').removeChild(el);
+      }
+    });
+    Array.from(this._element.querySelector('.completed-items-list').children).forEach((el) => {
+      this._element.querySelector('.completed-items-list').removeChild(el);
+    });
+  }
+
+  editText(event) {
+    if (event.key === 'Enter') {
+      this._element.querySelector('#new-item-placeholder').focus();
+      event.preventDefault();
+    }
+  }
+
+  deleteToDoItem(deleteBtn) {
+    this._element.querySelector('.newnote-to-do-items-area').removeChild(deleteBtn.parentNode);
+  }
+
+  toggleCompletedItems() {
+    this._element.querySelector('.completed-items-btn').classList.toggle('rotate-90-cw');
+    this._element.querySelector('.completed-items-list').classList.toggle('hide');
+  }
+
+  toggleCheckbox(checkbox) {
+    checkbox.setAttribute(
+      'checked',
+      checkbox.getAttribute('checked') === 'true' ? 'false' : 'true'
+    );
+    this._organizeToDoItems();
+  }
+
+  _organizeToDoItems() {
+    const newNoteToDoItems = Array.from(
+      this._element.querySelectorAll('.newnote-to-do-items-area .newnote-to-do-item')
+    );
+    const checkboxChecked = (item) =>
+      item.querySelector('.newnote-to-do-item-checkbox').getAttribute('checked') === 'true';
+
+    newNoteToDoItems.forEach((item) => {
+      if (checkboxChecked(item)) {
+        this._element.querySelector('.completed-items-list').append(item);
+      } else {
+        this._element
+          .querySelector('.newnote-to-do-items-area')
+          .insertBefore(item, this._element.querySelector('.newnote-item-placeholder'));
+      }
+    });
+    const completedItems = this._element.querySelector('.completed-items-list').children.length;
+    if (completedItems > 0) {
+      this._element.querySelector('.completed-items-area').classList.remove('hide');
+    } else {
+      this._element.querySelector('.completed-items-area').classList.add('hide');
+    }
+    this._element.querySelector('.completed-items-label').textContent =
+      completedItems > 1 ? `${completedItems} Completed items` : '1 Completed item';
+    // });
+  }
+
+  openNewNoteMenu() {
+    this._element.querySelector('.newnote-menu').classList.remove('hide');
+  }
+
+  closeNewNoteMenu() {
+    this._element.querySelector('.newnote-menu').classList.add('hide');
+  }
+
+  pinNewNote() {
+    this._element.querySelector('.newnote-pin-button').classList.toggle('note-pinned');
   }
 }

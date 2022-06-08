@@ -1,16 +1,17 @@
-import lampIcon from "../resources/svg/lamp-icon.svg";
-import bellIcon from "../resources/svg/bell-icon.svg";
-import pencilIcon from "../resources/svg/pencil-icon.svg";
-import boxIcon from "../resources/svg/box-icon.svg";
-import trashIcon from "../resources/svg/trash-icon.svg";
-import { app } from "../index";
+import lampIcon from '../resources/svg/lamp-icon.svg';
+import bellIcon from '../resources/svg/bell-icon.svg';
+import pencilIcon from '../resources/svg/pencil-icon.svg';
+import boxIcon from '../resources/svg/box-icon.svg';
+import trashIcon from '../resources/svg/trash-icon.svg';
 
-export class SidebarView {
-  constructor() {
+export default class SidebarView {
+  constructor(controller) {
+    this.pageHeadersController = controller;
     this._element = this._template();
   }
+
   _template() {
-    const element = document.querySelector(".sidebar-container");
+    const element = document.querySelector('.sidebar-container');
     element.innerHTML = `
       <nav class="sidebar">
         <div class="sidebar-item" id="sidebar-item-notes" active ">
@@ -46,51 +47,45 @@ export class SidebarView {
       </nav>
   `;
     element
-      .querySelector("#sidebar-item-notes")
-      .addEventListener("click", (event) =>
-        this.changeToNotesPage(event.target)
-      );
+      .querySelector('#sidebar-item-notes')
+      .addEventListener('click', () => this.pageHeadersController.changeToNotesPage());
     element
-      .querySelector("#sidebar-item-reminders")
-      .addEventListener("click", (event) =>
-        this.changeToRemindersPage(event.target)
-      );
+      .querySelector('#sidebar-item-reminders')
+      .addEventListener('click', () => this.pageHeadersController.changeToRemindersPage());
     element
-      .querySelector("#sidebar-item-archive")
-      .addEventListener("click", (event) =>
-        this.changeToArchivePage(event.target)
-      );
+      .querySelector('#sidebar-item-archive')
+      .addEventListener('click', () => this.pageHeadersController.changeToArchivePage());
     element
-      .querySelector("#sidebar-item-trash")
-      .addEventListener("click", (event) =>
-        this.changeToTrashPage(event.target)
-      );
+      .querySelector('#sidebar-item-trash')
+      .addEventListener('click', () => this.pageHeadersController.changeToTrashPage());
     return element;
   }
+
   removeActiveFromSidebarItems() {
-    this._element.querySelector("[active]").removeAttribute("active");
+    this._element.querySelector('[active]').removeAttribute('active');
   }
+
   changeToActiveSidebar() {
-    this._element.querySelector("[active]").click();
+    this._element.querySelector('[active]').click();
   }
-  changeToNotesPage(sidebar) {
+
+  changeToNotesPage() {
     this.removeActiveFromSidebarItems();
-    sidebar.setAttribute("active", "");
-    app.pageHeadersController.changeToNotesPage();
+    this._element.querySelector('#sidebar-item-notes').setAttribute('active', '');
   }
-  changeToRemindersPage(sidebar) {
+
+  changeToRemindersPage() {
     this.removeActiveFromSidebarItems();
-    sidebar.setAttribute("active", "");
-    app.pageHeadersController.changeToRemindersPage();
+    this._element.querySelector('#sidebar-item-reminders').setAttribute('active', '');
   }
-  changeToArchivePage(sidebar) {
+
+  changeToArchivePage() {
     this.removeActiveFromSidebarItems();
-    sidebar.setAttribute("active", "");
-    app.pageHeadersController.changeToArchivePage();
+    this._element.querySelector('#sidebar-item-archive').setAttribute('active', '');
   }
-  changeToTrashPage(sidebar) {
+
+  changeToTrashPage() {
     this.removeActiveFromSidebarItems();
-    sidebar.setAttribute("active", "");
-    app.pageHeadersController.changeToTrashPage();
+    this._element.querySelector('#sidebar-item-trash').setAttribute('active', '');
   }
 }

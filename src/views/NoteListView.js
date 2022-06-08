@@ -1,18 +1,26 @@
-import {NoteItemView} from "./NoteItemView" 
+import NoteItemView from './NoteItemView';
 
-export class NoteListView {
-  constructor(list) {
-    this._element = this._template();
-    this.update(list);
+export default class NoteListView {
+  constructor(controller) {
+    this.noteItemController = controller;
+    this.list = this.noteItemController.dbManager.noteItemsList.getList();
+    this.update(this.list);
+  }
+
+  build() {
     return this._element;
   }
 
-  _template() {
-    const element = document.createElement("section");
-    element.setAttribute("id", "notes-area");
+  _template(list) {
+    const element = document.createElement('section');
+    element.setAttribute('id', 'notes-area');
+    list.forEach((noteItem) => {
+      element.append(new NoteItemView(noteItem, this.noteItemController).build());
+    });
     return element;
   }
+
   update(list) {
-    list.forEach(noteItem => this._element.append(new NoteItemView(noteItem)));
+    this._element = this._template(list);
   }
 }
